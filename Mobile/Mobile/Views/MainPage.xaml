@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Name="mainPage"
+             xmlns:controls="clr-namespace:Microsoft.Maui.Controls"
+             xmlns:common="clr-namespace:Mobile.Common"
+             xmlns:convertors="clr-namespace:Mobile.Common.Convertors"
+             xmlns:sfListView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             ControlTemplate="{StaticResource MainPageTemplate}"
+             x:Class="Mobile.Views.MainPage">
+
+  <ContentPage.Resources>
+
+    <ResourceDictionary>
+
+      <convertors:DateDifferenceFromNowConvertor
+        x:Key="dateDifferenceFromNowConvertor" />
+    </ResourceDictionary>
+    
+    <DataTemplate
+      x:Key="budgetOverviewDataTemplate">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition
+  Height="auto" />
+        </Grid.RowDefinitions>
+        <Label
+          Grid.Row="0"
+  Text="{Binding PaymentPeriod.DateTo, Source={RelativeSource Mode=TemplatedParent}}" />
+      </Grid>
+    </DataTemplate>
+
+    <common:MoneyOverviewTemplateSelector
+      x:Key="moneyOverviewTemplateSelector"
+  BudgetOverviewDataTemplate="{StaticResource budgetOverviewDataTemplate}" />
+
+  </ContentPage.Resources>
+
+  <ContentPage.Content>
+
+    <Grid>
+
+
+      <Grid.RowDefinitions>
+        <RowDefinition
+  Height="auto" />
+        <RowDefinition
+Height="150" />
+        <RowDefinition
+  Height="auto" />
+        <RowDefinition
+Height="auto" />
+      </Grid.RowDefinitions>
+
+      <ContentView
+ControlTemplate="{StaticResource NavigationScreen}" />
+
+      <ContentView
+  ControlTemplate="{StaticResource CreatePaymentScreen}" />
+
+      <ContentView
+  Grid.Row="0"
+  ControlTemplate="{StaticResource MainPageContentFrame}">
+        <ContentView.GestureRecognizers>
+          <TapGestureRecognizer
+    Command="{Binding PaymentPeriodTappedCommand}" />
+        </ContentView.GestureRecognizers>
+        <Label
+          TextColor="Black">
+          <Label.Text>
+            <MultiBinding StringFormat="{}Period Ends: {0:dd/MM/yyyy} ({1} day(s) remain)">
+              <Binding
+        Path="PaymentPeriod.DateTo" />
+              <Binding
+        Path="PaymentPeriod.DateTo"
+        Converter="{StaticResource dateDifferenceFromNowConvertor}" />
+            </MultiBinding>
+          </Label.Text>
+        </Label>
+      </ContentView>
+
+      <ContentView
+      Grid.Row="1"
+      ControlTemplate="{StaticResource MainPageContentFrameAlternative}">
+        <sfListView:SfListView        
+        IsScrollingEnabled="True"
+        ScrollBarVisibility="Always"
+        IsStickyHeader="True"
+        HeaderSize="50"
+        ItemsSource="{Binding LastPaymentsDataSource}">
+
+        <sfListView:SfListView.HeaderTemplate>
+          <DataTemplate>
+            <Label
+  Text="Payments For The Last 3 Days" />
+          </DataTemplate>
+        </sfListView:SfListView.HeaderTemplate>
+        
+        <sfListView:SfListView.ItemTemplate>
+          <DataTemplate>
+            <Label
+              Text="{Binding PaymentTypeDescription}" />
+          </DataTemplate>
+        </sfListView:SfListView.ItemTemplate>
+        
+      </sfListView:SfListView>
+      </ContentView>
+
+      <ContentView
+        Grid.Row="2"
+        ControlTemplate="{StaticResource MainPageContentFrame}">
+
+        <chart:SfCartesianChart>
+
+          <chart:SfCartesianChart.Title>
+            <Label Text="Receipts/Payments Over The Last 7 Days" />
+          </chart:SfCartesianChart.Title>
+
+          <chart:SfCartesianChart.XAxes>
+            <chart:DateTimeAxis
+              ShowMajorGridLines="False"
+              ShowMinorGridLines="False"/>
+          </chart:SfCartesianChart.XAxes>
+          <chart:SfCartesianChart.YAxes>
+            <chart:NumericalAxis
+              ShowMajorGridLines="False"
+              ShowMinorGridLines="False" />
+          </chart:SfCartesianChart.YAxes>
+
+          <chart:ColumnSeries x:Name="receiptsColumnSeries"
+                              ItemsSource="{Binding DailySpendAndReceiptsDataSource}"
+                              ShowDataLabels="True"
+                              XBindingPath="Date" 
+                              YBindingPath="AmountSpent" >
+           
+          </chart:ColumnSeries>
+
+          <chart:ColumnSeries ItemsSource="{Binding DailySpendAndReceiptsDataSource}"
+                              ShowDataLabels="True"
+                              XBindingPath="Date" 
+                              YBindingPath="AmountReceived">
+           
+          </chart:ColumnSeries>
+
+        </chart:SfCartesianChart>
+
+      </ContentView>
+
+      <ContentView
+        ControlTemplate="{StaticResource MainPageContentFrameAlternative}"
+        Grid.Row="3">
+        <CarouselView         
+        BackgroundColor="Transparent"
+        ItemsSource="{Binding BudgetInformation}">
+          <CarouselView.ItemTemplate>
+            <DataTemplate>
+              <Label
+Text="{Binding .}" />
+            </DataTemplate>
+          </CarouselView.ItemTemplate>
+        </CarouselView>
+      </ContentView>
+      
+      
+    </Grid>
+  
+  </ContentPage.Content>
+  
+
+</ContentPage>

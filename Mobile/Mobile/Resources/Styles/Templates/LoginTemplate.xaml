@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mobile.Resources.Styles.Templates.LoginTemplate">
+
+
+  <ControlTemplate
+    x:Key="AuthenticationTemplate">
+
+    <Grid
+      BackgroundColor="#444cb1"
+      Padding="0"
+      Margin="0">
+      <Grid.RowDefinitions>
+        <RowDefinition
+Height="250" />
+        <RowDefinition
+Height="*" />
+      </Grid.RowDefinitions>
+
+      <Frame
+        BackgroundColor="Transparent"
+        BorderColor="Transparent"
+  Grid.Row="0">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition
+  Height="auto" />
+            <RowDefinition
+  Height="*" />
+          </Grid.RowDefinitions>
+          <Image
+Margin="0,50,0,0"              
+Grid.Row="0"
+Source="bootcom_whitetext_transparentbg.png" />
+        </Grid>
+      </Frame>
+
+
+      <Border
+        Grid.Row="1"
+        Margin="5, -50,5, 0"
+        BackgroundColor="#444cb1"
+        StrokeThickness="0">
+        <Border.StrokeShape>
+          <RoundRectangle
+            CornerRadius="40,40,0,0" />
+        </Border.StrokeShape>
+        <Frame
+          Margin="0"
+Grid.Row="0"          
+>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition
+      Height="*" />
+            </Grid.RowDefinitions>
+            <ContentPresenter>
+
+            </ContentPresenter>
+          </Grid>
+        </Frame>
+      </Border>
+    </Grid>
+
+  </ControlTemplate>
+  
+</ResourceDictionary>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mobile.Views.Authentication.AuthenticateEmailPage"
+             xmlns:controls="clr-namespace:Mobile.Controls"
+             xmlns:popup="clr-namespace:Syncfusion.Maui.Popup;assembly=Syncfusion.Maui.Popup"
+             Padding="0"
+             ControlTemplate="{StaticResource AuthenticationTemplate}"
+             Title="Authenticate Email">
+
+  <ContentPage.Content>
+
+    <Grid>
+      
+      <popup:SfPopup x:Name="sfPopup"
+               HeaderTitle=""
+               ShowCloseButton="False"
+               AnimationMode="Zoom"
+               IsOpen="{Binding OpenPopup}">
+        <popup:SfPopup.HeaderTemplate>
+          <DataTemplate>
+            <Label
+              Margin="10"
+              Text="Please wait whilst an email is prepared ..." />
+          </DataTemplate>
+        </popup:SfPopup.HeaderTemplate>
+        <popup:SfPopup.ContentTemplate>
+          <DataTemplate>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition
+                  Height="*" />
+                <RowDefinition
+                  Height="auto" />
+              </Grid.RowDefinitions>
+
+              <Image Source="loader.gif"
+                 Grid.Row="0"
+                 Margin="5"
+                 IsAnimationPlaying="{Binding LoaderImagePlaying}" />
+
+            </Grid>
+          </DataTemplate>
+        </popup:SfPopup.ContentTemplate>
+      </popup:SfPopup>
+
+      <Grid>
+
+
+        <Grid.RowDefinitions>
+          <RowDefinition
+Height="auto" />
+          <RowDefinition
+Height="auto" />
+          <RowDefinition
+Height="auto" />
+          <RowDefinition
+Height="auto" />
+        </Grid.RowDefinitions>
+
+
+
+        <Label
+      Grid.Row="0"
+      HorizontalTextAlignment="Center"
+Text="You should shortly receive an email which contains an entry code. This is to prove your email address came from you." />
+
+        <Label
+  Grid.Row="1"
+  Text="Please enter the entry code you received in your email" />
+
+        <Entry
+          Keyboard="Numeric"
+          Text="{Binding QuickAccessCode}"
+          Grid.Row="2" />
+
+        <Button
+          Grid.Row="3"
+          Command="{Binding CompleteSignInCommand}"
+          Text="Complete Sign In" />
+
+      </Grid>
+    </Grid>
+    
+   
+    
+    
+    
+  </ContentPage.Content>
+  
+    
+</ContentPage>

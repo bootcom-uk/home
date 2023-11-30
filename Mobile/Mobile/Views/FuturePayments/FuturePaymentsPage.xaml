@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
+             xmlns:data="clr-namespace:Syncfusion.Maui.DataSource;assembly=Syncfusion.Maui.DataSource"
+             x:Class="Mobile.Views.FuturePayments.FuturePaymentsPage"
+             ControlTemplate="{StaticResource MainPageTemplate}"
+             Title="FuturePaymentsPage">
+    <Grid
+      Margin="5">
+
+    <Grid.RowDefinitions>
+      <RowDefinition
+  Height="auto" />
+      <RowDefinition
+  Height="auto" />
+    </Grid.RowDefinitions>
+      
+    <ContentView
+ControlTemplate="{StaticResource NavigationScreen}" />
+
+    <ContentView
+ControlTemplate="{StaticResource CreatePaymentScreen}" />
+      
+    <syncfusion:SfListView            
+      Grid.Row="0"
+      ItemSize="80"
+      ItemSpacing="5"
+      AllowSwiping="True"      
+      SwipeStarting="SfListView_SwipeStarting"
+      AllowGroupExpandCollapse="False"
+      ItemsSource="{Binding DataSource}"
+      >
+
+      <syncfusion:SfListView.DataSource>
+        <data:DataSource>
+          <data:DataSource.GroupDescriptors>
+            <data:GroupDescriptor
+              PropertyName="PaymentPeriodId" />
+          </data:DataSource.GroupDescriptors>
+        </data:DataSource>
+      </syncfusion:SfListView.DataSource>
+      
+      <syncfusion:SfListView.ItemTemplate>
+        <DataTemplate>
+          <Border
+            BackgroundColor="{StaticResource White}"            
+            StrokeThickness="0">
+            <Border.StrokeShape>
+              <RoundRectangle                
+                CornerRadius="25,25,25,25" />
+            </Border.StrokeShape>
+            <ContentView>
+                <Grid
+                  Padding="10">
+                  <Grid.RowDefinitions>
+                    <RowDefinition
+                      Height="auto" />
+                    <RowDefinition
+                      Height="auto" />
+                  </Grid.RowDefinitions>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                      Width="*" />
+                    <ColumnDefinition
+                      Width="auto" />
+                  </Grid.ColumnDefinitions>
+                  <Label
+                    Grid.Row="0"
+                    Text="{Binding PaymentRequiredDate, StringFormat='Payment Required: {0:dd/MM/yyyy}'}"/>
+                  <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="{Binding PaymentInformation}" />
+                  <Label
+                      Grid.Row="1"
+                      Grid.Column="1"
+                      Text="{Binding PaymentExpectedAmount, StringFormat='{0:C2}'}" />
+                </Grid>
+            </ContentView>
+          </Border>
+        </DataTemplate>
+      </syncfusion:SfListView.ItemTemplate>
+
+      <syncfusion:SfListView.StartSwipeTemplate>
+        <DataTemplate x:Name="StartSwipeTemplate">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition
+              Height="auto" />
+            </Grid.RowDefinitions>
+            <Button
+              Grid.Row="0"
+              StyleClass="EditSwipeButton"/>
+          </Grid>
+        </DataTemplate>
+      </syncfusion:SfListView.StartSwipeTemplate>
+
+      <syncfusion:SfListView.EndSwipeTemplate>
+        <DataTemplate x:Name="EndSwipeTemplate">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition
+              Height="auto" />
+            </Grid.RowDefinitions>
+            <Button
+              StyleClass="DeleteSwipeButton"
+              Grid.Row="0" />
+          </Grid>
+        </DataTemplate>
+      </syncfusion:SfListView.EndSwipeTemplate>
+      
+    </syncfusion:SfListView>
+      
+    </Grid>
+</ContentPage>

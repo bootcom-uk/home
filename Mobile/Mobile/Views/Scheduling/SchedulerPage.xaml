@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:local="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
+             xmlns:sfPopup="clr-namespace:Syncfusion.Maui.Popup;assembly=Syncfusion.Maui.Popup"
+             x:Class="Mobile.Views.Scheduling.SchedulerPage"
+             ControlTemplate="{StaticResource MainPageTemplate}"
+             Title="SchedulerPage">
+
+  <ContentPage.Content>
+
+    <Grid>
+      <ContentView
+ControlTemplate="{StaticResource NavigationScreen}" />
+
+      <ContentView
+  ControlTemplate="{StaticResource CreatePaymentScreen}" />
+
+      <ContentView
+        ControlTemplate="{StaticResource ModifyPaymentScreen}" />
+            
+      <scheduler:SfScheduler
+        Grid.Row="0"
+        ShowNavigationArrows="True"
+        ShowWeekNumber="False"
+        AppointmentsSource="{Binding DataSource}"
+        QueryAppointmentsCommand="{Binding QueryAppointmentsCommand}"        
+        FirstDayOfWeek="Monday"
+        View="Month">
+
+        <scheduler:SfScheduler.Behaviors>
+          <local:EventToCommandBehavior
+            EventName="DoubleTapped"
+            Command="{Binding SchedulerDoubleTappedCommand}"
+            x:TypeArguments="scheduler:SchedulerDoubleTappedEventArgs"
+             />
+        </scheduler:SfScheduler.Behaviors>
+        
+        <scheduler:SfScheduler.MonthView>
+          <scheduler:SchedulerMonthView
+            AppointmentDisplayMode="Text" />
+        </scheduler:SfScheduler.MonthView>
+        
+        <scheduler:SfScheduler.AppointmentMapping>
+          <scheduler:SchedulerAppointmentMapping
+            Subject="PaymentTypeName"
+            Background="PaymentColour"
+            StartTime="LocalStartDate"
+            EndTime="LocalEndDate"
+            />
+        </scheduler:SfScheduler.AppointmentMapping>
+        
+      </scheduler:SfScheduler>
+
+    </Grid>
+        
+  </ContentPage.Content>
+  
+</ContentPage>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
+             xmlns:data="clr-namespace:Syncfusion.Maui.DataSource;assembly=Syncfusion.Maui.DataSource"
+             xmlns:sfPopup="clr-namespace:Syncfusion.Maui.Popup;assembly=Syncfusion.Maui.Popup"
+             xmlns:picker="clr-namespace:Syncfusion.Maui.Picker;assembly=Syncfusion.Maui.Picker"
+             x:Class="Mobile.Views.PaymentPeriods.PaymentPeriodsPage"
+             ControlTemplate="{StaticResource MainPageTemplate}"
+             Title="PaymentPeriodsPage">
+
+  <ContentPage.Content>
+    <Grid>
+
+      <Grid.RowDefinitions>
+        <RowDefinition
+          Height="*" />
+      </Grid.RowDefinitions>
+
+      <sfPopup:SfPopup
+         PopupStyle="{StaticResource PaymentPopupStyle}"
+         AnimationMode="Fade"
+         AnimationEasing="SinInOut"
+         AnimationDuration="500"
+         IsOpen="{Binding IsPaymentPeriodScreenOpen}"
+         IsFullScreen="True"
+         ShowCloseButton="True"
+         ShowHeader="True"
+         x:Name="paymentPeriodPopup"
+         HeaderTitle="{Binding PaymentPeriodTitle}">
+        <sfPopup:SfPopup.ContentTemplate>
+          <DataTemplate>
+            <ScrollView>
+              <Grid
+                Padding="5">
+                <Grid.RowDefinitions>
+                  <RowDefinition
+                    Height="auto" />
+                  <RowDefinition
+                    Height="auto" />
+                  <RowDefinition
+                    Height="auto" />
+                  <RowDefinition
+                    Height="auto" />
+                  <RowDefinition
+                    Height="*" />
+                  <RowDefinition
+                  Height="auto" />
+                </Grid.RowDefinitions>
+                <Label
+                  StyleClass="PopupLabel"
+                  Grid.Row="0"                  
+                  Text="Date From:" />
+                <DatePicker
+                  Grid.Row="1"
+                  Date="{Binding PaymentPeriodPopupDataSource.DateFrom}"
+                  />
+                <Label
+                  StyleClass="PopupLabel"
+                  Grid.Row="2"
+                  Text="Date To:" />
+                <DatePicker
+                  Grid.Row="3"
+                  Date="{Binding PaymentPeriodPopupDataSource.DateTo}"
+                  />
+                <CollectionView
+                  Grid.Row="4"
+                  ItemsSource="{Binding PaymentPeriodPopupDataSource.Budgets}">
+                  <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                      <Grid>
+                        <Grid.RowDefinitions>
+                          <RowDefinition
+  Height="auto" />
+                          <RowDefinition
+  Height="auto" />
+                          <RowDefinition
+  Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Label
+                        Grid.Row="0"
+Text="{Binding BudgetCategoryId.PaymentCategoryId.Name}" />
+                        <Label
+                        Grid.Row="1"
+Text="{Binding BudgetCategoryId.AssociatedResource.Name}" />
+                        <Label
+                          Grid.Row="2"
+  Text="{Binding BudgetRemaining}" />
+                      </Grid>
+                    </DataTemplate>
+                  </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Button
+                  IsEnabled="{Binding IsProcessing}"
+                  Grid.Row="5"
+                  Text="Save" />
+              </Grid>
+            </ScrollView>
+          </DataTemplate>
+        </sfPopup:SfPopup.ContentTemplate>
+      </sfPopup:SfPopup>
+      
+      <ContentView
+        ControlTemplate="{StaticResource NavigationScreen}" />
+
+      <ContentView
+        ControlTemplate="{StaticResource CreatePaymentScreen}" />
+
+
+      <syncfusion:SfListView
+        x:Name="paymentPeriodListView"
+        Grid.Row="0"
+        ItemSize="60"
+        HeaderSize="80"
+        ItemSpacing="5"
+        AllowSwiping="True"
+        ItemsSource="{Binding DataSource}">
+
+        <syncfusion:SfListView.HeaderTemplate>
+          <DataTemplate>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                  Width="*" />
+                <ColumnDefinition
+                  Width="120" />
+              </Grid.ColumnDefinitions>
+              <Label
+              Grid.Column="0"
+              Text="Payment Periods" />
+              <Button
+              Grid.Column="1"                
+              Text="Add New Payment Period"
+                Command="{Binding AddNewPaymentPeriodCommand}"
+              BackgroundColor="{StaticResource Blue300Accent}" />
+            </Grid>
+          </DataTemplate>
+        </syncfusion:SfListView.HeaderTemplate>
+
+        <syncfusion:SfListView.StartSwipeTemplate>
+          <DataTemplate>
+            <ImageButton
+              Command="{Binding Source={x:Reference paymentPeriodListView},Path=BindingContext.EditPaymentPeriodCommand}"
+              CommandParameter="{Binding .}"
+              StyleClass="EditSwipeButton" />
+          </DataTemplate>
+        </syncfusion:SfListView.StartSwipeTemplate>
+
+        <syncfusion:SfListView.EndSwipeTemplate>
+          <DataTemplate>
+            <ImageButton
+    StyleClass="DeleteSwipeButton" />
+          </DataTemplate>
+        </syncfusion:SfListView.EndSwipeTemplate>
+
+        <syncfusion:SfListView.ItemTemplate>
+          <DataTemplate>
+            <Border
+  BackgroundColor="{StaticResource White}"            
+  StrokeThickness="0">
+              <Border.StrokeShape>
+                <RoundRectangle                
+      CornerRadius="25,25,25,25" />
+              </Border.StrokeShape>
+              <ContentView>
+                <Grid
+                  Padding="10">
+                  <Grid.RowDefinitions>
+                    <RowDefinition
+                  Height="*" />
+                  </Grid.RowDefinitions>
+
+                  <Label
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    VerticalOptions="Fill"
+  Grid.Row="0">
+                    <Label.Text>
+                      <MultiBinding StringFormat="{}{0:dd/MM/yyyy} to {1:dd/MM/yyyy}">
+                        <Binding Path="DateFrom" />
+                        <Binding Path="DateTo" />
+                      </MultiBinding>
+                    </Label.Text>
+                  </Label>
+
+                </Grid>
+              </ContentView>
+            </Border>
+          </DataTemplate>
+        </syncfusion:SfListView.ItemTemplate>
+      </syncfusion:SfListView>
+        
+    </Grid>
+  </ContentPage.Content>
+
+
+</ContentPage>

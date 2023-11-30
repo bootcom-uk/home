@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mobile.Resources.Styles.Templates.MainPageTemplate">
+
+
+  <ControlTemplate
+  x:Key="MainPageContentFrame">
+
+    <Border
+      Grid.Row="0"
+      Margin="10,5,10,5"
+      StrokeThickness="1"
+      BackgroundColor="{StaticResource White}">
+      <Border.StrokeShape>
+        <RoundRectangle CornerRadius="40,25,25,40" />
+      </Border.StrokeShape>
+      <Border.Shadow>
+        <Shadow
+          Brush="{StaticResource BlackBrush}"
+          Offset="20,20"
+          Radius="40"
+          Opacity="0.8" />
+      </Border.Shadow>
+      <Frame          
+BorderColor="Transparent">
+        <ContentPresenter />
+      </Frame>
+    </Border>
+
+  </ControlTemplate>
+
+  <ControlTemplate
+  x:Key="MainPageContentFrameAlternative">
+
+    <Border
+      Grid.Row="0"
+      Margin="10,5,10,5"
+      StrokeThickness="1"
+      BackgroundColor="{StaticResource White}">
+      <Border.StrokeShape>
+        <RoundRectangle CornerRadius="25,40,40,25" />
+      </Border.StrokeShape>
+      <Border.Shadow>
+        <Shadow
+          Brush="{StaticResource BlackBrush}"
+          Offset="20,20"
+          Radius="40"
+          Opacity="0.8" />
+      </Border.Shadow>
+      <Frame          
+BorderColor="Transparent">
+        <ContentPresenter />
+      </Frame>
+    </Border>
+
+  </ControlTemplate>
+
+  <ControlTemplate
+    x:Key="MainPageTemplate">
+
+    <RefreshView
+          BindingContext="{Binding BindingContext, Source={RelativeSource Mode=TemplatedParent}}"
+      IsRefreshing="{Binding IsRefreshing}"
+      Command="{Binding RefreshViewCommand}"
+      >
+
+      <Grid>
+
+      <Grid.RowDefinitions>
+        <RowDefinition
+  Height="50" />
+        <RowDefinition
+  Height="*" />
+        <RowDefinition
+Height="auto" />
+      </Grid.RowDefinitions>
+
+      <!-- Top navigation bar -->
+      <Grid
+        BackgroundColor="{StaticResource Primary}"
+        Padding="0"
+        Margin="0"
+        Grid.Row="0">
+
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition
+  Width="55" />
+          <ColumnDefinition
+  Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <ImageButton
+  Grid.Column="0"
+          BindingContext="{Binding BindingContext, Source={RelativeSource Mode=TemplatedParent}}"
+          Padding="3"
+          Command="{Binding ShowNavigationMenuCommand}"
+  Source="buddy.png" />
+
+        <Label
+          VerticalOptions="Center"
+          Grid.Column="1"
+          BindingContext="{Binding BindingContext, Source={RelativeSource Mode=TemplatedParent}}"
+          TextColor="{StaticResource White}"
+          Text="{Binding Title}" />
+
+      </Grid>
+
+        <!-- Primary page content -->
+        <ScrollView
+          BackgroundColor="{StaticResource Primary}"
+    Grid.Row="1">
+          <ContentPresenter />
+        </ScrollView>
+        
+      
+      <Label
+  Grid.Row="2"
+        TextColor="{StaticResource White}"
+        BackgroundColor="{StaticResource Primary}"
+        Text="© 2023 BootCom"
+        />
+
+    </Grid>
+
+    </RefreshView>
+  
+  </ControlTemplate>
+  
+</ResourceDictionary>

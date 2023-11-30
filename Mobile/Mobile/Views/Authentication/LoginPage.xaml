@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Mobile.Controls"
+             x:Class="Mobile.Views.Authentication.LoginPage"
+             Title="LoginPage"
+             Padding="0"
+             ControlTemplate="{StaticResource AuthenticationTemplate}">
+  <ContentPage.Content>
+
+
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition
+  Height="auto" />
+        <RowDefinition
+Height="auto" />
+        <RowDefinition
+Height="auto" />
+        <RowDefinition
+Height="auto" />
+        <RowDefinition
+Height="auto" />
+        <RowDefinition
+Height="auto" />
+        <RowDefinition
+Height="*" />
+      </Grid.RowDefinitions>
+
+      <Label
+        Grid.Row="0"
+        HorizontalTextAlignment="Center"
+        Text="Please enter your email address below. If you do not have an account, this will be created as part of the sign in process." />
+
+      <controls:Entry
+        x:Name="EmailAddress"
+        Title="Email Address"
+        EntryKeyboard="Email"
+        ValidationRequired="True"
+        Text="{Binding EmailAddress}"
+        ValidationType="EMAIL"
+        Grid.Row="1"
+/>
+      
+      <StackLayout
+        Grid.Row="4">
+        <Button
+          Margin="0,10,0,0"
+          IsEnabled="{Binding Valid, Source={x:Reference EmailAddress}}"
+          Command="{Binding LoginCommand}"
+          Text="Send Login Link" />
+      </StackLayout>
+
+    </Grid>
+    
+  </ContentPage.Content>    
+</ContentPage>

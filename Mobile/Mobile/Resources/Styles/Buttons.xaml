@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+  <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+
+  <Style
+TargetType="Button"
+Class="YesButton">
+    <Setter Property="CornerRadius" Value="25" />
+    <Setter Property="BorderColor" Value="{StaticResource Black}" />
+    <Setter Property="BorderWidth" Value="2" />
+    <Setter Property="Text" Value="Yes" />
+  </Style>
+
+  <Style
+TargetType="Button"
+Class="NoButton">
+    <Setter Property="CornerRadius" Value="25" />
+    <Setter Property="BorderColor" Value="{StaticResource Black}" />
+    <Setter Property="BorderWidth" Value="2" />
+    <Setter Property="Text" Value="No" />
+  </Style>
+
+  <Style
+  TargetType="ImageButton"
+  Class="EditSwipeButton">
+    <Setter Property="Source" Value="edit.png" />
+    <Setter Property="BackgroundColor" Value="{StaticResource Yellow300Accent}" />
+    <Setter Property="HeightRequest" Value="80" />
+    <Setter Property="WidthRequest" Value="120" />
+    <Setter Property="CornerRadius" Value="25" />
+  </Style>
+
+  <Style
+  TargetType="ImageButton"
+  Class="DeleteSwipeButton">
+    <Setter Property="BackgroundColor" Value="{StaticResource OutgoingPaymentColor}" />
+    <Setter Property="Source" Value="delete.png" />
+    <Setter Property="HeightRequest" Value="80" />
+    <Setter Property="CornerRadius" Value="25" />
+    <Setter Property="WidthRequest" Value="120" />
+  </Style>
+
+
+  <Style
+    TargetType="ImageButton"
+    Class="PhotoButton">
+    <Setter Property="Margin" Value="5" />
+    <Setter Property="HeightRequest" Value="150" />
+    <Setter Property="WidthRequest" Value="150" />
+    <Setter Property="CornerRadius" Value="75" />
+  </Style>
+    
+  <Style
+    TargetType="Button"
+    ApplyToDerivedTypes="True">
+    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Primary}}" />
+    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+    <Setter Property="FontFamily" Value="ArialRoundedMtBold"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="Padding" Value="14,10"/>
+    <Setter Property="VisualStateManager.VisualStateGroups">
+      <VisualStateGroupList>
+        <VisualStateGroup x:Name="CommonStates">
+          <VisualState x:Name="Normal" />
+          <VisualState x:Name="Disabled">
+            <VisualState.Setters>
+              <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+              <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+            </VisualState.Setters>
+          </VisualState>
+        </VisualStateGroup>
+      </VisualStateGroupList>
+    </Setter>
+  </Style>
+
+  <Style
+      TargetType="Button"
+      Class="SelectablePaymentTypeButton">
+    <Setter Property="CornerRadius" Value="20" />
+    <Setter Property="BorderColor" Value="{StaticResource Black}" />
+    <Setter Property="BorderWidth" Value="2" />
+    <Setter Property="Margin" Value="0, 5, 0, 0" />
+  </Style>
+
+
+  <Style
+  TargetType="Button"
+  Class="NavigationButton">
+    <Setter Property="HorizontalOptions" Value="Center" />
+    <Setter Property="HeightRequest" Value="120" />
+    <Setter Property="WidthRequest" Value="120" />
+    <Setter Property="LineBreakMode" Value="WordWrap" />
+  </Style>
+    
+  <Style
+TargetType="Button"
+Class="OutgoingPaymentSelectionButton">
+    <Setter Property="HeightRequest" Value="150" />
+    <Setter Property="WidthRequest" Value="200" />
+    <Setter Property="BackgroundColor" Value="{StaticResource OutgoingPaymentColor}" />
+    <Setter Property="CornerRadius" Value="20" />
+    <Setter Property="BorderColor" Value="{StaticResource Black}" />
+    <Setter Property="BorderWidth" Value="2" />
+  </Style>
+
+  <Style
+TargetType="Button"
+Class="IncomingPaymentSelectionButton">
+    <Setter Property="Margin" Value="0, 10, 0, 0" />
+    <Setter Property="HeightRequest" Value="150" />
+    <Setter Property="WidthRequest" Value="200" />
+    <Setter Property="BackgroundColor" Value="{StaticResource Success}" />
+    <Setter Property="CornerRadius" Value="20" />
+    <Setter Property="BorderColor" Value="{StaticResource Black}" />
+    <Setter Property="BorderWidth" Value="2" />
+  </Style>
+
+
+
+</ResourceDictionary>

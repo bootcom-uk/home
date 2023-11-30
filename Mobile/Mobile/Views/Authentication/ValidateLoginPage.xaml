@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mobile.Views.Authentication.ValidateLoginPage"
+             Title="ValidateLoginPage">
+
+  <ContentPage.Content>
+
+    <Grid
+      Margin="15">
+      <Grid.RowDefinitions>
+        <RowDefinition
+          Height="*" />
+      </Grid.RowDefinitions>
+
+      <Label
+  VerticalOptions="Center"
+  Text="{Binding ValidateLoginText}" />
+
+    </Grid>
+    
+  </ContentPage.Content>
+  
+</ContentPage>
