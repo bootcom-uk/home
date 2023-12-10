@@ -31,10 +31,16 @@
   <convertors:NotIsEqualsConvertor
     x:Key="notIsEqualsConvertor" />
 
+  <convertors:AllPaymentsToActualPaymentConvertor
+    x:Key="allPaymentsToActualPaymentConvertor" />
+
+  <convertors:AllPaymentsToActualPaymentTextColourConvertor
+    x:Key="allPaymentsToActualPaymentTextColourConvertor" />
+
   <ControlTemplate
-  x:Key="ModifyPaymentScreen">
+  x:Key="ViewTransactionsScreen">
     <sfPopup:SfPopup
-      x:Name="modifyPaymentPopup"
+      x:Name="viewTransactionsPopup"
       PopupStyle="{StaticResource PaymentPopupStyle}"
       AnimationMode="Fade"
       AnimationEasing="SinInOut"
@@ -42,32 +48,106 @@
       IsFullScreen="True"
       ShowCloseButton="True"
       ShowHeader="True"
-      HeaderTitle="{Binding ModifyPaymentScreenTitle}"
-      IsOpen="{Binding IsModifyPaymentScreenOpen}"
+      HeaderTitle="{Binding DailyTransactionScreenTitle}"
+      IsOpen="{Binding IsDailyTransactionScreenOpen}"
       BindingContext="{Binding BindingContext, Source={RelativeSource Mode=TemplatedParent}}">
       <sfPopup:SfPopup.ContentTemplate>
         <DataTemplate>
           <Grid
-            Margin="15">
+            Margin="5">
             <Grid.RowDefinitions>
               <RowDefinition
-  Height="auto" />
-              <RowDefinition
-  Height="auto" />
+  Height="*" />
             </Grid.RowDefinitions>
-            <Label
-              Grid.Row="0"
-              StyleClass="PopupLabel"
-              Text="{Binding ModifyPaymentConfirmation}" />
-            <HorizontalStackLayout
-              Grid.Row="1">
-              <Button
-                StyleClass="YesButton"
-                 />
-              <Button
-                StyleClass="NoButton"
-                 />
-            </HorizontalStackLayout>
+
+            <listview:SfListView
+              x:Name="transactionsListView"
+              AllowSwiping="True"
+              BackgroundColor="Transparent"
+              SelectionMode="None"
+              ItemSize="100"
+              ItemSpacing="5"
+              ItemsSource="{Binding DailyTransactionsDataSource}">
+
+              <listview:SfListView.StartSwipeTemplate>
+                <DataTemplate>
+                  <ImageButton
+                    Command="{Binding BindingContext.EditDailyTransactionCommand, Source={x:Reference transactionsListView}}"
+                    CommandParameter="{Binding Id}"
+                    StyleClass="EditSwipeButton" />
+                </DataTemplate>
+              </listview:SfListView.StartSwipeTemplate>
+
+              <listview:SfListView.EndSwipeTemplate>
+                <DataTemplate>
+                  <ImageButton
+                    Command="{Binding BindingContext.DeleteDailyTransactionCommand, Source={x:Reference transactionsListView}}"
+                    CommandParameter="{Binding Id}"
+                    StyleClass="DeleteSwipeButton" />
+                </DataTemplate>
+              </listview:SfListView.EndSwipeTemplate>
+
+              <listview:SfListView.ItemTemplate>
+                <DataTemplate>
+                  <Border StyleClass="SwipeViewContentItemBorder">
+                    <ContentView StyleClass="SwipeViewContentItem">
+                      <Grid>
+                        <Grid.RowDefinitions>
+                          <RowDefinition
+Height="auto" />
+                          <RowDefinition
+Height="auto" />
+                          <RowDefinition
+Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition
+  Width="*" />
+                          <ColumnDefinition
+  Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label
+                          Grid.Row="0"
+                          Grid.Column="0"
+                          Text="{Binding PaymentTypeName}" />
+                        <Label
+                            StyleClass="LargePaymentAmountLabel"
+                            VerticalOptions="Fill"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="3">
+                          <Label.TextColor>
+                            <MultiBinding
+                              Converter="{StaticResource allPaymentsToActualPaymentTextColourConvertor}">
+                              <Binding Path="AmountPaid" />
+                              <Binding Path="AmountReceived" />
+                            </MultiBinding>
+                          </Label.TextColor>
+                          <Label.Text>
+                            <MultiBinding
+                              StringFormat="{}{0:c2}"
+                              Converter="{StaticResource allPaymentsToActualPaymentConvertor}">
+                              <Binding Path="AmountPaid" />
+                              <Binding Path="AmountReceived" />
+                            </MultiBinding>
+                          </Label.Text>
+                        </Label>
+                        <Label
+                          Grid.Row="1"
+                          Grid.Column="0"
+                          Text="{Binding PaymentTypeDescription}" />
+                        <Label
+                          Grid.Row="2"
+                          Grid.Column="0"
+                          Text="{Binding AssociatedResource.Name}" />
+                      </Grid>
+                    </ContentView>
+                  </Border>
+                </DataTemplate>
+              </listview:SfListView.ItemTemplate>
+              
+            </listview:SfListView>
+            
           </Grid>
         </DataTemplate>
       </sfPopup:SfPopup.ContentTemplate>
