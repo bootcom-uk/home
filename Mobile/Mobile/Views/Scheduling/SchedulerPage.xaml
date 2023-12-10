@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
              xmlns:local="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:listView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
              xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
              xmlns:sfPopup="clr-namespace:Syncfusion.Maui.Popup;assembly=Syncfusion.Maui.Popup"
              x:Class="Mobile.Views.Scheduling.SchedulerPage"
@@ -12,6 +13,13 @@
   <ContentPage.Content>
 
     <Grid>
+
+      <Grid.RowDefinitions>
+        <RowDefinition
+          Height="*" />
+      </Grid.RowDefinitions>
+      
+      
       <ContentView
 ControlTemplate="{StaticResource NavigationScreen}" />
 
@@ -19,14 +27,14 @@ ControlTemplate="{StaticResource NavigationScreen}" />
   ControlTemplate="{StaticResource CreatePaymentScreen}" />
 
       <ContentView
-        ControlTemplate="{StaticResource ModifyPaymentScreen}" />
+        ControlTemplate="{StaticResource ViewTransactionsScreen}" />
             
       <scheduler:SfScheduler
         Grid.Row="0"
         ShowNavigationArrows="True"
         ShowWeekNumber="False"
         AppointmentsSource="{Binding DataSource}"
-        QueryAppointmentsCommand="{Binding QueryAppointmentsCommand}"        
+        QueryAppointmentsCommand="{Binding QueryAppointmentsCommand}"
         FirstDayOfWeek="Monday"
         View="Month">
 
@@ -40,6 +48,7 @@ ControlTemplate="{StaticResource NavigationScreen}" />
         
         <scheduler:SfScheduler.MonthView>
           <scheduler:SchedulerMonthView
+            ShowLeadingAndTrailingDates="True"
             AppointmentDisplayMode="Text" />
         </scheduler:SfScheduler.MonthView>
         
@@ -49,6 +58,10 @@ ControlTemplate="{StaticResource NavigationScreen}" />
             Background="PaymentColour"
             StartTime="LocalStartDate"
             EndTime="LocalEndDate"
+            Id="Id"
+            Location="PaymentTypeDescription"
+            IsAllDay="AllDayAppointment"
+            Notes="PaymentTypeDescription"
             />
         </scheduler:SfScheduler.AppointmentMapping>
         

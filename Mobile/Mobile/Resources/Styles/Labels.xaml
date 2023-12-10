@@ -22,6 +22,11 @@
     </Setter>
   </Style>
 
+  <Style TargetType="Label" Class="LargePaymentAmountLabel">
+    <Setter Property="VerticalTextAlignment" Value="Center" />
+    <Setter Property="FontSize" Value="26" />
+  </Style>
+  
   <Style TargetType="Label" Class="PopupLabel">
     <Setter Property="TextColor" Value="{StaticResource White}" />
   </Style>

@@ -6,10 +6,25 @@
     xmlns:editors="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+  <RoundRectangle
+    x:Key="SwipeViewContentItemBorderRectangle"
+    CornerRadius="25" />
+
+  <Style TargetType="Border" Class="SwipeViewContentItemBorder">
+    <Setter Property="StrokeThickness" Value="1" />
+    <Setter Property="BackgroundColor" Value="{StaticResource White}" />
+    <Setter Property="StrokeShape" Value="{StaticResource SwipeViewContentItemBorderRectangle}" />
+  </Style>
+
+  <Style TargetType="ContentView" Class="SwipeViewContentItem">
+    <Setter Property="Margin" Value="10" />
+    <Setter Property="BackgroundColor" Value="{StaticResource White}" />
+  </Style>
+  
   <Style TargetType="editors:SfNumericEntry">
     <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
     <Setter Property="TextColor" Value="{StaticResource White}" />
-    <Setter Property="ClearButtonColor" Value="{StaticResource White}" />
+    <Setter Property="ClearButtonColor" Value="{StaticResource White}" /> 
     <Setter Property="PlaceholderColor" Value="{StaticResource White}" />
   </Style>
   

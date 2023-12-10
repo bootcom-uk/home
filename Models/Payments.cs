@@ -37,6 +37,8 @@ namespace Models
 
         public double? TotalHours { get; set; }
 
+        [Ignored] public bool AllDayAppointment { get; set; } = true;
+
         [Ignored]
         public DateTime LocalStartDate
         {
