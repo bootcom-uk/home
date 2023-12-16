@@ -11,9 +11,7 @@ namespace Mobile.ViewModels
 {
     public partial class MainPageViewModel : ViewModelBase
     {
-        [ObservableProperty]
-        string title;
-
+        
         [ObservableProperty]
         PaymentPeriod paymentPeriod;
 

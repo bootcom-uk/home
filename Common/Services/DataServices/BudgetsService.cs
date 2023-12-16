@@ -1,6 +1,8 @@
 ﻿using Models;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,9 +69,31 @@ namespace Services.DataServices
             
         }
 
-        public async Task FullPaymentPeriodBudgetResync(PaymentPeriod paymentPeriod)
+        public IEnumerable<BudgetCategories> CollectDefaultBudgets()
         {
-            if (paymentPeriod.Budgets == null || paymentPeriod.Budgets.Count == 0) return;
+            return _realmService.Realm.All<BudgetCategories>();
+        }
+
+        public async Task FullPaymentPeriodBudgetResync(ObjectId paymentPeriodId)
+        {
+
+            var paymentPeriod = _realmService.Realm.All<PaymentPeriod>()
+                .FirstOrDefault(record => record.Id == paymentPeriodId);
+
+            if (paymentPeriod!.Budgets == null || paymentPeriod.Budgets.Count == 0)
+            {
+                foreach(var budget in CollectDefaultBudgets())
+                {
+                    paymentPeriod.Budgets!.Add(new()
+                    {
+                        AmountReceived = 0,
+                        AmountSpent = 0,
+                        Budget = budget.DefaultBudget,
+                        BudgetCategoryId = budget,
+                        BudgetRemaining = budget.DefaultBudget ?? 0
+                    });
+                }
+            }
             
             var payments = _realmService.Realm.All<Payments>()
                 .Where(record => record.StartDate >= paymentPeriod.DateFrom && record.EndDate <= paymentPeriod.DateTo)
@@ -78,26 +102,37 @@ namespace Services.DataServices
             var paymentTypes = _realmService.Realm.All<PaymentType>()
                 .ToList();
 
-
-            foreach(var budgetCategory in paymentPeriod.Budgets)
-            {
-                var filteredPaymentTypes = paymentTypes.Where(record => budgetCategory.BudgetCategoryId is not null && record.PaymentCategoryId == budgetCategory.BudgetCategoryId.PaymentCategoryId);
-
-                var filteredPayments = payments.Where(record => filteredPaymentTypes.Contains(record.PaymentTypeId));
-
-                var amountPaid = filteredPayments.Where(record => record.AmountPaid > 0)
-                    .Select(record => record.AmountPaid)
-                    .Sum();
-                var amountReceived = filteredPayments.Where(record => record.AmountReceived > 0)
-                    .Select(record => record.AmountReceived)
-                    .Sum();
-
-                budgetCategory.AmountSpent = amountPaid;
-                budgetCategory.AmountReceived = amountReceived;                
-            }
-
             await _realmService.Realm.WriteAsync(() =>
             {
+
+                foreach (var budgetCategory in paymentPeriod.Budgets)
+                {
+                    var filteredPaymentTypes = paymentTypes.Where(record => budgetCategory.BudgetCategoryId is not null && budgetCategory.BudgetCategoryId.PaymentCategoryId is not null && record.PaymentCategoryId!.Id == budgetCategory.BudgetCategoryId.PaymentCategoryId.Id)
+                    .ToImmutableList();
+
+                    var filteredPayments = Enumerable.Empty<Payments>(); 
+                    
+                    if(budgetCategory.BudgetCategoryId!.AssociatedResource is not null)
+                    {
+                        filteredPayments = payments.Where(record => record.PaymentTypeId is not null && filteredPaymentTypes.Contains(record.PaymentTypeId) && (budgetCategory.BudgetCategoryId!.AssociatedResource is not null && budgetCategory.BudgetCategoryId!.AssociatedResource.Id == record.AssociatedResource?.Id));
+                    } else
+                    {
+                        filteredPayments = payments.Where(record => record.PaymentTypeId is not null && filteredPaymentTypes.Contains(record.PaymentTypeId));
+                    }
+                    
+
+                    var amountPaid = filteredPayments.Where(record => record.AmountPaid > 0)
+                        .Select(record => record.AmountPaid)
+                        .Sum();
+                    var amountReceived = filteredPayments.Where(record => record.AmountReceived > 0)
+                        .Select(record => record.AmountReceived)
+                        .Sum();
+
+                    budgetCategory.AmountSpent = amountPaid ?? 0;
+                    budgetCategory.AmountReceived = amountReceived ?? 0;
+                    budgetCategory.BudgetRemaining = (budgetCategory.Budget ?? 0) - budgetCategory.AmountSpent.Value + budgetCategory.AmountReceived.Value;
+                }
+            
                 _realmService.Realm.Add(paymentPeriod, true);
             });
             

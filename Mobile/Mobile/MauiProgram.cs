@@ -14,6 +14,7 @@ using Mobile.Views.PaymentPeriods;
 using Mobile.Views.PaymentTypes;
 using Mobile.Views.Scheduling;
 using Services;
+using Services.DataServices;
 using Syncfusion.Maui.Core.Hosting;
 
 namespace Mobile
@@ -43,6 +44,9 @@ namespace Mobile
 
                         containerRegistry
                         .RegisterScoped<RealmService>();
+
+                        containerRegistry
+                        .RegisterScoped<BudgetsService>();
 
                         containerRegistry
                         .RegisterForNavigation<NavigationPage>();

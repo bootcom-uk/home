@@ -21,13 +21,25 @@
     <Setter Property="BackgroundColor" Value="{StaticResource White}" />
   </Style>
   
-  <Style TargetType="editors:SfNumericEntry">
+  <Style
+    TargetType="editors:SfNumericEntry"
+    ApplyToDerivedTypes="True">
     <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
     <Setter Property="TextColor" Value="{StaticResource White}" />
     <Setter Property="ClearButtonColor" Value="{StaticResource White}" /> 
     <Setter Property="PlaceholderColor" Value="{StaticResource White}" />
+    <Setter Property="FontFamily" Value="{StaticResource PrimaryFontFamily}" />
+    <Setter Property="FontSize" Value="14" />
   </Style>
-  
+
+  <Style TargetType="editors:SfNumericEntry"
+         Class="PaymentPeriodPopupNumericEntry">
+    <Setter Property="BackgroundColor" Value="Transparent" />
+    <Setter Property="TextColor" Value="{StaticResource Black}" />
+    <Setter Property="Minimum" Value="1" />
+    <Setter Property="CustomFormat" Value="C2" />
+  </Style>
+
   <sfPopup:PopupStyle
     x:Key="PaymentPopupStyle">
     <sfPopup:PopupStyle.FooterBackground>
