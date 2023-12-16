@@ -5,10 +5,17 @@
              xmlns:data="clr-namespace:Syncfusion.Maui.DataSource;assembly=Syncfusion.Maui.DataSource"
              xmlns:sfPopup="clr-namespace:Syncfusion.Maui.Popup;assembly=Syncfusion.Maui.Popup"
              xmlns:picker="clr-namespace:Syncfusion.Maui.Picker;assembly=Syncfusion.Maui.Picker"
+             xmlns:editors="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Mobile.Views.PaymentPeriods.PaymentPeriodsPage"
              ControlTemplate="{StaticResource MainPageTemplate}"
              Title="PaymentPeriodsPage">
 
+  <ContentPage.Resources>
+    <mct:InvertedBoolConverter
+      x:Key="invertedBoolConvertor" />
+  </ContentPage.Resources>
+  
   <ContentPage.Content>
     <Grid>
 
@@ -30,8 +37,7 @@
          HeaderTitle="{Binding PaymentPeriodTitle}">
         <sfPopup:SfPopup.ContentTemplate>
           <DataTemplate>
-            <ScrollView>
-              <Grid
+            <Grid
                 Padding="5">
                 <Grid.RowDefinitions>
                   <RowDefinition
@@ -63,43 +69,70 @@
                   Grid.Row="3"
                   Date="{Binding PaymentPeriodPopupDataSource.DateTo}"
                   />
-                <CollectionView
-                  Grid.Row="4"
+              <ScrollView
+                Grid.Row="4">
+                <CollectionView                                   
                   ItemsSource="{Binding PaymentPeriodPopupDataSource.Budgets}">
                   <CollectionView.ItemTemplate>
                     <DataTemplate>
-                      <Grid>
-                        <Grid.RowDefinitions>
-                          <RowDefinition
-  Height="auto" />
-                          <RowDefinition
-  Height="auto" />
-                          <RowDefinition
-  Height="auto" />
-                        </Grid.RowDefinitions>
-                        <Label
-                        Grid.Row="0"
-Text="{Binding BudgetCategoryId.PaymentCategoryId.Name}" />
-                        <Label
-                        Grid.Row="1"
-Text="{Binding BudgetCategoryId.AssociatedResource.Name}" />
-                        <Label
-                          Grid.Row="2"
-  Text="{Binding BudgetRemaining}" />
-                      </Grid>
+
+                      <ContentView
+Grid.Row="0"
+ControlTemplate="{StaticResource MainPageContentFrame}">
+                        <Grid>
+                          <Grid.RowDefinitions>
+                            <RowDefinition
+    Height="auto" />
+                            <RowDefinition
+    Height="auto" />
+                            <RowDefinition
+    Height="auto" />
+                          </Grid.RowDefinitions>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+  Width="*" />
+                            <ColumnDefinition
+  Width="120" />
+                          </Grid.ColumnDefinitions>
+                          <Label
+                          Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+  Text="{Binding BudgetCategoryInformation}" />
+                          <Label
+                          Grid.Row="1"
+                            Grid.Column="0"
+                            VerticalOptions="Center"
+                            Text="Budget:" />
+                          <editors:SfNumericEntry
+                              Grid.Row="1"
+                              Grid.Column="1"
+                              StyleClass="PaymentPeriodPopupNumericEntry"                              
+                              Value="{Binding Budget}" />
+                          <Label
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Text="Budget Remaining:" />
+                          <Label
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Text="{Binding BudgetRemaining, StringFormat='{0:C2}'}" />
+                        </Grid>
+                      </ContentView>
                     </DataTemplate>
                   </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Button
-                  IsEnabled="{Binding IsProcessing}"
+              </ScrollView>
+              <Button
+                  IsEnabled="{Binding IsProcessing, Converter={StaticResource invertedBoolConvertor}}"
+                Command="{Binding UpdatePaymentPeriodCommand}"
                   Grid.Row="5"
                   Text="Save" />
               </Grid>
-            </ScrollView>
           </DataTemplate>
         </sfPopup:SfPopup.ContentTemplate>
       </sfPopup:SfPopup>
-      
+
       <ContentView
         ControlTemplate="{StaticResource NavigationScreen}" />
 
@@ -125,9 +158,6 @@ Text="{Binding BudgetCategoryId.AssociatedResource.Name}" />
                 <ColumnDefinition
                   Width="120" />
               </Grid.ColumnDefinitions>
-              <Label
-              Grid.Column="0"
-              Text="Payment Periods" />
               <Button
               Grid.Column="1"                
               Text="Add New Payment Period"
@@ -149,6 +179,8 @@ Text="{Binding BudgetCategoryId.AssociatedResource.Name}" />
         <syncfusion:SfListView.EndSwipeTemplate>
           <DataTemplate>
             <ImageButton
+              Command="{Binding Source={x:Reference paymentPeriodListView},Path=BindingContext.DeletePaymentPeriodCommand}"
+CommandParameter="{Binding .}"
     StyleClass="DeleteSwipeButton" />
           </DataTemplate>
         </syncfusion:SfListView.EndSwipeTemplate>

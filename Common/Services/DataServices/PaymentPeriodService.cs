@@ -1,4 +1,6 @@
 ﻿using Models;
+using Models.Local;
+using MongoDB.Bson;
 using Realms;
 
 namespace Services.DataServices
@@ -6,10 +8,84 @@ namespace Services.DataServices
     public class PaymentPeriodService
     {
 
-        internal RealmService _realmService;
+        internal RealmService _realmService { get; }
 
         public PaymentPeriodService(RealmService realmService) { 
             _realmService = realmService;
+        }
+
+        public async Task DeletePaymentPeriod(ObjectId id)
+        {
+            if (_realmService.Realm is null) await _realmService.InitializeAsync();
+
+            await _realmService.Realm!.WriteAsync(async () =>
+            {
+                var paymentPeriod = await GetPaymentPeriodById(id);
+
+                if (paymentPeriod is null) return;
+
+                _realmService.Realm!.Remove(paymentPeriod);
+            });
+        }
+
+        public async Task<ObjectId> SavePaymentPeriod(EditablePaymentPeriod editablePaymentPeriod, IEnumerable<BudgetCategories> budgets, bool isUpdate)
+        {
+            if (_realmService.Realm is null) await _realmService.InitializeAsync();
+
+
+            // Updating a payment period
+            if (isUpdate)
+            {
+                await _realmService.Realm!.WriteAsync(async () =>
+                {
+                    var paymentPeriod = await GetPaymentPeriodById(editablePaymentPeriod.Id!.Value);
+
+                    if (paymentPeriod is null) return;
+
+                    paymentPeriod.DateFrom = editablePaymentPeriod.DateFrom;
+                    paymentPeriod.DateTo = editablePaymentPeriod.DateTo?.AddDays(1).AddMicroseconds(-1);
+
+                    foreach (var budget in paymentPeriod.Budgets)
+                    {
+                        var modifiedBudget = editablePaymentPeriod.Budgets.First(record => record.BudgetCategoryId == budget.BudgetCategoryId!.Id);
+                        budget.Budget = modifiedBudget.Budget;
+                    }
+                    _realmService.Realm.Add(paymentPeriod, isUpdate);
+
+                });
+                return editablePaymentPeriod.Id!.Value;
+            }
+
+            var id = ObjectId.GenerateNewId();
+
+            // Creating a new payment period
+            await _realmService.Realm!.WriteAsync(() =>
+            {
+                var paymentPeriod = new PaymentPeriod()
+                {
+                    Id = id,
+                    DateFrom = editablePaymentPeriod.DateFrom,
+                    DateTo = editablePaymentPeriod.DateTo?.AddDays(1).AddMicroseconds(-1),
+                    OriginalId = null
+                };
+
+                foreach(var budget in budgets)
+                {
+                    paymentPeriod.Budgets!.Add(new()
+                    {
+                        AmountReceived = 0,
+                        AmountSpent = 0,
+                        Budget = budget.DefaultBudget,
+                        BudgetCategoryId = budget,
+                        BudgetRemaining = budget.DefaultBudget ?? 0
+                    });
+                }
+
+                _realmService.Realm.Add(paymentPeriod, isUpdate);
+                
+            });
+
+            return id;
         }
 
         public async Task<DateTime?> LastPeriodEnds()
@@ -27,6 +103,14 @@ namespace Services.DataServices
 
             return _realmService.Realm!.All<PaymentPeriod>()
                 .OrderByDescending(record => record.DateFrom);
+        }
+
+        public async Task<PaymentPeriod?> GetPaymentPeriodById(ObjectId paymentPeriodId)
+        {
+            if (_realmService.Realm is null) await _realmService.InitializeAsync();
+
+            return _realmService.Realm!.All<PaymentPeriod>().
+                FirstOrDefault(record => record.Id == paymentPeriodId);
         }
 
         public PaymentPeriod? PaymentPeriodForDate(DateTimeOffset date)

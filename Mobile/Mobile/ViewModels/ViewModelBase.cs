@@ -13,7 +13,13 @@ namespace Mobile.ViewModels
     {
 
         [ObservableProperty]
+        string title;
+
+        [ObservableProperty]
         bool isRefreshing;
+
+        [ObservableProperty]
+        bool isProcessing;
 
         internal ISemanticScreenReader _screenReader { get; }
 

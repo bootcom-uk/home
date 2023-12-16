@@ -93,7 +93,7 @@ namespace Services.DataServices
             var paymentPeriod = _paymentPeriodService.PaymentPeriodForDate(payments.StartDate!.Value);
             if(paymentPeriod != null)
             {
-                await _budgetsService.FullPaymentPeriodBudgetResync(paymentPeriod);
+                await _budgetsService.FullPaymentPeriodBudgetResync(paymentPeriod.Id!.Value);
             }
         }
 
@@ -105,7 +105,7 @@ namespace Services.DataServices
             var paymentPeriod = _paymentPeriodService.PaymentPeriodForDate(payments.StartDate!.Value);
             if (paymentPeriod != null)
             {
-                await _budgetsService.FullPaymentPeriodBudgetResync(paymentPeriod);
+                await _budgetsService.FullPaymentPeriodBudgetResync(paymentPeriod.Id!.Value);
             }
         }
 
