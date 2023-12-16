@@ -90,9 +90,16 @@ namespace Mobile.ViewModels.Scheduling
             OUTGOING
         }
 
+        private SchedulerAppointment selectedSchedulerAppointment;
+
+        private TransactionTypesToView selectedTransactionTypesToView;
+
         private async Task ViewDailyTransactions(SchedulerAppointment schedulerEntry, TransactionTypesToView entryTypesToView)
         {
             var payments = await _paymentsService.GetPaymentsByDates(new DateTimeOffset(schedulerEntry.StartTime), new DateTimeOffset(schedulerEntry.EndTime));
+
+            selectedSchedulerAppointment = schedulerEntry;
+            selectedTransactionTypesToView = entryTypesToView;
 
             switch (entryTypesToView)
             {
@@ -114,6 +121,12 @@ namespace Mobile.ViewModels.Scheduling
         async Task DeleteDailyTransaction(ObjectId paymentId)
         {
             await _paymentsService.DeletePayment(DailyTransactionsDataSource.First(record => record.Id == paymentId));
+            await ViewDailyTransactions(selectedSchedulerAppointment, selectedTransactionTypesToView);
+            await QueryAppointments(CachedEventArgs);
+
+            // Close the popup when all transactions for that day have been removed
+            IsDailyTransactionScreenOpen = (DailyTransactionsDataSource.Count() > 0);
+            
         }
 
         [RelayCommand]
