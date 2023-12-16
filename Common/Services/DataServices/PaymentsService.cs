@@ -99,10 +99,12 @@ namespace Services.DataServices
 
         public async Task DeletePayment(Payments payments)
         {
+            var paymentPeriod = _paymentPeriodService.PaymentPeriodForDate(payments.StartDate!.Value);
+
             await _realmService.Realm.WriteAsync(() => {
                 _realmService.Realm.Remove(payments);
             });
-            var paymentPeriod = _paymentPeriodService.PaymentPeriodForDate(payments.StartDate!.Value);
+            
             if (paymentPeriod != null)
             {
                 await _budgetsService.FullPaymentPeriodBudgetResync(paymentPeriod.Id!.Value);
