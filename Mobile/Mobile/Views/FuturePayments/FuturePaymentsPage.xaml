@@ -3,9 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:syncfusion="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
              xmlns:data="clr-namespace:Syncfusion.Maui.DataSource;assembly=Syncfusion.Maui.DataSource"
+             xmlns:sfPopup="clr-namespace:Syncfusion.Maui.Popup;assembly=Syncfusion.Maui.Popup"
+             xmlns:editors="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+             xmlns:convertors="clr-namespace:Mobile.Common.Convertors"
              x:Class="Mobile.Views.FuturePayments.FuturePaymentsPage"
              ControlTemplate="{StaticResource MainPageTemplate}"
              Title="FuturePaymentsPage">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <convertors:EditableFuturePaymentCanSaveConvertor
+        x:Key="editableFuturePaymentCanSaveConvertor" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  
     <Grid
       Margin="5">
 
@@ -21,10 +32,97 @@ ControlTemplate="{StaticResource NavigationScreen}" />
 
     <ContentView
 ControlTemplate="{StaticResource CreatePaymentScreen}" />
-      
+
+    <sfPopup:SfPopup
+   PopupStyle="{StaticResource PaymentPopupStyle}"
+   AnimationMode="Fade"
+   AnimationEasing="SinInOut"
+   AnimationDuration="500"
+   IsOpen="{Binding IsFuturePaymentPopupOpen}"
+   IsFullScreen="True"
+   ShowCloseButton="True"
+   ShowHeader="True"
+   x:Name="futurePaymentPopup"
+   HeaderTitle="Future Payment">
+      <sfPopup:SfPopup.ContentTemplate>
+        <DataTemplate>
+          <Grid
+            Margin="10">
+            <Grid.RowDefinitions>
+              <RowDefinition
+Height="auto" />
+              <RowDefinition
+Height="auto" />
+              <RowDefinition
+Height="auto" />
+              <RowDefinition
+Height="250" />
+              <RowDefinition
+Height="auto" />
+              <RowDefinition
+Height="auto" />
+              <RowDefinition
+Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Label
+              StyleClass="FormElementLabel"
+              Grid.Row="0"
+              Text="Date: "
+              />
+            <DatePicker
+              MinimumDate="{Binding FuturePaymentMinimumDate}"
+              Date="{Binding PopupDataSource.FuturePaymentDate}"
+              Grid.Row="1" />
+            <Label
+              Grid.Row="2"
+              StyleClass="FormElementLabel"
+              Text="Detail: "
+              />
+            <Editor
+              Text="{Binding PopupDataSource.FuturePaymentDetail}"
+              Grid.Row="3" />
+
+            <Label
+              StyleClass="FormElementLabel"
+              Grid.Row="4"
+              Text="Amount: "
+              />
+
+            <editors:SfNumericEntry
+              Value="{Binding PopupDataSource.FuturePaymentAmount}"
+              Grid.Row="5" />
+
+            <HorizontalStackLayout
+              Grid.Row="6">
+              <Button
+                Command="{Binding SaveFuturePaymentCommand}"                
+                StyleClass="SaveButton">
+                <Button.IsEnabled>
+                  <MultiBinding
+                    Converter="{StaticResource editableFuturePaymentCanSaveConvertor}">
+                    <Binding Path="PopupDataSource.FuturePaymentDate" />
+                    <Binding Path="PopupDataSource.FuturePaymentDetail" />
+                    <Binding Path="PopupDataSource.FuturePaymentAmount" />
+                    <Binding Path="IsProcessing" />
+                  </MultiBinding>
+                </Button.IsEnabled>
+              </Button>
+              <Button
+                Command="{Binding CancelFuturePaymentCommand}"
+                StyleClass="CancelButton"/>
+            </HorizontalStackLayout>
+  
+          </Grid>
+        </DataTemplate>
+      </sfPopup:SfPopup.ContentTemplate>
+    </sfPopup:SfPopup>
+
     <syncfusion:SfListView            
       Grid.Row="0"
+      x:Name="lvFuturePayments"
       ItemSize="80"
+      HeaderSize="60"
       ItemSpacing="5"
       AllowSwiping="True"      
       SwipeStarting="SfListView_SwipeStarting"
@@ -40,6 +138,31 @@ ControlTemplate="{StaticResource CreatePaymentScreen}" />
           </data:DataSource.GroupDescriptors>
         </data:DataSource>
       </syncfusion:SfListView.DataSource>
+
+      <syncfusion:SfListView.HeaderTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition
+          Width="*" />
+              <ColumnDefinition
+          Width="120" />
+            </Grid.ColumnDefinitions>
+            <Button
+              Grid.Column="1"
+              StyleClass="AddNewButton"
+              Command="{Binding AddNewFuturePaymentCommand}" />
+          </Grid>
+        </DataTemplate>
+      </syncfusion:SfListView.HeaderTemplate>
+
+      <syncfusion:SfListView.EmptyView>
+        <Label
+          Margin="20"
+          StyleClass="FormElementLabel"
+         Text="There are no future payments, why not use the above button to add one?" />
+      </syncfusion:SfListView.EmptyView>
+
       
       <syncfusion:SfListView.ItemTemplate>
         <DataTemplate>
@@ -89,13 +212,15 @@ ControlTemplate="{StaticResource CreatePaymentScreen}" />
               <RowDefinition
               Height="auto" />
             </Grid.RowDefinitions>
-            <Button
+            <ImageButton
+              Command="{Binding Source={x:Reference lvFuturePayments},Path=BindingContext.ModifyFuturePaymentCommand}"
+              CommandParameter="{Binding .}"
               Grid.Row="0"
               StyleClass="EditSwipeButton"/>
           </Grid>
         </DataTemplate>
       </syncfusion:SfListView.StartSwipeTemplate>
-
+      
       <syncfusion:SfListView.EndSwipeTemplate>
         <DataTemplate x:Name="EndSwipeTemplate">
           <Grid>
@@ -103,7 +228,9 @@ ControlTemplate="{StaticResource CreatePaymentScreen}" />
               <RowDefinition
               Height="auto" />
             </Grid.RowDefinitions>
-            <Button
+            <ImageButton
+              Command="{Binding Source={x:Reference lvFuturePayments},Path=BindingContext.DeleteFuturePaymentsCommand}"
+              CommandParameter="{Binding .}"
               StyleClass="DeleteSwipeButton"
               Grid.Row="0" />
           </Grid>
