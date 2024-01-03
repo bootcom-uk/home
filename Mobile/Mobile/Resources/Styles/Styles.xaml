@@ -29,6 +29,7 @@
     <Setter Property="ClearButtonColor" Value="{StaticResource White}" /> 
     <Setter Property="PlaceholderColor" Value="{StaticResource White}" />
     <Setter Property="FontFamily" Value="{StaticResource PrimaryFontFamily}" />
+    <Setter Property="CustomFormat" Value="C2" />
     <Setter Property="FontSize" Value="14" />
   </Style>
 
@@ -119,18 +120,18 @@
   </Style>
 
   <Style TargetType="Editor">
-    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+    <Setter Property="TextColor" Value="{StaticResource White}" />
     <Setter Property="BackgroundColor" Value="Transparent" />
     <Setter Property="FontFamily" Value="ArialRoundedMtBold"/>
     <Setter Property="FontSize" Value="14" />
-    <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
+    <Setter Property="PlaceholderColor" Value="{StaticResource Gray200}" />
     <Setter Property="VisualStateManager.VisualStateGroups">
       <VisualStateGroupList>
         <VisualStateGroup x:Name="CommonStates">
           <VisualState x:Name="Normal" />
           <VisualState x:Name="Disabled">
             <VisualState.Setters>
-              <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+              <Setter Property="TextColor" Value="{StaticResource Gray300}" />
             </VisualState.Setters>
           </VisualState>
         </VisualStateGroup>

@@ -12,10 +12,34 @@ namespace Services.DataServices
             _realmService = realmService;
         }
 
+        public async Task AddFuturePayment(FuturePayment futurePayment)
+        {
+            await _realmService.Realm.WriteAsync(() =>
+            {
+                _realmService.Realm.Add(futurePayment);
+            });
+        }
+
+        public async Task UpdateFuturePayment(FuturePayment futurePayment)
+        {
+            await _realmService.Realm.WriteAsync(() =>
+            {
+                _realmService.Realm.Add(futurePayment, true);
+            });
+        }
+
         public IQueryable<FuturePayment> GetFuturePayments() {
             var futurePayments = _realmService.Realm.All<FuturePayment>()
                 .OrderBy(record => record.PaymentRequiredDate);
             return futurePayments;
+        }
+
+        public async Task DeleteFuturePayment(FuturePayment futurePayment)
+        {
+            await _realmService.Realm.WriteAsync(() =>
+            {
+                _realmService.Realm.Remove(futurePayment);
+            });
         }
 
         public double GetFuturePaymentsTotalForPeriod(PaymentPeriod paymentPeriod)

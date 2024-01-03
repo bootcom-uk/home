@@ -22,6 +22,13 @@
     </Setter>
   </Style>
 
+  <Style
+    TargetType="Label"
+    Class="FormElementLabel">
+    <Setter Property="FontSize" Value="16" />
+    <Setter Property="TextColor" Value="{StaticResource White}" />
+  </Style>
+
   <Style TargetType="Label" Class="LargePaymentAmountLabel">
     <Setter Property="VerticalTextAlignment" Value="Center" />
     <Setter Property="FontSize" Value="26" />

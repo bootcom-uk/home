@@ -144,7 +144,7 @@ ControlTemplate="{StaticResource MainPageContentFrame}">
         x:Name="paymentPeriodListView"
         Grid.Row="0"
         ItemSize="60"
-        HeaderSize="80"
+        HeaderSize="60"
         ItemSpacing="5"
         AllowSwiping="True"
         ItemsSource="{Binding DataSource}">
@@ -162,7 +162,7 @@ ControlTemplate="{StaticResource MainPageContentFrame}">
               Grid.Column="1"                
               Text="Add New Payment Period"
                 Command="{Binding AddNewPaymentPeriodCommand}"
-              BackgroundColor="{StaticResource Blue300Accent}" />
+                StyleClass="AddNewButton" />
             </Grid>
           </DataTemplate>
         </syncfusion:SfListView.HeaderTemplate>

@@ -1,4 +1,5 @@
 ﻿using Models;
+using MongoDB.Bson;
 
 namespace Services.DataServices
 {
@@ -10,6 +11,14 @@ namespace Services.DataServices
         public UsersService(RealmService realmService)
         {
             _realmService = realmService;
+        }
+
+        public User? GetUserById(Guid? userId)
+        {
+            if (userId == null) return null;
+
+            return _realmService.Realm.All<User>()
+                .FirstOrDefault(record => record.OriginalId == userId);
         }
 
         public List<User> ListUsers()

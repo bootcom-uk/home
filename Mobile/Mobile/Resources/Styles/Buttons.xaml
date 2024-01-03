@@ -6,6 +6,29 @@
 
   <Style
 TargetType="Button"
+Class="SaveButton">
+    <Setter Property="Text" Value="Save" />
+  </Style>
+
+  <Style
+TargetType="Button"
+Class="CancelButton">
+    <Setter Property="Text" Value="Cancel" />
+  </Style>
+
+  <Style
+      TargetType="Button"
+      Class="AddNewButton">
+    <Setter Property="MinimumHeightRequest" Value="60" />
+    <Setter Property="Text" Value="Add New" />
+    <Setter Property="BackgroundColor" Value="{StaticResource Blue300Accent}" />
+    <Setter Property="BorderColor" Value="{StaticResource Black}" />
+    <Setter Property="BorderWidth" Value="2" />
+  </Style>
+
+    
+  <Style
+TargetType="Button"
 Class="YesButton">
     <Setter Property="CornerRadius" Value="25" />
     <Setter Property="BorderColor" Value="{StaticResource Black}" />
