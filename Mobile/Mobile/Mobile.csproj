@@ -48,6 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.json" />
     <None Remove="Resources\Fonts\ARLRDBD.TTF" />
     <None Remove="Resources\Images\bootcom_whitetext_transparentbg.png" />
     <None Remove="Resources\Images\buddy.png" />
@@ -58,6 +59,10 @@
     <None Remove="Resources\Images\People\chris.png" />
     <None Remove="Resources\Images\People\hazel.png" />
     <None Remove="Resources\Splash\buddy.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="appsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
