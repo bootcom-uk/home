@@ -1,4 +1,8 @@
-﻿namespace Mobile
+﻿using Mobile.Common.Config;
+using System.Reflection;
+using System.Text.Json;
+
+namespace Mobile
 {
     public partial class App : Application
     {
@@ -6,7 +10,11 @@
         {
             InitializeComponent();
 
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mjc3OTkwOUAzMjMzMmUzMDJlMzBiWGY4RXRuSXN5TGdEVEh6Z1U3MGJ4d3JmK0tSM0hCV1lITUc2UFp4eXhnPQ==");
+            var assembly = Assembly.GetExecutingAssembly();
+            var appSettingsStream = assembly.GetManifestResourceStream("Mobile.appsettings.json");
+            var appSettings = JsonSerializer.Deserialize<AppSettings>(appSettingsStream!);
+
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(appSettings.Syncfusion.LicenceKey);
         }
     }
 }
