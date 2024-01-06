@@ -18,13 +18,15 @@
         <RowDefinition
           Height="*" />
       </Grid.RowDefinitions>
-      
-      
-      <ContentView
-ControlTemplate="{StaticResource NavigationScreen}" />
 
       <ContentView
-  ControlTemplate="{StaticResource CreatePaymentScreen}" />
+        ControlTemplate="{StaticResource ModifyTransactionScreen}" />
+
+      <ContentView
+        ControlTemplate="{StaticResource NavigationScreen}" />
+
+      <ContentView
+        ControlTemplate="{StaticResource CreatePaymentScreen}" />
 
       <ContentView
         ControlTemplate="{StaticResource ViewTransactionsScreen}" />
