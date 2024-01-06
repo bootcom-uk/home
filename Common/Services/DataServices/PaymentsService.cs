@@ -1,5 +1,6 @@
 ﻿using Models;
 using Models.Local;
+using MongoDB.Bson;
 
 namespace Services.DataServices
 {
@@ -51,6 +52,14 @@ namespace Services.DataServices
             return items
                 .OrderByDescending(record => record.Date)
                 .ToList();
+        }
+
+        public async Task<Payments?> GetPaymentById(ObjectId id)
+        {
+            if (_realmService.Realm is null) await _realmService.InitializeAsync();
+            return _realmService.Realm!.All<Payments>()
+                .FirstOrDefault(record => record.Id == id);
+
         }
 
         public async Task<IQueryable<Payments>?> GetPaymentsByDates(DateTimeOffset dateFrom, DateTimeOffset dateTo)

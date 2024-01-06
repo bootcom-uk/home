@@ -253,6 +253,16 @@ namespace Mobile.ViewModels
 
         #endregion
 
+        #region "Modify Payments"
+
+        [ObservableProperty]
+        bool isModifyTransactionScreenOpen;
+
+        [ObservableProperty]
+        EditableModifyPayment modifyPaymentDataSource;
+
+        #endregion
+
         protected override void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             switch(e.PropertyName)

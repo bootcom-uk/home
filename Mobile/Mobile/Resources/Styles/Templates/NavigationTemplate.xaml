@@ -38,6 +38,96 @@
     x:Key="allPaymentsToActualPaymentTextColourConvertor" />
 
   <ControlTemplate
+x:Key="ModifyTransactionScreen">
+    <sfPopup:SfPopup
+      x:Name="modifyTransactionPopup"
+      PopupStyle="{StaticResource PaymentPopupStyle}"
+      AnimationMode="Fade"
+      AnimationEasing="SinInOut"
+      AnimationDuration="500"
+      IsFullScreen="True"
+      ShowCloseButton="True"
+      ShowHeader="True"
+      HeaderTitle="Modify Payment"
+      IsOpen="{Binding IsModifyTransactionScreenOpen}"
+      BindingContext="{Binding BindingContext, Source={RelativeSource Mode=TemplatedParent}}">
+      <sfPopup:SfPopup.ContentTemplate>
+        <DataTemplate>
+          <Grid
+            RowSpacing="5"
+            Margin="15">
+            <Grid.RowDefinitions>
+              <RowDefinition
+Height="auto" />
+              <RowDefinition
+Height="auto" />
+              <RowDefinition
+Height="auto" />
+              <RowDefinition
+Height="auto" />
+              <RowDefinition
+Height="auto" />
+              <RowDefinition
+Height="auto" />
+              <RowDefinition
+Height="auto" />
+              <RowDefinition
+Height="*" />
+              <RowDefinition
+Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Label
+              Grid.Row="0"
+              StyleClass="FormElementLabel"
+              Text="Payment Type:" />
+
+            <Label
+              Grid.Row="1"
+              StyleClass="FormElementLabel"
+              Text="{Binding ModifyPaymentDataSource.PaymentType}" />
+
+            <Label
+              Grid.Row="2"
+              StyleClass="FormElementLabel"
+              Text="Payment Date:" />
+
+            <DatePicker
+              Grid.Row="3"
+              Date="{Binding ModifyPaymentDataSource.AppointmentDateTime}"
+              />
+
+            <Label
+              Grid.Row="4"
+              StyleClass="FormElementLabel"
+              Text="Payment Amount:" />
+
+            <editors:SfNumericEntry
+              Grid.Row="5"
+              Value="{Binding ModifyPaymentDataSource.PaymentAmount}" />
+
+            <Label
+              Grid.Row="6"
+              StyleClass="FormElementLabel"
+              Text="Detail:" />
+
+            <Editor
+              Grid.Row="7"
+              Text="{Binding ModifyPaymentDataSource.PaymentInformation}" />
+
+            <Button
+              Command="{Binding UpdatePaymentCommand}"
+              Grid.Row="8"
+              Text="Save" />
+
+          </Grid>
+        </DataTemplate>
+      </sfPopup:SfPopup.ContentTemplate>
+    </sfPopup:SfPopup>
+      
+  </ControlTemplate>
+
+  <ControlTemplate
   x:Key="ViewTransactionsScreen">
     <sfPopup:SfPopup
       x:Name="viewTransactionsPopup"

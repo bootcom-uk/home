@@ -14,6 +14,7 @@ namespace Mobile.ViewModels.Scheduling
 
         public SchedulerPageViewModel(ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService) : base(screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
         {
+            ModifyPaymentDataSource = new();
         }
 
         [ObservableProperty]
@@ -130,9 +131,68 @@ namespace Mobile.ViewModels.Scheduling
         }
 
         [RelayCommand]
-        void EditDailyTransaction(ObjectId paymentId)
+        async Task UpdatePayment()
         {
-            Console.WriteLine(paymentId);
+
+            if (ModifyPaymentDataSource.Id is null) return;
+
+            // Load in the payment
+            var payment = await _paymentsService.GetPaymentById(ModifyPaymentDataSource.Id.Value);
+            if (payment is null)
+            {
+                return;
+            }
+
+            // Create a new payments object - if we use the object we just pulled
+            // we'll have an exception thrown
+            var savePayment = new Payments();            
+            foreach(var prpInfo in payment.GetType().GetProperties())
+            {
+                if(!prpInfo.CanWrite) continue;
+                savePayment.GetType().GetProperty(prpInfo.Name).SetValue(savePayment, prpInfo.GetValue(payment));
+            }
+
+            savePayment.StartDate = new(ModifyPaymentDataSource.AppointmentDateTime);
+            savePayment.EndDate = new(ModifyPaymentDataSource.AppointmentDateTime.AddDays(1).AddMicroseconds(-1));
+            savePayment.PaymentTypeDescription = ModifyPaymentDataSource.PaymentInformation;
+            if(payment.AmountPaid > 0)
+            {
+                savePayment.AmountPaid = ModifyPaymentDataSource.PaymentAmount;
+            }
+            if (payment.AmountReceived > 0)
+            {
+                savePayment.AmountReceived = ModifyPaymentDataSource.PaymentAmount;
+            }
+
+            await _paymentsService.UpdatePayment(savePayment);
+
+            await QueryAppointments(CachedEventArgs);
+
+            IsModifyTransactionScreenOpen = false;
+        }
+
+        [RelayCommand]
+        async Task EditDailyTransaction(ObjectId paymentId)
+        {
+            IsDailyTransactionScreenOpen = false;
+            // Load in the payment
+            var payment = await _paymentsService.GetPaymentById(paymentId);
+            if(payment is null)
+            {
+                return;
+            }
+
+            ModifyPaymentDataSource.AppointmentDateTime = payment.LocalStartDate.ToLocalTime();
+            ModifyPaymentDataSource.Id = paymentId;
+            ModifyPaymentDataSource.PaymentInformation = payment.PaymentTypeDescription;
+            ModifyPaymentDataSource.PaymentType = payment.PaymentTypeId?.Name;
+            ModifyPaymentDataSource.PaymentAmount = payment.AmountPaid ?? 0;
+            if (payment.AmountReceived != null && payment.AmountReceived! > 0)
+            {
+                ModifyPaymentDataSource.PaymentAmount = payment.AmountReceived.Value;
+            }
+            
+            IsModifyTransactionScreenOpen = true;
         }
 
         [RelayCommand]
