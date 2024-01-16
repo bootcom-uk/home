@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Models.Local;
+using MongoDB.Bson;
 
 namespace HomeTests
 {
@@ -16,9 +17,13 @@ namespace HomeTests
         {
             var selectablePayment = new SelectablePaymentType()
             {
-                Name = "Chris"
+                Name = "Chris",
+                Active = true,
+                IsResourceRequired = true,
+                PaymentAmount = 100,
+                Id = ObjectId.GenerateNewId()
             };
-            Assert.IsFalse(string.IsNullOrWhiteSpace(selectablePayment.Name));
+            Assert.That(string.IsNullOrWhiteSpace(selectablePayment.Name), Is.False);
         }
 
     }
