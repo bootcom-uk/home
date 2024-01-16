@@ -19,7 +19,7 @@ namespace Models.Local
         double? budget;
 
         [ObservableProperty]
-        string budgetCategoryInformation;
+        string? budgetCategoryInformation;
 
         [ObservableProperty]
         ObjectId? budgetCategoryId;

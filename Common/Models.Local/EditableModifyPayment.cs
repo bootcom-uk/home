@@ -10,13 +10,13 @@ namespace Models.Local
         ObjectId? id;
 
         [ObservableProperty]
-        string paymentType;
+        string? paymentType;
 
         [ObservableProperty]
         DateTime appointmentDateTime;
 
         [ObservableProperty]
-        string paymentInformation;
+        string? paymentInformation;
 
         [ObservableProperty]
         double paymentAmount;

@@ -16,7 +16,7 @@ namespace Models.Local
         DateTime? dateFrom;
 
         [ObservableProperty]
-        List<EditablePaymentPeriodBudget> budgets;
+        List<EditablePaymentPeriodBudget>? budgets;
 
     }
 }

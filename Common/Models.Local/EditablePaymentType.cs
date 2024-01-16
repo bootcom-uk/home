@@ -13,7 +13,7 @@ namespace Models.Local
         ObjectId? paymentCategory;
 
         [ObservableProperty]
-        string name;
+        string? name;
 
         [ObservableProperty]
         double paymentAmount;
