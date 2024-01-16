@@ -7,7 +7,7 @@ namespace Models.Local
 
         public ObjectId Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public double? PaymentAmount {  get; set; }
 

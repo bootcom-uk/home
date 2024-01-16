@@ -3,26 +3,29 @@ using MongoDB.Bson;
 
 namespace Models.Local
 {
-    public partial class EditablePaymentPeriodBudget : ObservableObject
+    public partial class EditablePaymentType : ObservableObject
     {
 
         [ObservableProperty]
-        double? amountReceived;
+        ObjectId id;
 
         [ObservableProperty]
-        double? amountSpent;
+        ObjectId? paymentCategory;
 
         [ObservableProperty]
-        double budgetRemaining;
+        string? name;
 
         [ObservableProperty]
-        double? budget;
+        double paymentAmount;
 
         [ObservableProperty]
-        string? budgetCategoryInformation;
+        int color;
 
         [ObservableProperty]
-        ObjectId? budgetCategoryId;
+        bool havePaymentsEnded;
+
+        [ObservableProperty]
+        bool isResourceRequired;
 
     }
 }

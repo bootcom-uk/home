@@ -1,4 +1,5 @@
 ﻿using Models;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,28 @@ namespace Services.DataServices
         public PaymentCategoryService(RealmService realmService)
         {
             _realmService = realmService;
+        }
+
+        public async Task<PaymentCategory?> GetPaymentCategory(ObjectId? id)
+        {
+            if (_realmService.Realm is null)
+            {
+                await _realmService.InitializeAsync();
+            }
+
+            if (id is null) return null;
+
+            return _realmService.Realm!.All<PaymentCategory>()
+                .FirstOrDefault(record => record.Id == id);
+        }
+
+        public async Task<IQueryable<PaymentCategory>> GetAllPaymentCategories() {
+            if (_realmService.Realm is null)
+            {
+                await _realmService.InitializeAsync();
+            }
+            return _realmService.Realm!.All<PaymentCategory>()
+                .OrderBy(record => record.Name);
         }
 
         public double? OutstandingHouseholdBillsForPeriod(PaymentPeriod paymentPeriod)
