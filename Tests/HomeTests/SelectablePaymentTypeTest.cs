@@ -12,18 +12,24 @@ namespace HomeTests
     public class SelectablePaymentTypeTest
     {
 
+        internal SelectablePaymentType? _selectablePaymentType;
+
+        [SetUp] public void SetUp() 
+        {
+            _selectablePaymentType = new SelectablePaymentType();
+        }
+
         [Test()]
         public void IsNameOk()
         {
-            var selectablePayment = new SelectablePaymentType()
-            {
-                Name = "Chris",
-                Active = true,
-                IsResourceRequired = true,
-                PaymentAmount = 100,
-                Id = ObjectId.GenerateNewId()
-            };
-            Assert.That(string.IsNullOrWhiteSpace(selectablePayment.Name), Is.False);
+
+            _selectablePaymentType!.Name = "Chris";
+            _selectablePaymentType!.Active = true;
+            _selectablePaymentType!.IsResourceRequired = true;
+            _selectablePaymentType!.PaymentAmount = 100;
+            _selectablePaymentType!.Id = ObjectId.GenerateNewId();
+
+            Assert.That(string.IsNullOrWhiteSpace(_selectablePaymentType!.Name), Is.False);
         }
 
     }
