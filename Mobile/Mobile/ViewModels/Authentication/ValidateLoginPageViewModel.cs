@@ -1,9 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using MongoDB.Bson;
-using Prism.Navigation;
 using Services;
 using Services.DataServices;
-using System.Text.Json;
 
 namespace Mobile.ViewModels.Authentication
 {

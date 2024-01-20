@@ -5,7 +5,6 @@ using Models.Local;
 using MongoDB.Bson;
 using Services;
 using Services.DataServices;
-using System.Security.Cryptography;
 
 namespace Mobile.ViewModels.PaymentTypes
 {
