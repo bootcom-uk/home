@@ -22,6 +22,13 @@ namespace Services.DataServices
             _paymentPeriodService = paymentPeriodService;
         }
 
+        public async Task UpdateBudget(BudgetCategories budgetCategories)
+        {
+            await _realmService.Realm.WriteAsync(() => {
+                _realmService.Realm.Add(budgetCategories, true);
+            });
+        }
+
         public double? OutstandingBudgetsForPeriod(PaymentPeriod paymentPeriod)
         {
 
@@ -69,9 +76,20 @@ namespace Services.DataServices
             
         }
 
-        public IEnumerable<BudgetCategories> CollectDefaultBudgets()
+        public async Task<BudgetCategories?> GetBudgetById(ObjectId? id)
         {
-            return _realmService.Realm.All<BudgetCategories>();
+            if (_realmService.Realm is null) await _realmService.InitializeAsync();
+
+            return _realmService.Realm!.All<BudgetCategories>()
+                .FirstOrDefault(record => record.Id ==  id);
+        }
+
+        public async Task<IQueryable<BudgetCategories>> CollectDefaultBudgets()
+        {
+            if (_realmService.Realm is null) await _realmService.InitializeAsync();
+
+            return _realmService.Realm!.All<BudgetCategories>()
+                .OrderBy(record => record.PaymentCategoryId!.Name);
         }
 
         public async Task FullPaymentPeriodBudgetResync(ObjectId paymentPeriodId)
@@ -82,8 +100,8 @@ namespace Services.DataServices
 
             if (paymentPeriod!.Budgets == null || paymentPeriod.Budgets.Count == 0)
             {
-                foreach(var budget in CollectDefaultBudgets())
-                {
+                foreach(var budget in await CollectDefaultBudgets())
+                {                                        
                     paymentPeriod.Budgets!.Add(new()
                     {
                         AmountReceived = 0,
