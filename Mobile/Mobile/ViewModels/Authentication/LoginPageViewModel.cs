@@ -1,9 +1,7 @@
-﻿
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Services;
 using Services.DataServices;
-using System.ComponentModel;
 
 namespace Mobile.ViewModels.Authentication
 {

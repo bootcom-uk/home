@@ -1,13 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DryIoc.FastExpressionCompiler.LightExpression;
 using Models;
 using Models.Local;
-using MongoDB.Bson.IO;
 using Services;
 using Services.DataServices;
 using Syncfusion.Maui.DataSource.Extensions;
-using Syncfusion.Maui.ListView;
 
 namespace Mobile.ViewModels.PaymentPeriods
 {
@@ -50,7 +47,7 @@ namespace Mobile.ViewModels.PaymentPeriods
                 DateFrom = (await _paymentPeriodService.LastPeriodEnds())?.AddDays(1).Date                
             };
 
-            PaymentPeriodPopupDataSource.DateTo = new DateTime(PaymentPeriodPopupDataSource.DateFrom.Value.AddMonths(1).Year, PaymentPeriodPopupDataSource.DateFrom.Value.AddMonths(1).Month, 27);
+            PaymentPeriodPopupDataSource.DateTo = new DateTime(PaymentPeriodPopupDataSource.DateFrom.Value.AddMonths(1).Year, PaymentPeriodPopupDataSource.DateFrom.Value.AddMonths(1).Month, 26);
 
             switch (PaymentPeriodPopupDataSource.DateTo?.DayOfWeek)
             {
