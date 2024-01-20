@@ -2,17 +2,132 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mobile.Views.Budgets.BudgetsPage"
-             ControlTemplate="{StaticResource MainPageTemplate}"
-             Title="BudgetsPage">
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
+             xmlns:data="clr-namespace:Syncfusion.Maui.DataSource;assembly=Syncfusion.Maui.DataSource"
+             xmlns:editors="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+             xmlns:sfPopup="clr-namespace:Syncfusion.Maui.Popup;assembly=Syncfusion.Maui.Popup"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             ControlTemplate="{StaticResource MainPageTemplate}">
 
-    <VerticalStackLayout>
+  <ContentPage.Resources>
+    <mct:InvertedBoolConverter
+      x:Key="invertedBoolConvertor" />
+  </ContentPage.Resources>
+  
+    <Grid>
+
+    <Grid.RowDefinitions>
+      <RowDefinition
+        Height="*" />
+    </Grid.RowDefinitions>
+
+    <sfPopup:SfPopup
+   PopupStyle="{StaticResource PaymentPopupStyle}"
+   AnimationMode="Fade"
+   AnimationEasing="SinInOut"
+   AnimationDuration="500"
+   IsOpen="{Binding IsModifyBudgetScreenOpen}"
+   IsFullScreen="True"
+   ShowCloseButton="True"
+   ShowHeader="True"
+   x:Name="budgetPopup"
+   HeaderTitle="{Binding ModifyBudgetScreenTitle}">
+      <sfPopup:SfPopup.ContentTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition
+  Height="auto" />
+              <RowDefinition
+  Height="auto" />
+              <RowDefinition
+  Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Label
+              Grid.Row="0"
+              Text="Budget: " />
+
+            <editors:SfNumericEntry
+              Grid.Row="1"
+              StyleClass="PaymentPeriodPopupNumericEntry"                              
+              Value="{Binding PopupDataSource.Budget}" />
+
+            <Button
+              IsEnabled="{Binding IsProcessing, Converter={StaticResource invertedBoolConvertor}}"
+              Command="{Binding SaveBudgetCommand}"
+              Grid.Row="2"
+              Text="Save" />
+
+          </Grid>
+        </DataTemplate>
+      </sfPopup:SfPopup.ContentTemplate>
+    </sfPopup:SfPopup>
 
     <ContentView
-ControlTemplate="{StaticResource NavigationScreen}" />
+  ControlTemplate="{StaticResource NavigationScreen}" />
 
-    <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ContentView
+  ControlTemplate="{StaticResource CreatePaymentScreen}" />
+
+    <syncfusion:SfListView
+      x:Name="lvBudgets"
+      ItemsSource="{Binding DataSource}"
+      ItemSize="80"
+      HeaderSize="60"
+      ItemSpacing="5"
+      Grid.Row="0">
+
+      <syncfusion:SfListView.ItemTemplate>
+        <DataTemplate>
+          <Border
+  BackgroundColor="{StaticResource White}"            
+  StrokeThickness="0">
+            <Border.StrokeShape>
+              <RoundRectangle                
+      CornerRadius="25,25,25,25" />
+            </Border.StrokeShape>
+            <ContentView>
+
+              <ContentView.GestureRecognizers>
+                <TapGestureRecognizer
+                  Command="{Binding Source={x:Reference lvBudgets},Path=BindingContext.ModifyBudgetCommand}"
+                  CommandParameter="{Binding Id}"
+                  />
+              </ContentView.GestureRecognizers>
+              
+              <Grid
+        Padding="10">
+                <Grid.RowDefinitions>
+                  <RowDefinition
+                Height="auto" />
+                  <RowDefinition
+                Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition
+                    Width="*" />
+                  <ColumnDefinition
+                    Width="150" />
+                </Grid.ColumnDefinitions>
+                <Label
+              Grid.Row="0"
+                  Grid.Column="0"
+              Text="{Binding PaymentCategoryId.Name}" />
+                <Label
+                    Text="{Binding DefaultBudget, StringFormat='{0:C2}'}"                    
+                    Grid.Row="0"
+                    Grid.Column="1" />
+                <Label
+              Grid.Row="1"
+              Text="{Binding AssociatedResource.Name}" />
+              </Grid>
+            </ContentView>
+          </Border>
+        </DataTemplate>
+      </syncfusion:SfListView.ItemTemplate>
+      
+    </syncfusion:SfListView>
+      
+    </Grid>
 </ContentPage>

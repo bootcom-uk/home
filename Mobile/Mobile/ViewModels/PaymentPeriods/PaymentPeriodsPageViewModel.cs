@@ -70,7 +70,7 @@ namespace Mobile.ViewModels.PaymentPeriods
         {
             IsProcessing = true;
             
-            var periodId = await _paymentPeriodService.SavePaymentPeriod(PaymentPeriodPopupDataSource, _budgetsService.CollectDefaultBudgets(), _updatingPeriod);
+            var periodId = await _paymentPeriodService.SavePaymentPeriod(PaymentPeriodPopupDataSource, await _budgetsService.CollectDefaultBudgets(), _updatingPeriod);
             await _budgetsService.FullPaymentPeriodBudgetResync(periodId);
 
 

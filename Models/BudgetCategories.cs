@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using Realms;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Models
 {
@@ -18,5 +19,6 @@ namespace Models
         public double? DefaultBudget { get; set; }
 
         public User? AssociatedResource { get; set; }
+
     }
 }
