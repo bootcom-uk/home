@@ -33,6 +33,7 @@ Height="*" />
         Text="Please enter your email address below. If you do not have an account, this will be created as part of the sign in process." />
 
       <controls:Entry
+        StyleClass="EntryInvertedTextColour"
         x:Name="EmailAddress"
         Title="Email Address"
         EntryKeyboard="Email"

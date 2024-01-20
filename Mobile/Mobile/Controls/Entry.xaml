@@ -24,6 +24,7 @@
 
     <Entry
       Grid.Row="1"
+      StyleClass="CustomEntryStyle"
       Keyboard="{Binding EntryKeyboard}"
       Text="{Binding Text, Mode=TwoWay}"/>
 

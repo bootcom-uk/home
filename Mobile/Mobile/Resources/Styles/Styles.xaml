@@ -153,6 +153,16 @@
     </Setter>
   </Style>
 
+  <Style TargetType="Entry"
+       Class="EntryInvertedTextColour">
+    <Setter Property="TextColor" Value="{StaticResource Black}" />
+  </Style>
+
+  <Style TargetType="Entry"
+       Class="CustomEntryStyle">
+    <Setter Property="TextColor" Value="{StaticResource Black}" />
+  </Style>
+
   <Style TargetType="Frame" ApplyToDerivedTypes="False">
     <Setter Property="BorderColor" Value="{StaticResource Gray200}" />
   </Style>
