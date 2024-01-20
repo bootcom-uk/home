@@ -38,8 +38,6 @@ namespace Mobile.ViewModels
 
         internal readonly PaymentPeriodService _paymentPeriodService;
 
-        internal readonly PaymentsService _paymentsService;
-
         internal readonly FuturePaymentsService _futurePaymentsService;
 
         internal readonly PaymentCategoryService _paymentCategoryService;
@@ -51,7 +49,6 @@ namespace Mobile.ViewModels
         {
             Title = "Overview";
             _paymentPeriodService = paymentPeriodService;
-            _paymentsService = paymentsService;
             _futurePaymentsService = futurePaymentsService;
             _paymentCategoryService = paymentCategoryService;
             _budgetsService = budgetsService;

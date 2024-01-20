@@ -30,15 +30,49 @@
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
+    <ApplicationTitle>Money</ApplicationTitle>
+    <AndroidUseAapt2>True</AndroidUseAapt2>
+    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+    <AndroidPackageFormat>aab</AndroidPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
+    <ApplicationTitle>Money</ApplicationTitle>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-maccatalyst|AnyCPU'">
+    <ApplicationTitle>Money</ApplicationTitle>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows10.0.19041.0|AnyCPU'">
+    <ApplicationTitle>Money</ApplicationTitle>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
+    <ApplicationTitle>Money</ApplicationTitle>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
+    <ApplicationTitle>Money</ApplicationTitle>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-maccatalyst|AnyCPU'">
+    <ApplicationTitle>Money</ApplicationTitle>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-windows10.0.19041.0|AnyCPU'">
+    <ApplicationTitle>Money</ApplicationTitle>
+  </PropertyGroup>
+
   <ItemGroup>
     <!-- App Icon -->
-    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#FFFFFF" />
 
     <!-- Splash Screen -->
     <MauiSplashScreen Include="Resources\Splash\buddy.png" Color="#444cb1" />
 
     <!-- Images -->
-    <MauiImage Include="Resources\Images\*" />
+    <MauiImage Include="Resources\Images\*" Color="#FFFFFF" />
 
     <!-- Custom Fonts -->
     <MauiFont Include="Resources\Fonts\*" />
@@ -49,6 +83,7 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Resources\AppIcon\appicon.png" />
     <None Remove="Resources\Fonts\ARLRDBD.TTF" />
     <None Remove="Resources\Images\bootcom_whitetext_transparentbg.png" />
     <None Remove="Resources\Images\buddy.png" />
@@ -150,6 +185,10 @@
 
   <ItemGroup>
     <Folder Include="LocalModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiIcon Include="Resources\AppIcon\appicon.png" />
   </ItemGroup>
 
   <ItemGroup>
