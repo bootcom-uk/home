@@ -71,6 +71,7 @@ Text="You should shortly receive an email which contains an entry code. This is 
 
         <Entry
           Keyboard="Numeric"
+          StyleClass="EntryInvertedTextColour"
           Text="{Binding QuickAccessCode}"
           Grid.Row="2" />
 
