@@ -102,7 +102,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.3" />
-    <PackageReference Include="BootCom-Maui-Shared-Controls" Version="1.0.1" />
+    <PackageReference Include="BootCom-Maui-Shared-Controls" Version="1.0.2" />
     <PackageReference Include="BootCom-Maui-Shared-Extensions" Version="1.0.1" />
     <PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
@@ -124,9 +124,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <MauiXaml Update="Controls\Entry.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
     <MauiXaml Update="Resources\Styles\Buttons.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
