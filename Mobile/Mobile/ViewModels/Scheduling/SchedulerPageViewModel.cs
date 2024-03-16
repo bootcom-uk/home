@@ -182,7 +182,7 @@ namespace Mobile.ViewModels.Scheduling
                 return;
             }
 
-            ModifyPaymentDataSource.AppointmentDateTime = payment.LocalStartDate.ToLocalTime();
+            ModifyPaymentDataSource.AppointmentDateTime = payment.StartDate.Value.LocalDateTime;
             ModifyPaymentDataSource.Id = paymentId;
             ModifyPaymentDataSource.PaymentInformation = payment.PaymentTypeDescription;
             ModifyPaymentDataSource.PaymentType = payment.PaymentTypeId?.Name;

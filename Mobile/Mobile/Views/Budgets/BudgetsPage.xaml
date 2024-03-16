@@ -64,12 +64,6 @@
       </sfPopup:SfPopup.ContentTemplate>
     </sfPopup:SfPopup>
 
-    <ContentView
-  ControlTemplate="{StaticResource NavigationScreen}" />
-
-    <ContentView
-  ControlTemplate="{StaticResource CreatePaymentScreen}" />
-
     <syncfusion:SfListView
       x:Name="lvBudgets"
       ItemsSource="{Binding DataSource}"

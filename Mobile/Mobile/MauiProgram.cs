@@ -87,6 +87,9 @@ namespace Mobile
                       .RegisterForNavigation<PaymentTypesPage, PaymentTypesPageViewModel>()
                       .RegisterInstance(SemanticScreenReader.Default);
 
+                        containerRegistry
+                        .RegisterForNavigation<PaymentsForBudgetByPaymentPeriodPage, PaymentsForBudgetByPaymentPeriodPageViewModel>()
+                        .RegisterInstance(SemanticScreenReader.Default);
                         
 
                     });
