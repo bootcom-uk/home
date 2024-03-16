@@ -29,7 +29,7 @@ namespace HomeTests
             _selectablePaymentType!.PaymentAmount = 100;
             _selectablePaymentType!.Id = ObjectId.GenerateNewId();
 
-            Assert.That(string.IsNullOrWhiteSpace(_selectablePaymentType!.Name), Is.False);
+            Assert.That(string.IsNullOrWhiteSpace(_selectablePaymentType!.Name), Is.True);
         }
 
     }

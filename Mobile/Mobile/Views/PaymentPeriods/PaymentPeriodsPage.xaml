@@ -133,14 +133,7 @@ ControlTemplate="{StaticResource MainPageContentFrame}">
         </sfPopup:SfPopup.ContentTemplate>
       </sfPopup:SfPopup>
 
-      <ContentView
-        ControlTemplate="{StaticResource NavigationScreen}" />
-
-      <ContentView
-        ControlTemplate="{StaticResource CreatePaymentScreen}" />
-
-
-      <syncfusion:SfListView
+      <syncfusion:SfListView        
         x:Name="paymentPeriodListView"
         Grid.Row="0"
         ItemSize="60"

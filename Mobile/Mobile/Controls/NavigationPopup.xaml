@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sfPopup="clr-namespace:Syncfusion.Maui.Popup;assembly=Syncfusion.Maui.Popup"
+             x:Class="Mobile.Controls.NavigationPopup">
+  <ContentView.Content>
+    <sfPopup:SfPopup
+      IsFullScreen="True"
+      ShowCloseButton="True"
+      ShowHeader="True"
+      HeaderTitle=""
+      BindingContext="{Binding BindingContext, Source={RelativeSource Mode=TemplatedParent}}"
+      IsOpen="{Binding IsMenuOpen}">
+
+      <sfPopup:SfPopup.ContentTemplate>
+
+        <DataTemplate>
+
+          <Grid
+            Margin="5,0,5,0">
+
+            <Grid.RowDefinitions>
+              <RowDefinition
+Height="140" />
+              <RowDefinition
+Height="140" />
+              <RowDefinition
+Height="140" />
+              <RowDefinition
+Height="140" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition
+  Width="0.5*" />
+              <ColumnDefinition
+  Width="0.5*" />
+            </Grid.ColumnDefinitions>
+
+            <Button
+             StyleClass="NavigationButton"
+             Grid.Row="0"
+             Grid.Column="0"
+             BackgroundColor="{StaticResource Yellow200Accent}"             
+             Command="{Binding NavigateCommand}"
+             CommandParameter="MainPage"
+             Text="Home"
+             IsEnabled="{Binding CurrentScreen, Converter={StaticResource notIsEqualsConvertor}, ConverterParameter='MainPage'}"
+             />
+
+            <Button
+            StyleClass="NavigationButton"
+            Grid.Row="0"
+            Grid.Column="1"
+BackgroundColor="{StaticResource Blue200Accent}"
+            Command="{Binding DisplayNewPaymentCommand}"              
+Text="Add New Payment" />
+
+
+            <Button
+              StyleClass="NavigationButton"
+              Grid.Row="1"
+              Grid.Column="0"
+              BackgroundColor="{StaticResource Cyan200Accent}"            
+              Command="{Binding NavigateCommand}"
+              CommandParameter="SchedulerPage"
+              Text="Payment Calendar"
+              IsEnabled="{Binding CurrentScreen, Converter={StaticResource notIsEqualsConvertor}, ConverterParameter='SchedulerPage'}"
+              />
+
+            <Button
+              StyleClass="NavigationButton"
+              Grid.Row="1"
+              Grid.Column="1"
+              BackgroundColor="{StaticResource Blue100Accent}"            
+              Command="{Binding NavigateCommand}"
+              CommandParameter="PaymentPeriodsPage"        
+              Text="Payment Periods"
+              IsEnabled="{Binding CurrentScreen, Converter={StaticResource notIsEqualsConvertor}, ConverterParameter='PaymentPeriodsPage'}"
+                />
+
+            <Button
+  StyleClass="NavigationButton"
+  Grid.Row="2"
+  Grid.Column="0"
+  BackgroundColor="{StaticResource Cyan300Accent}"            
+  Command="{Binding NavigateCommand}"
+  CommandParameter="BudgetsPage"        
+  Text="Budgets"
+  IsEnabled="{Binding CurrentScreen, Converter={StaticResource notIsEqualsConvertor}, ConverterParameter='BudgetsPage'}"
+    />
+
+            <Button
+StyleClass="NavigationButton"
+Grid.Row="2"
+Grid.Column="1"
+BackgroundColor="{StaticResource Cyan300Accent}"            
+Command="{Binding NavigateCommand}"
+CommandParameter="FuturePaymentsPage"        
+Text="Future Payments"
+IsEnabled="{Binding CurrentScreen, Converter={StaticResource notIsEqualsConvertor}, ConverterParameter='FuturePaymentsPage'}"
+  />
+
+            <Button
+StyleClass="NavigationButton"
+Grid.Row="3"
+Grid.Column="0"
+BackgroundColor="{StaticResource Yellow200Accent}"            
+Command="{Binding NavigateCommand}"
+CommandParameter="PaymentTypesPage"        
+Text="Payment Types"
+IsEnabled="{Binding CurrentScreen, Converter={StaticResource notIsEqualsConvertor}, ConverterParameter='PaymentTypesPage'}"
+  />
+
+            <Button
+StyleClass="NavigationButton"
+Grid.Row="3"
+Grid.Column="0"
+BackgroundColor="{StaticResource Blue300Accent}"            
+Command="{Binding NavigateCommand}"
+CommandParameter="PaymentsForBudgetByPaymentPeriodPage"        
+Text="Payments For Budget By Payment Period"
+IsEnabled="{Binding CurrentScreen, Converter={StaticResource notIsEqualsConvertor}, ConverterParameter='PaymentsForBudgetByPaymentPeriodPage'}"
+  />
+
+          </Grid>
+
+
+
+        </DataTemplate>
+
+      </sfPopup:SfPopup.ContentTemplate>
+
+    </sfPopup:SfPopup>
+  </ContentView.Content>
+</ContentView>

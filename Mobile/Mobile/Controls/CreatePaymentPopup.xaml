@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sfPopup="clr-namespace:Syncfusion.Maui.Popup;assembly=Syncfusion.Maui.Popup"
+             xmlns:editors="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+             xmlns:calendar="clr-namespace:Syncfusion.Maui.Calendar;assembly=Syncfusion.Maui.Calendar"
+             x:Class="Mobile.Controls.CreatePaymentPopup">
+  <ContentView.Content>
+    <sfPopup:SfPopup
+      PopupStyle="{StaticResource PaymentPopupStyle}"
+      AnimationMode="Fade"
+      AnimationEasing="SinInOut"
+      AnimationDuration="500"
+      IsOpen="{Binding IsPaymentScreenOpen}"
+      IsFullScreen="True"
+      ShowCloseButton="True"
+      ShowHeader="True"      
+      x:Name="paymentPopup"
+      BindingContext="{Binding BindingContext, Source={RelativeSource Mode=TemplatedParent}}"
+      HeaderTitle="{Binding PaymentTypeTitle}">
+
+      <sfPopup:SfPopup.ContentTemplate>
+
+        <DataTemplate>
+
+          <Grid>
+
+            <Grid
+              Margin="15"
+              IsVisible="{Binding NavigationScreenName, Converter={StaticResource paymentScreenScreenToDisplayConvertor}, ConverterParameter='SavingPayment'}">
+              <Label
+                VerticalTextAlignment="Center"
+                Text="{Binding SavingPaymentMessage}" />
+            </Grid>
+
+            <Grid
+            Margin="15"
+            IsVisible="{Binding NavigationScreenName, Converter={StaticResource paymentScreenScreenToDisplayConvertor}, ConverterParameter='SelectPaymentDate'}">
+
+              <Grid.RowDefinitions>
+                <RowDefinition
+                  Height="auto" />
+                <RowDefinition
+                  Height="*" />
+                <RowDefinition
+                  Height="auto" />
+              </Grid.RowDefinitions>
+
+              <Label
+                Text="Please select the date of this payment:" />
+
+              <calendar:SfCalendar
+                Grid.Row="1"
+                CanToggleDaySelection="True"
+                SelectionMode="Single"
+                DisplayDate="{Binding SelectedPaymentDate}"
+                SelectedDate="{Binding SelectedPaymentDate}"
+                x:Name="Calendar" 
+                View="Month">
+                <calendar:SfCalendar.Behaviors>
+                  <prism:EventToCommandBehavior
+                    EventName="SelectionChanged"
+                    EventArgsConverter="{StaticResource calendarSelectionChangedEventArgsToDateConvertor}"
+                    Command="{Binding PaymentDateChangedCommand}" />
+                </calendar:SfCalendar.Behaviors>
+              </calendar:SfCalendar>
+
+              <Button
+                Grid.Row="2"
+                Text="Save"
+                IsEnabled="{Binding SelectedPaymentDate, Converter={StaticResource dateTimeIsNotNullConvertor}}"
+                Command="{Binding SavePaymentCommand}"
+                />
+
+            </Grid>
+
+            <Grid
+            Margin="15"
+IsVisible="{Binding NavigationScreenName, Converter={StaticResource paymentScreenScreenToDisplayConvertor}, ConverterParameter='SelectPaymentResource'}">
+
+              <Grid.RowDefinitions>
+                <RowDefinition
+                  Height="auto" />
+                <RowDefinition
+                  Height="*" />
+                <RowDefinition
+                  Height="auto" />
+              </Grid.RowDefinitions>
+
+              <Label
+                Grid.Row="0"
+                Text="Select who this payment is assigned to" />
+
+              <CollectionView
+                ItemsSource="{Binding UsersDataSource}"
+                Grid.Row="1">
+                <CollectionView.ItemTemplate>
+                  <DataTemplate>
+                    <ImageButton
+                      StyleClass="PhotoButton"
+                      Command="{Binding BindingContext.PaymentResourceSelectedCommand, Source={x:Reference paymentPopup}}"
+                      CommandParameter="{Binding Id}"
+                      Source="{Binding ImagePath}">
+                      <ImageButton.Style>
+                        <Style TargetType="ImageButton">
+                          <Style.Triggers>
+                            <DataTrigger
+                              TargetType="ImageButton"                                           
+                              Value="True">
+                              <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource paymentTypeSelectedConvertor}">
+                                  <x:Binding
+                                    Path="Id" />
+                                  <x:Binding
+                                    Path="BindingContext.SelectedPaymentTypeResource" 
+                                    Source="{x:Reference paymentPopup}" />
+                                </MultiBinding>
+                              </DataTrigger.Binding>
+                              <Setter Property="HeightRequest" Value="200" />
+                              <Setter Property="WidthRequest" Value="200" />
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </ImageButton.Style>
+                    </ImageButton>
+                  </DataTemplate>
+                </CollectionView.ItemTemplate>
+              </CollectionView>
+
+              <Button
+                  Command="{Binding PaymentTypeResourceSelectedCommand}"
+                  Grid.Row="2"
+                  IsEnabled="{Binding BindingContext.SelectedPaymentTypeResource, Source={x:Reference paymentPopup}, Converter={StaticResource isNotNullConvertor}}"
+                  Text="Select" />
+
+            </Grid>
+
+            <Grid
+              Margin="15"
+  IsVisible="{Binding NavigationScreenName, Converter={StaticResource paymentScreenScreenToDisplayConvertor}, ConverterParameter='SelectPaymentAmount'}">
+
+              <Grid.RowDefinitions>
+                <RowDefinition
+Height="auto" />
+                <RowDefinition
+Height="auto" />
+                <RowDefinition
+Height="auto" />
+                <RowDefinition
+Height="auto" />
+                <RowDefinition
+Height="auto" />
+                <RowDefinition
+  Height="*" />
+              </Grid.RowDefinitions>
+
+              <Label
+                Grid.Row="0"
+                Text="Payment Info: " />
+
+              <Entry
+                Text="{Binding PaymentInfo}"
+                Grid.Row="1"/>
+
+              <Label
+                Grid.Row="2"
+Text="Select Payment Amount: " />
+
+              <editors:SfNumericEntry
+                Grid.Row="3"
+                Margin="0, 10, 0, 0"
+                FontSize="28"
+                Value="{Binding PaymentAmount}"
+                CustomFormat="C2"
+                ShowClearButton="True"
+                UpDownPlacementMode="Inline" />
+
+              <Button
+                Grid.Row="4"
+                Command="{Binding PaymentAmountSelectedCommand}"
+                IsEnabled="{Binding PaymentAmount, Converter={StaticResource paymentValueToBoolConvertor}}"
+                Text="Continue" />
+
+            </Grid>
+
+            <Grid
+Margin="15"
+IsVisible="{Binding NavigationScreenName, Converter={StaticResource paymentScreenScreenToDisplayConvertor}, ConverterParameter='SelectPaymentType'}">
+
+              <Grid.RowDefinitions>
+                <RowDefinition
+  Height="auto" />
+                <RowDefinition
+                  Height="*" />
+                <RowDefinition
+                  Height="auto" />
+              </Grid.RowDefinitions>
+              <Grid
+  Grid.Row="0">
+                <Label
+                  Text="Display archived payment types?"
+                  Grid.Row="0" />
+                <Switch
+                  IsToggled="{Binding DisplayArchivedRecords}"
+                Grid.Row="1" />
+              </Grid>
+              <CollectionView
+                Grid.Row="1"
+                ItemsSource="{Binding PaymentTypeDataSource}">
+                <CollectionView.ItemTemplate>
+                  <DataTemplate>
+                    <Grid>
+                      <Button
+                        StyleClass="SelectablePaymentTypeButton"
+                        Grid.Row="0"
+                        Command="{Binding Path=BindingContext.ChoosePaymentTypeCommand, Source={x:Reference paymentPopup}}"
+                        CommandParameter="{Binding Id}"
+                        Text="{Binding Name}">
+                        <Button.Style>
+                          <Style TargetType="Button">
+                            <Style.Triggers>
+                              <DataTrigger
+                                TargetType="Button"                                           
+                                           Value="True">
+                                <DataTrigger.Binding>
+                                  <MultiBinding Converter="{StaticResource paymentTypeSelectedConvertor}">
+                                    <x:Binding
+                                      Path="Id" />
+                                    <x:Binding
+                                      Path="BindingContext.SelectedPaymentTypeId" 
+                                      Source="{x:Reference paymentPopup}" />
+                                  </MultiBinding>
+                                </DataTrigger.Binding>
+                                <Setter Property="BackgroundColor" Value="Green" />
+                              </DataTrigger>
+                            </Style.Triggers>
+                          </Style>
+                        </Button.Style>
+                      </Button>
+                    </Grid>
+                  </DataTemplate>
+                </CollectionView.ItemTemplate>
+              </CollectionView>
+
+              <Button                
+                Grid.Row="2"
+                Command="{Binding PaymentTypeSelectedCommand}"
+                IsEnabled="{Binding SelectedPaymentTypeId, Converter={StaticResource isNotNullConvertor}}"
+                Text="Continue" />
+
+            </Grid>
+
+            <Grid
+              Margin="15"
+              IsVisible="{Binding NavigationScreenName, Converter={StaticResource paymentScreenScreenToDisplayConvertor}, ConverterParameter='SelectIncomingOutgoingType'}">
+
+              <Grid.RowDefinitions>
+                <RowDefinition
+  Height="auto" />
+                <RowDefinition
+  Height="auto" />
+              </Grid.RowDefinitions>
+
+              <Button
+                StyleClass="OutgoingPaymentSelectionButton"
+                Command="{Binding SelectPaymentTypeCommand}"
+                CommandParameter="Outgoing"
+  Grid.Row="0"
+  Text="Outgoing Payment" />
+
+              <Button
+                StyleClass="IncomingPaymentSelectionButton"
+                Command="{Binding SelectPaymentTypeCommand}"
+CommandParameter="Incoming"
+  Grid.Row="1"
+  Text="Incoming Payment" />
+
+            </Grid>
+
+          </Grid>
+
+        </DataTemplate>
+
+      </sfPopup:SfPopup.ContentTemplate>
+
+    </sfPopup:SfPopup>
+  </ContentView.Content>
+</ContentView>

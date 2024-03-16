@@ -12,5 +12,7 @@ namespace Models
         public string? Name { get; set; }
 
         public int? OriginalId { get; set; }
+
+        public int? DisplayOrder { get; set; }
     }
 }

@@ -27,12 +27,6 @@
   Height="auto" />
     </Grid.RowDefinitions>
       
-    <ContentView
-ControlTemplate="{StaticResource NavigationScreen}" />
-
-    <ContentView
-ControlTemplate="{StaticResource CreatePaymentScreen}" />
-
     <sfPopup:SfPopup
    PopupStyle="{StaticResource PaymentPopupStyle}"
    AnimationMode="Fade"

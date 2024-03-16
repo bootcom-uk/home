@@ -48,16 +48,10 @@
         <RowDefinition
 Height="150" />
         <RowDefinition
-  Height="auto" />
+  Height="500" />
         <RowDefinition
 Height="auto" />
       </Grid.RowDefinitions>
-
-      <ContentView
-ControlTemplate="{StaticResource NavigationScreen}" />
-
-      <ContentView
-  ControlTemplate="{StaticResource CreatePaymentScreen}" />
 
       <ContentView
   Grid.Row="0"

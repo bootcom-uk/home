@@ -37,26 +37,8 @@ namespace Models
 
         public double? TotalHours { get; set; }
 
-        [Ignored] public bool AllDayAppointment { get; set; } = true;
-
         [Ignored]
-        public DateTime LocalStartDate
-        {
-            get
-            {
-                return StartDate!.Value.LocalDateTime;
-            }
-        }
-
-        [Ignored]
-        public DateTime LocalEndDate
-        {
-            get
-            {
-                return EndDate!.Value.LocalDateTime;
-            }
-        }
-
+        public PaymentPeriod? PaymentPeriod { get; set; }
 
     }
 }

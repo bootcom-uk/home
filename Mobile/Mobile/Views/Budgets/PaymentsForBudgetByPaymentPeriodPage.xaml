@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:convertors="clr-namespace:Mobile.Common.Convertors"
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
+             xmlns:data="clr-namespace:Syncfusion.Maui.DataSource;assembly=Syncfusion.Maui.DataSource"
+             xmlns:editors="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+             x:Class="Mobile.Views.Budgets.PaymentsForBudgetByPaymentPeriodPage"
+             ControlTemplate="{StaticResource MainPageTemplate}"
+             Title="PaymentsForBudgetByPaymentPeriodPage">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <convertors:PaymentsToAmountConvertor
+        x:Key="paymentsToAmountConvertor" />
+      <convertors:PaymentReceiptOrPaymentTextConvertor
+        x:Key="paymentReceiptOrPaymentTextConvertor" />
+      <convertors:AllPaymentsToActualPaymentTextColourConvertor
+        x:Key="paymentReceiptOrPaymentColourConvertor" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition
+  Height="auto" />
+      <RowDefinition
+  Height="*" />
+    </Grid.RowDefinitions>
+    <Label
+      Grid.Row="0"
+      Text="Displaying" />
+    <syncfusion:SfListView
+      Grid.Row="1"
+      HeaderSize="80"
+      ItemSpacing="10"
+      GroupHeaderSize="80"
+      x:Name="lvPayments"
+      AllowGroupExpandCollapse="True"      
+      ItemsSource="{Binding DataSource}">
+
+    <syncfusion:SfListView.HeaderTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition
+                Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition
+  Width="auto" />
+              <ColumnDefinition
+  Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <Label
+              Text="Payment Period: "
+              Grid.Row="0"
+              Grid.Column="0" />
+
+            <editors:SfComboBox
+              Grid.Row="0"
+              Grid.Column="1"
+              x:Name="cboPaymentPeriods"
+              x:FieldModifier="public"
+              SelectedItem="{Binding SelectedPaymentPeriod}"
+              ItemsSource="{Binding PaymentPeriodsDataSource}">
+              <editors:SfComboBox.ItemTemplate>
+                <DataTemplate>
+                  <Label
+                    Text="{Binding .}" />
+                </DataTemplate>
+              </editors:SfComboBox.ItemTemplate>
+            </editors:SfComboBox>
+
+          </Grid>
+        </DataTemplate>
+      </syncfusion:SfListView.HeaderTemplate>
+
+      <syncfusion:SfListView.GroupHeaderTemplate>
+        <DataTemplate>
+          <Border StyleClass="SwipeViewContentItemBorder">
+            <ContentView StyleClass="SwipeViewContentItem">
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition
+                    Height="auto" />
+                  <RowDefinition
+                    Height="auto" />
+                </Grid.RowDefinitions>
+                <Label
+                  StyleClass="ListViewItemGroupHeaderLabel"
+                  Grid.Row="0"
+    Text="{Binding Key}" />
+                <Label
+                  Grid.Row="1"
+                  Text="{Binding Items, Converter={StaticResource paymentsToAmountConvertor}, StringFormat='{0:C2}'}" />
+              </Grid>
+            </ContentView>
+          </Border>
+        </DataTemplate>
+      </syncfusion:SfListView.GroupHeaderTemplate>
+
+      <syncfusion:SfListView.ItemTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition
+                Height="auto" />
+              <RowDefinition
+                Height="auto" />
+              <RowDefinition
+                Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition
+                Width="auto" />
+              <ColumnDefinition
+                Width="auto" />
+            </Grid.ColumnDefinitions>
+            
+            <Label
+              Grid.Row="0"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Text="{Binding StartDate.Date, StringFormat='{0:dddd dd MMMM yyyy}'}" />
+
+            <Label
+              Grid.Row="1"
+              Grid.Column="0">
+              <Label.TextColor>
+                <MultiBinding
+                  Converter="{StaticResource paymentReceiptOrPaymentColourConvertor}">
+                  <Binding
+  Path="AmountPaid" />
+                  <Binding
+  Path="AmountReceived" />
+                </MultiBinding>
+              </Label.TextColor>
+              <Label.Text>
+                <MultiBinding
+                  StringFormat="{}{0:C2}"
+                  Converter="{StaticResource paymentReceiptOrPaymentTextConvertor}">
+                  <Binding
+                    Path="AmountPaid" />
+                  <Binding
+                    Path="AmountReceived" />
+                </MultiBinding>
+              </Label.Text>
+            </Label>
+              
+
+            <Label
+              Grid.Row="2"
+              Grid.Column="0"
+              Text="{Binding PaymentTypeDescription}" />
+
+          </Grid>
+          
+          
+        </DataTemplate>
+      </syncfusion:SfListView.ItemTemplate>
+      
+    </syncfusion:SfListView>
+  </Grid>
+    
+</ContentPage>
