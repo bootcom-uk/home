@@ -38,7 +38,7 @@ namespace Mobile.ViewModels.Authentication
             InternalSettings.UserId = Guid.Parse(response["userId"]);
 
             InternalSettings.CurrentScreen = "MainPage";
-            await _navigationService.NavigateAsync("/MainPage");
+            await _navigationService.NavigateAsync("MainPage");
         }
 
 

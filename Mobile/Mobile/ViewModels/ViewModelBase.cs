@@ -73,7 +73,7 @@ namespace Mobile.ViewModels
         {
             IsMenuOpen = false;
             InternalSettings.CurrentScreen = pageName;
-            await _navigationService.NavigateAsync($"/{pageName}");
+            await _navigationService.NavigateAsync($"{pageName}");
         }
 
         #endregion
