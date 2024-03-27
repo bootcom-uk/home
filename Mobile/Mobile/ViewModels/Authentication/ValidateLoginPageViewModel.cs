@@ -34,14 +34,14 @@ namespace Mobile.ViewModels.Authentication
 
                 if (response is null)
                 {                    
-                    await _navigationService.NavigateAsync("../MainPage");
+                    await _navigationService.NavigateAsync("MainPage");
                     return;
                 }
 
                 InternalSettings.UserToken = response["token"];
                 InternalSettings.RefreshToken = response["refreshToken"];
                 InternalSettings.UserId = Guid.Parse(response["userId"]);
-                await _navigationService.NavigateAsync("../MainPage");
+                await _navigationService.NavigateAsync("MainPage");
             }
             catch (Exception ex)
             {

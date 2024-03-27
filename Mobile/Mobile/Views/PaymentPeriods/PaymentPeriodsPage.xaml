@@ -46,12 +46,12 @@
                     Height="auto" />
                   <RowDefinition
                     Height="auto" />
-                  <RowDefinition
+                <RowDefinition
                     Height="auto" />
-                  <RowDefinition
-                    Height="*" />
-                  <RowDefinition
+                <RowDefinition
                   Height="auto" />
+                <RowDefinition
+                    Height="*" />
                 </Grid.RowDefinitions>
                 <Label
                   StyleClass="PopupLabel"
@@ -69,8 +69,13 @@
                   Grid.Row="3"
                   Date="{Binding PaymentPeriodPopupDataSource.DateTo}"
                   />
+              <Button
+    IsEnabled="{Binding IsProcessing, Converter={StaticResource invertedBoolConvertor}}"
+  Command="{Binding UpdatePaymentPeriodCommand}"
+    Grid.Row="4"
+    Text="Save" />
               <ScrollView
-                Grid.Row="4">
+                Grid.Row="5">
                 <CollectionView                                   
                   ItemsSource="{Binding PaymentPeriodPopupDataSource.Budgets}">
                   <CollectionView.ItemTemplate>
@@ -123,11 +128,7 @@ ControlTemplate="{StaticResource MainPageContentFrame}">
                   </CollectionView.ItemTemplate>
                 </CollectionView>
               </ScrollView>
-              <Button
-                  IsEnabled="{Binding IsProcessing, Converter={StaticResource invertedBoolConvertor}}"
-                Command="{Binding UpdatePaymentPeriodCommand}"
-                  Grid.Row="5"
-                  Text="Save" />
+              
               </Grid>
           </DataTemplate>
         </sfPopup:SfPopup.ContentTemplate>

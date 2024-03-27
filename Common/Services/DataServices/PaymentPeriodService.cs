@@ -35,7 +35,7 @@ namespace Services.DataServices
             // Updating a payment period
             if (isUpdate)
             {
-                await _realmService.Realm!.WriteAsync(async () =>
+                await _realmService.Realm!.Write(async () =>
                 {
                     var paymentPeriod = await GetPaymentPeriodById(editablePaymentPeriod.Id!.Value);
 
@@ -46,7 +46,8 @@ namespace Services.DataServices
 
                     foreach (var budget in paymentPeriod.Budgets)
                     {
-                        var modifiedBudget = editablePaymentPeriod.Budgets.First(record => record.BudgetCategoryId == budget.BudgetCategoryId!.Id);
+                        var modifiedBudget = editablePaymentPeriod.Budgets!.FirstOrDefault(record => record.BudgetCategoryId == budget.BudgetCategoryId!.Id);
+                        if(modifiedBudget is null) continue;
                         budget.Budget = modifiedBudget.Budget;
                     }
                     _realmService.Realm.Add(paymentPeriod, isUpdate);

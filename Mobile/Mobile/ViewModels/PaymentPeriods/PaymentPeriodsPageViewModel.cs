@@ -34,7 +34,7 @@ namespace Mobile.ViewModels.PaymentPeriods
             _paymentPeriodService = paymentPeriodService;
             _budgetsService = budgetsService;
             IsPaymentPeriodScreenOpen = false;
-            Title = "Payment Periods";
+            Title = "Payment Periods";            
         }
 
         [RelayCommand]
