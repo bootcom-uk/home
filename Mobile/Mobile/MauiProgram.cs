@@ -49,6 +49,12 @@ namespace Mobile
                         .RegisterScoped<BudgetsService>();
 
                         containerRegistry
+                        .RegisterScoped<FuturePaymentsService>();
+
+                        containerRegistry
+                        .RegisterScoped<PaymentPeriodService>();
+
+                        containerRegistry
                         .RegisterForNavigation<NavigationPage>();
 
                         containerRegistry

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Models;
 using Models.Local;
+using MongoDB.Bson;
 using Services;
 using Services.DataServices;
 
@@ -62,7 +63,18 @@ namespace Mobile.ViewModels.FuturePayments
 
             IsFuturePaymentPopupOpen = false;
             IsProcessing = false;
+
+            DataSource = _futurePaymentsService.GetFuturePayments();
         }
+
+        [RelayCommand]
+        async Task RefreshView()
+        {
+            IsRefreshing = true;
+            await _futurePaymentsService.ResyncPaymentPeriodsForFuturePayment();
+            IsRefreshing = false;
+        }
+        
 
         [RelayCommand]
         void CancelFuturePayment()
@@ -84,6 +96,7 @@ namespace Mobile.ViewModels.FuturePayments
             _addingNewFuturePayment = true;
             FuturePaymentMinimumDate = DateTime.Now.Date;
             IsFuturePaymentPopupOpen = true;
+            PopupDataSource.Id = ObjectId.GenerateNewId();
             PopupDataSource.FuturePaymentDate = FuturePaymentMinimumDate;
             PopupDataSource.FuturePaymentDetail = string.Empty;
             PopupDataSource.FuturePaymentAmount = 0;

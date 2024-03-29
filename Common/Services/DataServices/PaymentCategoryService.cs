@@ -54,7 +54,7 @@ namespace Services.DataServices
                 .Select(record => record.PaymentTypeId)
                 .Distinct();            
             return paymentTypes.Except(payments)
-                .Select(record => record.DefaultPaymentAmount)
+                .Select(record => record!.DefaultPaymentAmount)
                 .Sum();
         }
 

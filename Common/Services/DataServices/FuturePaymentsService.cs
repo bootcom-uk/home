@@ -2,50 +2,65 @@
 
 namespace Services.DataServices
 {
-    public class FuturePaymentsService
+    public class FuturePaymentsService(RealmService realmService, PaymentPeriodService paymentPeriodService)
     {
 
-        internal readonly RealmService _realmService;
-
-        public FuturePaymentsService(RealmService realmService)
-        {
-            _realmService = realmService;
-        }
 
         public async Task AddFuturePayment(FuturePayment futurePayment)
         {
-            await _realmService.Realm.WriteAsync(() =>
+            await realmService.Realm.WriteAsync(() =>
             {
-                _realmService.Realm.Add(futurePayment);
+                realmService.Realm.Add(futurePayment);
             });
+
+            await ResyncPaymentPeriodsForFuturePayment();
         }
 
         public async Task UpdateFuturePayment(FuturePayment futurePayment)
         {
-            await _realmService.Realm.WriteAsync(() =>
+            await realmService.Realm.WriteAsync(() =>
             {
-                _realmService.Realm.Add(futurePayment, true);
+                realmService.Realm.Add(futurePayment, true);
             });
+
+            await ResyncPaymentPeriodsForFuturePayment();
         }
 
         public IQueryable<FuturePayment> GetFuturePayments() {
-            var futurePayments = _realmService.Realm.All<FuturePayment>()
+            var futurePayments = realmService.Realm.All<FuturePayment>()
                 .OrderBy(record => record.PaymentRequiredDate);
             return futurePayments;
         }
 
         public async Task DeleteFuturePayment(FuturePayment futurePayment)
         {
-            await _realmService.Realm.WriteAsync(() =>
+            await realmService.Realm.WriteAsync(() =>
             {
-                _realmService.Realm.Remove(futurePayment);
+                realmService.Realm.Remove(futurePayment);
+            });
+        }
+
+        public async Task ResyncPaymentPeriodsForFuturePayment()
+        {
+
+            await realmService.Realm.WriteAsync(async () =>
+            {
+                var paymentPeriods = await paymentPeriodService.GetPaymentPeriods();
+
+                foreach (var futurePayment in realmService.Realm.All<FuturePayment>())
+                {
+                    var paymentPeriod = paymentPeriods.FirstOrDefault(record => record.DateFrom <= futurePayment.PaymentRequiredDate && record.DateTo >= futurePayment.PaymentRequiredDate.Date);
+
+                    futurePayment.PaymentPeriodId = paymentPeriod;
+                    realmService.Realm.Add(futurePayment, true);
+                }
             });
         }
 
         public double GetFuturePaymentsTotalForPeriod(PaymentPeriod paymentPeriod)
         {
 
-            var futurePayments = _realmService.Realm.All<FuturePayment>()
+            var futurePayments = realmService.Realm.All<FuturePayment>()
                 .Where(record => record.PaymentRequiredDate >= paymentPeriod.DateFrom && record.PaymentRequiredDate <= paymentPeriod.DateTo)
                 .ToList();
              return futurePayments                
