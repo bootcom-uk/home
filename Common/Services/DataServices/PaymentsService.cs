@@ -90,8 +90,12 @@ namespace Services.DataServices
             await _realmService.Realm.WriteAsync(() => {
                 _realmService.Realm.Add(payments);
             });
-            
-            await _budgetsService.BudgetUpdateFromPayment(payments);            
+
+            var paymentPeriod = _paymentPeriodService.PaymentPeriodForDate(payments.StartDate!.Value);
+            if (paymentPeriod != null)
+            {
+                await _budgetsService.FullPaymentPeriodBudgetResync(paymentPeriod.Id!.Value);
+            }
         }
 
         public async Task UpdatePayment(Payments payments)

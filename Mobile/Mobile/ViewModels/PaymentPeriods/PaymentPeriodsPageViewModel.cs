@@ -29,9 +29,12 @@ namespace Mobile.ViewModels.PaymentPeriods
 
         internal BudgetsService _budgetsService { get; }
 
-        public PaymentPeriodsPageViewModel(ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, PaymentPeriodService paymentPeriodService, BudgetsService budgetsService) : base(screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
+        internal FuturePaymentsService _futurePaymentsService {  get; }
+
+        public PaymentPeriodsPageViewModel(ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, PaymentPeriodService paymentPeriodService, BudgetsService budgetsService, FuturePaymentsService futurePaymentsService) : base(screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
         {
             _paymentPeriodService = paymentPeriodService;
+            _futurePaymentsService = futurePaymentsService;
             _budgetsService = budgetsService;
             IsPaymentPeriodScreenOpen = false;
             Title = "Payment Periods";            
@@ -69,7 +72,7 @@ namespace Mobile.ViewModels.PaymentPeriods
             
             var periodId = await _paymentPeriodService.SavePaymentPeriod(PaymentPeriodPopupDataSource, await _budgetsService.CollectDefaultBudgets(), _updatingPeriod);
             await _budgetsService.FullPaymentPeriodBudgetResync(periodId);
-
+            await _futurePaymentsService.ResyncPaymentPeriodsForFuturePayment();
 
             DataSource = await _paymentPeriodService.GetPaymentPeriods();
 
@@ -87,7 +90,7 @@ namespace Mobile.ViewModels.PaymentPeriods
         }
 
         [RelayCommand]
-        void EditPaymentPeriod(object period)
+        async Task EditPaymentPeriod(object period)
         {
             _updatingPeriod = true;
             var paymentPeriod = period as PaymentPeriod;   
@@ -99,8 +102,25 @@ namespace Mobile.ViewModels.PaymentPeriods
                 DateFrom = paymentPeriod.DateFrom?.DateTime
             };
             PaymentPeriodPopupDataSource.Budgets = new();
+            var allPayments = await _paymentsService.GetPaymentsByDates(paymentPeriod.DateFrom.Value, paymentPeriod.DateTo.Value);
             paymentPeriod.Budgets.Where(record => record.Budget > 0).ForEach(record =>
-            {                
+            {
+
+                var receipts = allPayments.ToList()
+
+                .Where(paymentRecord => paymentRecord.PaymentTypeId.PaymentCategoryId.Id == record.BudgetCategoryId.PaymentCategoryId.Id)
+                .Where(paymentRecord => paymentRecord.AmountReceived > 0)
+                .Where(paymentRecord => paymentRecord.StartDate >= paymentPeriod.DateFrom && paymentRecord.EndDate <= paymentPeriod.DateTo)
+                .Where(paymentRecord => paymentRecord.AssociatedResource != null && record.BudgetCategoryId.AssociatedResource != null && (paymentRecord.AssociatedResource.Id == record.BudgetCategoryId.AssociatedResource.Id));
+
+                
+                
+
+                Console.WriteLine(receipts.Count().ToString());
+
+
+                var receiptTotal = receipts.Select(receiptRecord => receiptRecord.AmountReceived).Sum() ?? 0;
+
                 PaymentPeriodPopupDataSource.Budgets.Add(new()
                 {
                     AmountReceived = record.AmountReceived,

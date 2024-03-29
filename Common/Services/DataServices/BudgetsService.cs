@@ -37,39 +37,6 @@ namespace Services.DataServices
             return budgetTotal;
         }
 
-        public async Task BudgetUpdateFromPayment(Payments payments)
-        {
-            if (payments.PaymentTypeId is null) return;
-            if (payments.StartDate is null) return;
-
-            var paymentPeriod = _paymentPeriodService.PaymentPeriodForDate(payments.StartDate.Value);
-
-            if(paymentPeriod is null) return;
-
-            var budgets = paymentPeriod.Budgets.Where(record => record.BudgetCategoryId is not null && record.BudgetCategoryId.PaymentCategoryId == payments.PaymentTypeId.PaymentCategoryId);
-
-            PaymentPeriod_Budgets? budgetToUse = null;
-
-            switch (budgets.Count()) {
-                case > 1:
-                    budgetToUse = budgets.FirstOrDefault(record => record.BudgetCategoryId!.AssociatedResource == payments.AssociatedResource);
-                    break;
-                case 1:
-                    budgetToUse = budgets.First();
-                    break;
-            }
-                
-            if(budgetToUse is null) return;
-
-            budgetToUse.AmountReceived += payments.AmountReceived;
-            budgetToUse.AmountSpent += payments.AmountPaid;
-            budgetToUse.BudgetRemaining = budgetToUse.Budget ?? 0 + payments.AmountReceived ?? 0 - payments.AmountPaid ?? 0;
-
-           await _realmService.Realm.WriteAsync(() => {
-                _realmService.Realm.Add(paymentPeriod, true);
-            });
-            
-        }
 
         public async Task<BudgetCategories?> GetBudgetById(ObjectId? id)
         {
@@ -95,17 +62,21 @@ namespace Services.DataServices
 
             if (paymentPeriod!.Budgets == null || paymentPeriod.Budgets.Count == 0)
             {
-                foreach(var budget in await CollectDefaultBudgets())
-                {                                        
-                    paymentPeriod.Budgets!.Add(new()
+
+                await _realmService.Realm.WriteAsync(async () =>
+                {
+                    foreach (var budget in await CollectDefaultBudgets())
                     {
-                        AmountReceived = 0,
-                        AmountSpent = 0,
-                        Budget = budget.DefaultBudget,
-                        BudgetCategoryId = budget,
-                        BudgetRemaining = budget.DefaultBudget ?? 0
-                    });
-                }
+                        paymentPeriod.Budgets!.Add(new()
+                        {
+                            AmountReceived = 0,
+                            AmountSpent = 0,
+                            Budget = budget.DefaultBudget,
+                            BudgetCategoryId = budget,
+                            BudgetRemaining = budget.DefaultBudget ?? 0
+                        });
+                    }
+                });                
             }
             
             var payments = _realmService.Realm.All<Payments>()
@@ -118,7 +89,7 @@ namespace Services.DataServices
             await _realmService.Realm.WriteAsync(() =>
             {
 
-                foreach (var budgetCategory in paymentPeriod.Budgets)
+                foreach (var budgetCategory in paymentPeriod.Budgets!)
                 {
                     var filteredPaymentTypes = paymentTypes.Where(record => budgetCategory.BudgetCategoryId is not null && budgetCategory.BudgetCategoryId.PaymentCategoryId is not null && record.PaymentCategoryId!.Id == budgetCategory.BudgetCategoryId.PaymentCategoryId.Id)
                     .ToImmutableList();
