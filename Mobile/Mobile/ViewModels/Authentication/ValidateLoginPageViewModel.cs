@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.Configuration;
 using Services;
 using Services.DataServices;
 
@@ -9,7 +10,7 @@ namespace Mobile.ViewModels.Authentication
 
         internal readonly HttpService _httpService;
 
-        public ValidateLoginPageViewModel(ISemanticScreenReader screenReader, INavigationService navigationService, HttpService httpService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService) : base(screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
+        public ValidateLoginPageViewModel(IConfiguration configuration, ISemanticScreenReader screenReader, INavigationService navigationService, HttpService httpService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService) : base(configuration, screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
         {
             _httpService = httpService;
         }

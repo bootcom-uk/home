@@ -1,6 +1,7 @@
 ﻿
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Configuration;
 using Models;
 using Models.Local;
 using Services;
@@ -45,7 +46,7 @@ namespace Mobile.ViewModels
         internal readonly BudgetsService _budgetsService;
 
 
-        public MainPageViewModel(ISemanticScreenReader screenReader, INavigationService navigationService, PaymentPeriodService paymentPeriodService, RealmService realmService, PaymentsService paymentsService, FuturePaymentsService futurePaymentsService, PaymentCategoryService paymentCategoryService, BudgetsService budgetsService, PaymentTypeService paymentTypeService, UsersService usersService) : base(screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
+        public MainPageViewModel(IConfiguration configuration, ISemanticScreenReader screenReader, INavigationService navigationService, PaymentPeriodService paymentPeriodService, RealmService realmService, PaymentsService paymentsService, FuturePaymentsService futurePaymentsService, PaymentCategoryService paymentCategoryService, BudgetsService budgetsService, PaymentTypeService paymentTypeService, UsersService usersService) : base(configuration, screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
         {
             Title = "Overview";
             _paymentPeriodService = paymentPeriodService;

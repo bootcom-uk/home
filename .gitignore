@@ -55,7 +55,7 @@ nunit-*.xml
 dlldata.c
 
 # Application settings
-appsettings.json
+appsettings.development.json
 
 # Benchmark Results
 BenchmarkDotNet.Artifacts/

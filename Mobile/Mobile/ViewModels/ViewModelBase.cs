@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Configuration;
 using Models;
 using Models.Local;
 using MongoDB.Bson;
@@ -21,6 +22,8 @@ namespace Mobile.ViewModels
         [ObservableProperty]
         bool isProcessing;
 
+        internal IConfiguration _configuration { get; }
+
         internal ISemanticScreenReader _screenReader { get; }
 
         internal INavigationService _navigationService { get; }
@@ -33,10 +36,11 @@ namespace Mobile.ViewModels
 
         internal RealmService _realmService { get; }
 
-        public ViewModelBase(ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService)
+        public ViewModelBase(IConfiguration configuration, ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService)
         {
             SelectedPaymentTypeId = null;
 
+            _configuration = configuration;
             _screenReader = screenReader;
             _navigationService = navigationService;
             _paymentTypeService = paymentTypeService;            

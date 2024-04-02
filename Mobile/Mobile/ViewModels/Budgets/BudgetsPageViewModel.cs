@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Extensions;
+using Microsoft.Extensions.Configuration;
 using Models;
 using Models.Local;
 using MongoDB.Bson;
@@ -27,7 +28,7 @@ namespace Mobile.ViewModels.Budgets
         [ObservableProperty]
         EditableBudgetCategory popupDataSource;
 
-        public BudgetsPageViewModel(ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, BudgetsService budgetsService) : base(screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
+        public BudgetsPageViewModel(IConfiguration configuration, ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, BudgetsService budgetsService) : base(configuration, screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
         {
             _budgetsService = budgetsService;
             Title = "Budgets";

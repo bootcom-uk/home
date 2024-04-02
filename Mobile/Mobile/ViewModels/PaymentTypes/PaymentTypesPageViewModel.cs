@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Configuration;
 using Models;
 using Models.Local;
 using MongoDB.Bson;
@@ -29,7 +30,7 @@ namespace Mobile.ViewModels.PaymentTypes
 
         internal PaymentCategoryService _paymentCategoryService;
 
-        public PaymentTypesPageViewModel(ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, PaymentCategoryService paymentCategoryService) : base(screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
+        public PaymentTypesPageViewModel(IConfiguration configuration, ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, PaymentCategoryService paymentCategoryService) : base(configuration, screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
         {
             _paymentCategoryService = paymentCategoryService;
         }

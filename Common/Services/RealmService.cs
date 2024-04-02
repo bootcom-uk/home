@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Microsoft.Extensions.Configuration;
+using Models;
 using Realms.Sync;
 using Services.Config;
 using System.Reflection;
@@ -6,32 +7,16 @@ using System.Text.Json;
 
 namespace Services
 {
-    public class RealmService
+    public class RealmService(IConfiguration configuration)
     {
 
         private Realms.Realm _realm;
 
         public Realms.Realm Realm => _realm;
 
-        public RealmService()
-        {
-
-            // Realm.UseLegacyGuidRepresentation = true;
-
-            //Logger.LogLevel = LogLevel.All;
-            //// customize the logging function:
-            //Logger.Default = Logger.Function(message =>
-            //{
-            //    // Do something with the message
-            //    Console.WriteLine(message);
-            //});
-        }
-
         public async Task InitializeAsync()
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var appSettingsStream = assembly.GetManifestResourceStream("Services.appsettings.json");
-            var appSettings = await JsonSerializer.DeserializeAsync<AppSettings>(appSettingsStream!);
+            var appSettings = configuration.Get<AppSettings>();
 
             var app = Realms.Sync.App.Create(new AppConfiguration(appSettings!.RealmDetails.AppId));
 

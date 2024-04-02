@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Configuration;
 using Mobile.ViewModels;
 using Mobile.ViewModels.Authentication;
 using Mobile.ViewModels.Budgets;
@@ -16,6 +17,7 @@ using Mobile.Views.Scheduling;
 using Services;
 using Services.DataServices;
 using Syncfusion.Maui.Core.Hosting;
+using System.Reflection;
 
 namespace Mobile
 {
@@ -31,7 +33,19 @@ namespace Mobile
 
 #endif
 
-            var builder = MauiApp.CreateBuilder();            
+            var builder = MauiApp.CreateBuilder();
+            var assembly = Assembly.GetExecutingAssembly();
+            var stream = null as Stream;
+
+#if DEBUG
+            stream = assembly.GetManifestResourceStream("Mobile.appsettings.development.json");
+
+#else
+            stream = assembly.GetManifestResourceStream("Mobile.appsettings.json");
+#endif
+
+            builder.Configuration.AddJsonStream(stream);
+
             builder
                 .UseMauiApp<App>()
                 .UsePrism(prism =>
