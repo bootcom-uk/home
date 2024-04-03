@@ -1,4 +1,5 @@
-﻿using Mobile.Common.Config;
+﻿using Microsoft.Extensions.Configuration;
+using Mobile.Common.Config;
 using System.Reflection;
 using System.Text.Json;
 
@@ -6,13 +7,11 @@ namespace Mobile
 {
     public partial class App : Application
     {
-        public App()
+        public App(IConfiguration configuration)
         {
             InitializeComponent();
 
-            var assembly = Assembly.GetExecutingAssembly();
-            var appSettingsStream = assembly.GetManifestResourceStream("Mobile.appsettings.json");
-            var appSettings = JsonSerializer.Deserialize<AppSettings>(appSettingsStream!);
+            var appSettings = configuration.Get<AppSettings>();
 
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(appSettings.Syncfusion.LicenceKey);
         }

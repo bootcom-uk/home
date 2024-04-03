@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Configuration;
 using Models;
 using Models.Local;
 using Services;
@@ -31,7 +32,7 @@ namespace Mobile.ViewModels.PaymentPeriods
 
         internal FuturePaymentsService _futurePaymentsService {  get; }
 
-        public PaymentPeriodsPageViewModel(ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, PaymentPeriodService paymentPeriodService, BudgetsService budgetsService, FuturePaymentsService futurePaymentsService) : base(screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
+        public PaymentPeriodsPageViewModel(IConfiguration configuration, ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, PaymentPeriodService paymentPeriodService, BudgetsService budgetsService, FuturePaymentsService futurePaymentsService) : base(configuration, screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
         {
             _paymentPeriodService = paymentPeriodService;
             _futurePaymentsService = futurePaymentsService;

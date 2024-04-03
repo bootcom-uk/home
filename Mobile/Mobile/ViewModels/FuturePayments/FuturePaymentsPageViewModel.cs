@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Configuration;
 using Models;
 using Models.Local;
 using MongoDB.Bson;
@@ -29,7 +30,7 @@ namespace Mobile.ViewModels.FuturePayments
 
         internal bool _addingNewFuturePayment = false;
 
-        public FuturePaymentsPageViewModel(ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, FuturePaymentsService futurePaymentsService, PaymentPeriodService paymentPeriodService) : base(screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
+        public FuturePaymentsPageViewModel(IConfiguration configuration, ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, FuturePaymentsService futurePaymentsService, PaymentPeriodService paymentPeriodService) : base(configuration, screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
         {
             _futurePaymentsService = futurePaymentsService;
             _paymentPeriodService = paymentPeriodService;

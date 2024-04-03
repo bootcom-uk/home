@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Configuration;
 using Models;
 using Services;
 using Services.DataServices;
@@ -12,7 +13,7 @@ namespace Mobile.ViewModels.Budgets
 
         private PaymentPeriodService _paymentPeriodService;
 
-        public PaymentsForBudgetByPaymentPeriodPageViewModel(ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, PaymentPeriodService paymentPeriodService) : base(screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
+        public PaymentsForBudgetByPaymentPeriodPageViewModel(IConfiguration configuration, ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, PaymentPeriodService paymentPeriodService) : base(configuration, screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
         {
             Title = "Payments For Budget By Payment Period";
             _paymentPeriodService = paymentPeriodService;
