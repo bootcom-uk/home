@@ -10,9 +10,7 @@ namespace Services
     public class RealmService(IConfiguration configuration)
     {
 
-        private Realms.Realm _realm;
-
-        public Realms.Realm Realm => _realm;
+        public Realms.Realm? Realm { get; internal set; }
 
         public async Task InitializeAsync()
         {
@@ -27,26 +25,24 @@ namespace Services
             var config = new FlexibleSyncConfiguration(app.CurrentUser!);
             config.Schema = new[] { typeof(PaymentType), typeof(Payments), typeof(BudgetCategories), typeof(PaymentCategory), typeof(PaymentPeriod), typeof(PaymentPeriod_Budgets), typeof(FuturePayment), typeof(Models.User) };
 
-            // config.EncryptionKey = Encoding.ASCII.GetBytes("iAaTxFA0gV9rwd8mD0tJHLQd0kLAFsiXSemKkYPUTqfinMw4hN3yJX16k23PW7bQ");
+            Realm = Realms.Realm.GetInstance(config);
 
-            _realm = Realms.Realm.GetInstance(config);
+            var path = Realm.Config.DatabasePath;
 
-            var path = _realm.Config.DatabasePath;
-
-            _realm.Subscriptions.Update(() =>
+            Realm.Subscriptions.Update(() =>
             {
-                _realm.Subscriptions.Add(_realm.All<PaymentPeriod>(), new() { Name = "Payment Periods" });
-                _realm.Subscriptions.Add(_realm.All<PaymentCategory>(), new() { Name = "Payment Categories" });
-                _realm.Subscriptions.Add(_realm.All<BudgetCategories>(), new() { Name = "Budget Categories" });
-                _realm.Subscriptions.Add(_realm.All<PaymentType>(), new() { Name = "Payment Types" });
-                _realm.Subscriptions.Add(_realm.All<Payments>(), new() { Name = "Payments" });
-                _realm.Subscriptions.Add(_realm.All<FuturePayment>(), new() { Name = "Future Payments" });
-                _realm.Subscriptions.Add(_realm.All<Models.User>(), new() { Name = "User" });
+                Realm.Subscriptions.Add(Realm.All<PaymentPeriod>(), new() { Name = "Payment Periods" });
+                Realm.Subscriptions.Add(Realm.All<PaymentCategory>(), new() { Name = "Payment Categories" });
+                Realm.Subscriptions.Add(Realm.All<BudgetCategories>(), new() { Name = "Budget Categories" });
+                Realm.Subscriptions.Add(Realm.All<PaymentType>(), new() { Name = "Payment Types" });
+                Realm.Subscriptions.Add(Realm.All<Payments>(), new() { Name = "Payments" });
+                Realm.Subscriptions.Add(Realm.All<FuturePayment>(), new() { Name = "Future Payments" });
+                Realm.Subscriptions.Add(Realm.All<Models.User>(), new() { Name = "User" });
             });
 
             try
             {
-                await _realm.Subscriptions.WaitForSynchronizationAsync();
+                await Realm.Subscriptions.WaitForSynchronizationAsync();
             }
             catch (Exception exception)
             {
