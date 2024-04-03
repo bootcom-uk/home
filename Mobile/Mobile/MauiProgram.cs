@@ -34,6 +34,7 @@ namespace Mobile
 #endif
 
             var builder = MauiApp.CreateBuilder();
+
             var assembly = Assembly.GetExecutingAssembly();
             var stream = null as Stream;
 
