@@ -31,6 +31,11 @@ jobs:
           sed -i "s|{{MOBILE_REALM_APPID}}|${{secrets.MOBILE_REALM_APPID}}|g" Mobile/Mobile/appsettings.json
           sed -i "s|{{MOBILE_REALM_EMAIL_ADDRESS}}|${{secrets.MOBILE_REALM_EMAIL_ADDRESS}}|g" Mobile/Mobile/appsettings.json
           sed -i "s|{{MOBILE_REALM_PASSWORD}}|${{secrets.MOBILE_REALM_PASSWORD}}|g" Mobile/Mobile/appsettings.json
+
+    - name: Decode keystore secret
+      run: |
+          $base64Content = "${{ secrets.ANDROID_KEYSTORE_BASE64_CONTENT }}"
+          [System.Text.Encoding]::UTF8.GetBytes($base64Content) | Set-Content -Path BootComHome.keystore -Encoding Byte
       
     - name: Build
-      run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore
+      run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
