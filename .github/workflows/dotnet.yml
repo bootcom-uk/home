@@ -58,7 +58,7 @@ jobs:
         service-account-key: "${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}"
         # Specifies the track to be uploaded. Valid values are: alpha, beta, production, and internal.
         track: internal
-        package-name: co.uk.bootcom.home
+        package-name: "co.uk.bootcom.home"
     
     
           
