@@ -35,7 +35,10 @@ jobs:
     - name: Decode keystore secret
       run: |
           $base64Content = "${{ secrets.ANDROID_KEYSTORE_BASE64_CONTENT }}"
-          [System.Text.Encoding]::UTF8.GetBytes($base64Content) | Set-Content -Path BootComHome.keystore -Encoding Byte
-      
+          # Decode the keystore secret
+          $keystoreBytes = [System.Convert]::FromBase64String($base64Content)
+          # Write the decoded keystore bytes to a file
+          [System.IO.File]::WriteAllBytes("BootComHome.keystore", $keystoreBytes)
+                
     - name: Build
       run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
