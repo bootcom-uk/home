@@ -59,7 +59,7 @@ jobs:
         aab-path: Mobile\obj\Release\net8.0-android\android\bin\co.uk.bootcom.home.aab
         key-json: "${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}"
         # Specifies the track to be uploaded. Valid values are: alpha, beta, production, and internal.
-        track: internal
+        # track: internal
         package-name: "co.uk.bootcom.home"
     
     
