@@ -49,18 +49,13 @@ jobs:
         path: |
           ./**/*.aab
           ./**/*.apk
-
-
-
     - name: Publish Google Play
-      uses: italankin/google-play-aab-uploader@1.3
+      uses: bbjoern/upload-google-play@v0.0.6
       with:
-      # Specify the path of the Android App Bundle file to upload.
-        aab-path: Mobile\obj\Release\net8.0-android\android\bin\co.uk.bootcom.home.aab
-        key-json: "${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}"
-        # Specifies the track to be uploaded. Valid values are: alpha, beta, production, and internal.
-        # track: internal
-        package-name: "co.uk.bootcom.home"
+      # The service account json private key file to authorize the upload request
+        serviceAccountJsonPlainText: "${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}"
+        track: internal
+        releaseFile: Mobile\obj\Release\net8.0-android\android\bin\co.uk.bootcom.home.aab
     
     
           
