@@ -54,7 +54,7 @@ jobs:
       with:
       # The service account json private key file to authorize the upload request
         serviceAccountJsonPlainText: "${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}"
-        track: internal
+        track: qa
         releaseFile: D:\a\home\home\Mobile\Mobile\bin\Release\net8.0-android\co.uk.bootcom.home-Signed.apk
         packageName: co.uk.bootcom.home
     
