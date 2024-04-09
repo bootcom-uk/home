@@ -49,15 +49,12 @@ jobs:
         path: |
           ./**/*.aab
           ./**/*.apk
-    - name: Publish Google Play
-      uses: bbjoern/upload-google-play@v0.0.6
-      with:
-      # The service account json private key file to authorize the upload request
-        serviceAccountJsonPlainText: "${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}"
-        track: internal
-        releaseFile: D:\a\home\home\Mobile\Mobile\bin\Release\net8.0-android\co.uk.bootcom.home-Signed.apk
-        packageName: co.uk.bootcom.home
-    
-    
+
           
-  
+    - name: Publish Google Play
+      uses: r0adkll/upload-google-play@v1
+      with:
+        serviceAccountJsonPlainText: "${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}"
+        track: qa
+        releaseFiles: D:\a\home\home\Mobile\Mobile\bin\Release\net8.0-android\co.uk.bootcom.home-Signed.apk
+        packageName: co.uk.bootcom.home
