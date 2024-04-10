@@ -56,5 +56,5 @@ jobs:
       with:
         serviceAccountJsonPlainText: "${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}"
         track: qa
-        releaseFiles: D:\a\home\home\Mobile\Mobile\bin\Release\net8.0-android\co.uk.bootcom.home-Signed.apk
+        releaseFiles: D:\a\home\home\Mobile\Mobile\bin\Release\net8.0-android\co.uk.bootcom.home-Signed.aab
         packageName: co.uk.bootcom.home
