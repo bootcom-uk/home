@@ -53,8 +53,15 @@ jobs:
           ./**/*.aab
           ./**/*.apk
 
+    - name: Download Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        version: 'latest'
+        service_account_key: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+
+    - name: Set up gcloud CLI
+      run: gcloud config set project ${{ secrets.GOOGLE_PLAY_PROJECT_ID }}
+
     - name: Upload AAB to Play Store
       run: |
-          gcloud config set project ${{ secrets.GOOGLE_PLAY_PROJECT_ID }}
-          gcloud auth activate-service-account --key-file=service-account.json
           gcloud app deploy "D:\\a\\home\\home\\Mobile\\Mobile\\bin\\Release\\net8.0-android\\co.uk.bootcom.home-Signed.aab"
