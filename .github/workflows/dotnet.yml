@@ -58,6 +58,6 @@ jobs:
 
     - name: Upload AAB to Play Store
       run: |
-          gcloud config set project "co.uk.bootcom.home"
+          gcloud config set project 4972236284397000812
           gcloud app deploy "D:\\a\\home\\home\\Mobile\\Mobile\\bin\\Release\\net8.0-android\\co.uk.bootcom.home-Signed.aab"
    
