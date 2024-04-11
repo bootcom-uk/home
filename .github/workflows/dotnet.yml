@@ -50,11 +50,12 @@ jobs:
           ./**/*.aab
           ./**/*.apk
    
-    - name: Upload .aab to Google Play
-      uses: r0adkll/upload-google-play@v1.1.3
+    - name: Upload .aab to Internal Track
+      id: upload_internal
+      uses: KevinRohn/github-action-upload-play-store@v1.0.0
       with:
-        serviceAccountJson: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}
-        packageName: "co.uk.bootcom.home"
-        releaseFiles: "D:\\a\\home\\home\\Mobile\\Mobile\\bin\\Release\\net8.0-android\\co.uk.bootcom.home-Signed.aab"
+        service_account_json: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}
+        package_name: "co.uk.bootcom.home"
+        aab_file_path: "D:\\a\\home\\home\\Mobile\\Mobile\\bin\\Release\\net8.0-android\\co.uk.bootcom.home-Signed.aab"
         track: "internal"
-        status: "draft"
+        release_status: "draft"
