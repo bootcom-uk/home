@@ -56,6 +56,6 @@ jobs:
       with:
         service_account_json: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}
         package_name: "co.uk.bootcom.home"
-        aab_file_path: "D:\\a\\home\\home\\Mobile\\Mobile\\bin\\Release\\net8.0-android\\co.uk.bootcom.home-Signed.aab"
+        aab_file_path: D:\a\home\home\Mobile\Mobile\bin\Release\net8.0-android\co.uk.bootcom.home-Signed.aab
         track: "internal"
         release_status: "draft"
