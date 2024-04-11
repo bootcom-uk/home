@@ -51,7 +51,7 @@ jobs:
           ./**/*.apk
 
     - name: Download Google Play Service Account JSON
-      run: echo ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }} > service-account.json
+      run: echo "${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}" > service-account.json
       
     - name: Upload AAB to Play Store
       run: |
