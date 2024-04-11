@@ -49,13 +49,13 @@ jobs:
         path: |
           ./**/*.aab
           ./**/*.apk
+
+    - name: Download Google Play Service Account JSON
+      run: echo ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }} > service-account.json
+      
+    - name: Upload AAB to Play Store
+      run: |
+          gcloud auth activate-service-account --key-file=service-account.json
+          gcloud config set project "co.uk.bootcom.home"
+          gcloud app deploy "D:\\a\\home\\home\\Mobile\\Mobile\\bin\\Release\\net8.0-android\\co.uk.bootcom.home-Signed.aab"
    
-    - name: Upload .aab to Internal Track
-      id: upload_internal
-      uses: KevinRohn/github-action-upload-play-store@v1.0.0
-      with:
-        service_account_json: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}
-        package_name: "co.uk.bootcom.home"
-        aab_file_path: "D:\\a\\home\\home\\Mobile\\Mobile\\bin\\Release\\net8.0-android\\co.uk.bootcom.home-Signed.aab"
-        track: "internal"
-        release_status: "draft"
