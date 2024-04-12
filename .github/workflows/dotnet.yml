@@ -59,6 +59,12 @@ jobs:
         version: 'latest'
         service_account_key: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
 
+    - name: Export Service Account JSON To File
+      run: echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}" > auth.json
+
+    - name: Authenticate gCloud
+      run: gcloud auth activate-service-account --key-file=auth.json
+
     - name: Set up gcloud CLI
       run: gcloud config set project ${{ secrets.GOOGLE_PLAY_PROJECT_ID }}
 
