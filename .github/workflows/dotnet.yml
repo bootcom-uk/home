@@ -57,10 +57,10 @@ jobs:
       uses: google-github-actions/setup-gcloud@v2
       with:
         version: 'latest'
-        service_account_key: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+        service_account_key: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}
 
     - name: Export Service Account JSON To File
-      run: echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}" > auth.json
+      run: echo "${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}" > auth.json
 
     - name: Authenticate gCloud
       run: gcloud auth activate-service-account --key-file=auth.json
