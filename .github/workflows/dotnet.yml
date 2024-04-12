@@ -64,4 +64,4 @@ jobs:
 
     - name: Upload AAB to Play Store
       run: |
-          gcloud app deploy "D:\\a\\home\\home\\Mobile\\Mobile\\bin\\Release\\net8.0-android\\co.uk.bootcom.home-Signed.aab"
+          gcloud app deploy "D:\\a\\home\\home\\Mobile\\Mobile\\bin\\Release\\net8.0-android\\co.uk.bootcom.home-Signed.aab" --project=${{ secrets.GOOGLE_PLAY_PROJECT_ID }}
