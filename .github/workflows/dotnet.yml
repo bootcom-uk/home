@@ -53,21 +53,12 @@ jobs:
           ./**/*.aab
           ./**/*.apk
 
-    - name: Download Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
+    - name: Upload .aab to Internal Track
+      id: upload_internal
+      uses: KevinRohn/github-action-upload-play-store@v1.0.0
       with:
-        version: 'latest'
-        service_account_key: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}
-
-   # - name: Export Service Account JSON To File
-   #   run: echo "${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}" > auth.json
-
-   # - name: Authenticate gCloud
-   #   run: gcloud auth activate-service-account --key-file=auth.json
-
-    - name: Set up gcloud CLI
-      run: gcloud config set project ${{ secrets.GOOGLE_PLAY_PROJECT_ID }}
-
-    - name: Upload AAB to Play Store
-      run: |
-          gcloud app deploy "D:\\a\\home\\home\\Mobile\\Mobile\\bin\\Release\\net8.0-android\\co.uk.bootcom.home-Signed.aab" --project=${{ secrets.GOOGLE_PLAY_PROJECT_ID }}
+        service_account_json: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}
+        package_name: "co.uk.bootcom.home"
+        aab_file_path: "D:\\a\\home\\home\\Mobile\\Mobile\\bin\\Release\\net8.0-android\\co.uk.bootcom.home-Signed.aab"
+        track: "internal"
+        release_status: "draft"
