@@ -1,7 +1,7 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: Build Home Application (CI)
+name: Build and Deploy to Google Play Store
 
 on:
   push:
@@ -16,12 +16,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+
     - name: Install .NET MAUI
       run: dotnet workload install maui
+
     - name: Restore dependencies
       run: dotnet restore
 
@@ -42,6 +45,9 @@ jobs:
                 
     - name: Build
       run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
+      
+    - name: Publish
+      run: dotnet publish Mobile/Mobile/Mobile.csproj -c:Release -f:net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
@@ -50,11 +56,12 @@ jobs:
           ./**/*.aab
           ./**/*.apk
 
-          
-    - name: Publish Google Play
-      uses: r0adkll/upload-google-play@v1
+    - name: Upload .aab to Internal Track
+      id: upload_internal
+      uses: KevinRohn/github-action-upload-play-store@v1.0.0
       with:
-        serviceAccountJsonPlainText: "${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}"
-        track: qa
-        releaseFiles: D:\a\home\home\Mobile\Mobile\bin\Release\net8.0-android\co.uk.bootcom.home-Signed.apk
-        packageName: co.uk.bootcom.home
+        service_account_json: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON_BASE64 }}
+        package_name: "co.uk.bootcom.home"
+        aab_file_path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\co.uk.bootcom.home-Signed.aab"
+        track: "internal"
+        release_status: "inProgress"
