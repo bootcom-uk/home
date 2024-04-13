@@ -37,7 +37,7 @@ jobs:
 
     - name: Setup Keystore File
       run: |
-        echo "${{ secrets.ANDROID_KEYSTORE_GPG_FILE }}" > myapp.keystore.asc
+        echo "${{ secrets.ANDROID_KEYSTORE_GPG_FILE }}" > BootComHome.keystore.asc
         gpg -d --passphrase "${{ secrets.ANDROID_KEYSTORE_GPG_PASSWORD }}" --batch BootComHome.keystore.asc > BootComHome.keystore
                 
     - name: Build
