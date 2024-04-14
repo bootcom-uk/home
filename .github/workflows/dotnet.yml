@@ -41,7 +41,8 @@ jobs:
         gpg -d --passphrase "${{ secrets.ANDROID_KEYSTORE_GPG_PASSWORD }}" --batch BootComHome.keystore.asc > BootComHome.keystore
                 
     - name: Build
-      run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
+      # run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
+      run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore
       
     - name: Publish
       run: dotnet publish Mobile/Mobile/Mobile.csproj -c:Release -f:net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
