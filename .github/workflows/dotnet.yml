@@ -35,26 +35,27 @@ jobs:
           sed -i "s|{{MOBILE_REALM_EMAIL_ADDRESS}}|${{secrets.MOBILE_REALM_EMAIL_ADDRESS}}|g" Mobile/Mobile/appsettings.json
           sed -i "s|{{MOBILE_REALM_PASSWORD}}|${{secrets.MOBILE_REALM_PASSWORD}}|g" Mobile/Mobile/appsettings.json
 
-    - name: Decode keystore secret
-      run: |
-          $base64Content = "${{ secrets.ANDROID_KEYSTORE_BASE64_CONTENT }}"
-          # Decode the keystore secret
-          $keystoreBytes = [System.Convert]::FromBase64String($base64Content)
-          # Write the decoded keystore bytes to a file
-          [System.IO.File]::WriteAllBytes("BootComHome.keystore", $keystoreBytes)
-                
+    - name: Clean      
+      run: dotnet clean Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android 
+
     - name: Build
-      run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
+      # run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
+      run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore
+    
+    - name: Setup Keystore File
+      run: |
+        echo "${{ secrets.ANDROID_KEYSTORE_GPG_FILE }}" > BootComHome.keystore.asc
+        gpg -d --passphrase "${{ secrets.ANDROID_KEYSTORE_GPG_PASSWORD }}" --batch BootComHome.keystore.asc > "D:\a\home\home\Mobile\Mobile\bin\Release\net8.0-android\BootComHome.keystore"
       
     - name: Publish
-      run: dotnet publish Mobile/Mobile/Mobile.csproj -c:Release -f:net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
-
+      run: dotnet publish Mobile/Mobile/Mobile.csproj  -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="D:\a\home\home\Mobile\Mobile\bin\Release\net8.0-android\BootComHome.keystore" -p:AndroidSigningKeyAlias=${{ secrets.ANDROID_KEYSTORE_ALIAS }} -p:AndroidSigningKeyPass=${{ secrets.ANDROID_KEYSTORE_PASSWORD }} -p:AndroidSigningStorePass=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
         path: |
           ./**/*.aab
-          ./**/*.apk
+        # ./**/*.apk
 
     - name: Upload .aab to Internal Track
       id: upload_internal
@@ -62,6 +63,6 @@ jobs:
       with:
         service_account_json: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON_BASE64 }}
         package_name: "co.uk.bootcom.home"
-        aab_file_path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\co.uk.bootcom.home-Signed.aab"
+        aab_file_path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\co.uk.bootcom.home-Signed.aab"
         track: "internal"
         release_status: "inProgress"
