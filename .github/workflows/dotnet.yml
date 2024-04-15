@@ -45,7 +45,7 @@ jobs:
     - name: Setup Keystore File
       run: |
         echo "${{ secrets.ANDROID_KEYSTORE_GPG_FILE }}" > BootComHome.keystore.asc
-        gpg -d --passphrase "${{ secrets.ANDROID_KEYSTORE_GPG_PASSWORD }}" --batch BootComHome.keystore.asc > BootComHome.keystore
+        gpg -d --passphrase "${{ secrets.ANDROID_KEYSTORE_GPG_PASSWORD }}" --batch BootComHome.keystore.asc > "D:\a\home\home\Mobile\Mobile\bin\Release\net8.0-android\publish\BootComHome.keystore"
       
     - name: Publish
       run: dotnet publish Mobile/Mobile/Mobile.csproj  -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="D:\a\home\home\Mobile\Mobile\bin\Release\net8.0-android\publish\BootComHome.keystore" -p:AndroidSigningKeyAlias=${{ secrets.ANDROID_KEYSTORE_ALIAS }} -p:AndroidSigningKeyPass=${{ secrets.ANDROID_KEYSTORE_PASSWORD }} -p:AndroidSigningStorePass=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
