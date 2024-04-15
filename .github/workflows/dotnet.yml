@@ -65,4 +65,4 @@ jobs:
         package_name: "co.uk.bootcom.home"
         aab_file_path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\co.uk.bootcom.home-Signed.aab"
         track: "internal"
-        release_status: "completed"
+        release_status: "draft"
