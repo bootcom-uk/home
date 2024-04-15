@@ -35,13 +35,13 @@ jobs:
           sed -i "s|{{MOBILE_REALM_EMAIL_ADDRESS}}|${{secrets.MOBILE_REALM_EMAIL_ADDRESS}}|g" Mobile/Mobile/appsettings.json
           sed -i "s|{{MOBILE_REALM_PASSWORD}}|${{secrets.MOBILE_REALM_PASSWORD}}|g" Mobile/Mobile/appsettings.json
 
+    - name: Clean      
+      run: dotnet clean Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android 
+
     - name: Setup Keystore File
       run: |
         echo "${{ secrets.ANDROID_KEYSTORE_GPG_FILE }}" > BootComHome.keystore.asc
         gpg -d --passphrase "${{ secrets.ANDROID_KEYSTORE_GPG_PASSWORD }}" --batch BootComHome.keystore.asc > BootComHome.keystore
-                
-    - name: Build      
-      run: dotnet clean Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android 
     
     - name: Build
       # run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
