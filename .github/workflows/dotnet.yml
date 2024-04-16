@@ -38,9 +38,17 @@ jobs:
     - name: Clean      
       run: dotnet clean Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android 
 
+    - name: Update AndroidManifest.xml
+      uses: damienaicheh/update-android-version-manifest-action@v1.0.0
+      with:
+        android-manifest-path: 'Mobile/Mobile/Platforms/Android/AndroidManifest.xml'
+        version-code: 5
+        version-name: '1.0.4'
+        print-file: true
+
     - name: Build
       # run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
-      run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore -p:ApplicationDisplayVersion=1.0.4 -p:ApplicationVersion=5
+      run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore
     
     - name: Setup Keystore File
       run: |
