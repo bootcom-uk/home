@@ -40,7 +40,7 @@ jobs:
 
     - name: Build
       # run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore /p:AndroidSigningKeyStore=BootComHome.keystore /p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_ALIAS_PASSWORD }}"
-      run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore -p:ApplicationDisplayVersion 4 -p:ApplicationVersion 1.0.3	
+      run: dotnet build Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android --no-restore -p:ApplicationDisplayVersion=4 -p:ApplicationVersion=1.0.3	
     
     - name: Setup Keystore File
       run: |
