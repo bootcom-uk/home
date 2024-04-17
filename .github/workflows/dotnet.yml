@@ -39,18 +39,17 @@ jobs:
       run: dotnet clean Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android 
 
     - name: Bump release version
-      id: bump_version
-      uses: christian-draeger/increment-semantic-version@1.1.0
+      uses: action-pack/increment@v2
       with:
-        current-version: ${{vars.BOOTCOM_HOME_GITHUB_PAT}} # '2.11.7-alpha.3' # also accepted: 'v2.11.7-alpha.3' | '2.11.7-alpha3'
-        version-fragment: 'feature'
-        
+        name: 'MOBILE_ANDROID_VERSION_CODE'
+        token: ${{ secrets.BOOTCOM_HOME_GITHUB_PAT }}
+          
     - name: Update AndroidManifest.xml
       uses: damienaicheh/update-android-version-manifest-action@v1.0.0
       with:
         android-manifest-path: 'Mobile/Mobile/Platforms/Android/AndroidManifest.xml'
-        version-code: 6
-        version-name: ${{ steps.bump_version.outputs.next-version }}
+        version-code: ${{ vars.MOBILE_ANDROID_VERSION_CODE }}
+        version-name: 1.0.6
         print-file: true
 
     - name: Build
