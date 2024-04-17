@@ -43,13 +43,23 @@ jobs:
       with:
         name: 'MOBILE_ANDROID_VERSION_CODE'
         token: ${{ secrets.BOOTCOM_HOME_GITHUB_PAT }}
+
+    - name: Increment version        
+      run: |
+          $currentVersion=${{ vars.MOBILE_ANDROID_VERSION_NAME }}
+          $versionParts = $currentVersion -split "\."
+          $major = $versionParts[0]
+          $minor = $versionParts[1]
+          $patch = $versionParts[2]
+          $patch++
+          $newVersion = "$major.$minor.$patch"
           
     - name: Update AndroidManifest.xml
       uses: damienaicheh/update-android-version-manifest-action@v1.0.0
       with:
         android-manifest-path: 'Mobile/Mobile/Platforms/Android/AndroidManifest.xml'
         version-code: ${{ vars.MOBILE_ANDROID_VERSION_CODE }}
-        version-name: 1.0.6
+        version-name: $newVersion
         print-file: true
 
     - name: Build
