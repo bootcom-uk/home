@@ -45,6 +45,7 @@ jobs:
         token: ${{ secrets.BOOTCOM_HOME_GITHUB_PAT }}
 
     - name: Increment version        
+      id: increment-version
       run: |
           $currentVersion=${{ vars.MOBILE_ANDROID_VERSION_NAME }}
           $versionParts = $currentVersion -split "\."
@@ -53,13 +54,17 @@ jobs:
           $patch = $versionParts[2]
           $patch++
           $newVersion = "$major.$minor.$patch"
-          
+          Write-Output "::set-output name=version::$newVersion"
+
+    - name: Update version variable
+      run: echo "VERSION=$(echo ${{ steps.increment-version.outputs.version }})" >> $env:GITHUB_ENV
+
     - name: Update AndroidManifest.xml
       uses: damienaicheh/update-android-version-manifest-action@v1.0.0
       with:
         android-manifest-path: 'Mobile/Mobile/Platforms/Android/AndroidManifest.xml'
         version-code: ${{ vars.MOBILE_ANDROID_VERSION_CODE }}
-        version-name: $newVersion
+        version-name: ${{ steps.increment-version.outputs.version }}
         print-file: true
 
     - name: Build
