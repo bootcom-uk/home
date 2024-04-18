@@ -49,7 +49,7 @@ jobs:
       id: increment-version
       with:
         script: '$currentVersion="${{ vars.MOBILE_ANDROID_VERSION_NAME }}";$versionParts = $currentVersion.split(".");$major = [int]$versionParts[0];$minor = [int]$versionParts[1];$patch = [int]$versionParts[2];$patch++;$newVersion = "$major.$minor.$patch";return $newVersion'
-    - run: echo "${{ steps.my-script.outputs.result }}"
+    - run: echo "${{ steps.increment-version.outputs.result }}"
 
     #- name: Increment version        
     #  run: |
@@ -64,7 +64,7 @@ jobs:
     #      Write-Output "::set-output name=version::$newVersion"
 
     - name: Update version variable
-      run: echo "VERSION=$(echo ${{ steps.my-script.outputs.result }})" >> $env:GITHUB_ENV
+      run: echo "VERSION=$(echo ${{ steps.increment-version.outputs.result }})" >> $env:GITHUB_ENV
 
     - name: Update AndroidManifest.xml
       uses: damienaicheh/update-android-version-manifest-action@v1.0.0
