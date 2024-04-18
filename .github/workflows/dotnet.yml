@@ -48,7 +48,7 @@ jobs:
       name: Increment Version with Powershell
       id: increment-version
       with:
-        script: '$currentVersion="${{ vars.MOBILE_ANDROID_VERSION_NAME }}";$versionParts = split($currentVersion, ".");$major = $versionParts[0];$minor = $versionParts[1];$patch = $versionParts[2];$patch++;$newVersion = "$major.$minor.$patch";$newVersion'
+        script: '$currentVersion="${{ vars.MOBILE_ANDROID_VERSION_NAME }}";$versionParts = $currentVersion.split(".");$major = $versionParts[0];$minor = $versionParts[1];$patch = $versionParts[2];$patch++;$newVersion = "$major.$minor.$patch";$newVersion'
     - run: echo "${{ steps.my-script.outputs.result }}"
 
     #- name: Increment version        
