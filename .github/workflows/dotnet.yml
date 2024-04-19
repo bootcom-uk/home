@@ -79,7 +79,7 @@ jobs:
       with:
         android-manifest-path: 'Mobile/Mobile/Platforms/Android/AndroidManifest.xml'
         version-code: ${{ vars.MOBILE_ANDROID_VERSION_CODE }}
-        version-name: ${{ steps.increment-version.outputs.version }}
+        version-name: ${{ steps.increment-version.outputs.result }}
         print-file: true
 
     - name: Build
