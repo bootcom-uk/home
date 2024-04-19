@@ -69,7 +69,7 @@ jobs:
     - uses: mmoyaferrer/set-github-variable@v1.0.0
       name: Update version github actions variable
       with:
-        name: ${{ vars.MOBILE_ANDROID_VERSION_NAME }}
+        name: 'MOBILE_ANDROID_VERSION_NAME'
         value: ${{ steps.increment-version.outputs.result }}
         repository: 'bootcom-uk/home'
         token: ${{ secrets.BOOTCOM_HOME_GITHUB_PAT }}
