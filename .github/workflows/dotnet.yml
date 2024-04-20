@@ -37,16 +37,28 @@ jobs:
         showFileContent: true
 
     - name: Replace Variables in appsettings.json
-      run: sed -i "s|{{SYNCFUSION_LICENCE_KEY}}|${{secrets.SYNCFUSION_LICENCE_KEY}}|g" "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\appsettings.json"
-          
+      uses: Nambers/ReplaceStringInFile@v1.3
+      with:
+        path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\appsettings.json"
+        oldString: "{{MOBILE_REALM_APPID}}"
+        newString: "${{secrets.MOBILE_REALM_APPID}}"
+        showFileContent: true
+
     - name: Replace Variables in appsettings.json
-      run: sed -i "s|{{MOBILE_REALM_APPID}}|${{secrets.MOBILE_REALM_APPID}}|g" "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\appsettings.json
-          
+      uses: Nambers/ReplaceStringInFile@v1.3
+      with:
+        path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\appsettings.json"
+        oldString: "{{MOBILE_REALM_EMAIL_ADDRESS}}"
+        newString: "${{secrets.MOBILE_REALM_EMAIL_ADDRESS}}"
+        showFileContent: true
+
     - name: Replace Variables in appsettings.json
-      run:  sed -i "s|{{MOBILE_REALM_EMAIL_ADDRESS}}|${{secrets.MOBILE_REALM_EMAIL_ADDRESS}}|g" "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\appsettings.json
-         
-    - name: Replace Variables in appsettings.json
-      run: sed -i "s|{{MOBILE_REALM_PASSWORD}}|${{secrets.MOBILE_REALM_PASSWORD}}|g" "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\appsettings.json
+      uses: Nambers/ReplaceStringInFile@v1.3
+      with:
+        path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\appsettings.json"
+        oldString: "{{MOBILE_REALM_PASSWORD}}"
+        newString: "${{secrets.MOBILE_REALM_PASSWORD}}"
+        showFileContent: true
 
    # - name: Clean      
    #   run: dotnet clean Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android 
