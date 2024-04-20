@@ -90,6 +90,7 @@ jobs:
         # ./**/*.apk
 
     - name: Publish Android App To Google Play Internal Track
+      uses: r0adkll/upload-google-play@v1
       with:
         serviceAccountJsonPlainText: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}
         releaseFiles: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\co.uk.bootcom.home-Signed.aab"
