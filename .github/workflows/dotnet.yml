@@ -29,7 +29,15 @@ jobs:
       run: dotnet restore
 
     - name: Replace Variables in appsettings.json
-      run: sed -i "s|{{SYNCFUSION_LICENCE_KEY}}|${{secrets.SYNCFUSION_LICENCE_KEY}}|g" "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\appsettings.json
+      uses: Nambers/ReplaceStringInFile@v1
+      with:
+        path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\appsettings.json"
+        oldStringWin: "{{SYNCFUSION_LICENCE_KEY}}"
+        newStringWin: "${{secrets.SYNCFUSION_LICENCE_KEY}}"
+        showFileContent: true
+
+    - name: Replace Variables in appsettings.json
+      run: sed -i "s|{{SYNCFUSION_LICENCE_KEY}}|${{secrets.SYNCFUSION_LICENCE_KEY}}|g" "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\appsettings.json"
           
     - name: Replace Variables in appsettings.json
       run: sed -i "s|{{MOBILE_REALM_APPID}}|${{secrets.MOBILE_REALM_APPID}}|g" "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\appsettings.json
