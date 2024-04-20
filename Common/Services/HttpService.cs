@@ -13,7 +13,7 @@ namespace Services
         {
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+            // httpClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
 
             return httpClient;
         }
@@ -109,6 +109,8 @@ namespace Services
             {
                 return null;
             }
+
+            var content = await responseMessage.Content.ReadAsStringAsync();
 
             return System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(await responseMessage.Content.ReadAsStreamAsync());
 
