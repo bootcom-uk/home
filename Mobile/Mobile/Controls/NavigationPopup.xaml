@@ -113,15 +113,26 @@ IsEnabled="{Binding CurrentScreen, Converter={StaticResource notIsEqualsConverto
   />
 
             <Button
-StyleClass="NavigationButton"
-Grid.Row="3"
-Grid.Column="0"
-BackgroundColor="{StaticResource Blue300Accent}"            
-Command="{Binding NavigateCommand}"
-CommandParameter="PaymentsForBudgetByPaymentPeriodPage"        
-Text="Payments For Budget By Payment Period"
-IsEnabled="{Binding CurrentScreen, Converter={StaticResource notIsEqualsConvertor}, ConverterParameter='PaymentsForBudgetByPaymentPeriodPage'}"
-  />
+              StyleClass="NavigationButton"
+              Grid.Row="3"
+              Grid.Column="0"
+              BackgroundColor="{StaticResource Blue300Accent}"            
+              Command="{Binding NavigateCommand}"
+              CommandParameter="PaymentsForBudgetByPaymentPeriodPage"        
+              Text="Payments For Budget By Payment Period"
+              IsEnabled="{Binding CurrentScreen, Converter={StaticResource notIsEqualsConvertor}, ConverterParameter='PaymentsForBudgetByPaymentPeriodPage'}"
+                />
+
+            <Button
+             StyleClass="NavigationButton"
+             Grid.Row="3"
+             Grid.Column="1"
+             BackgroundColor="{StaticResource Yellow200Accent}"             
+             Command="{Binding NavigateCommand}"
+             CommandParameter="PaymentTypesPage"
+             Text="Payment Types"
+             IsEnabled="{Binding CurrentScreen, Converter={StaticResource notIsEqualsConvertor}, ConverterParameter='PaymentTypesPage'}"
+             />
 
           </Grid>
 

@@ -33,6 +33,7 @@ namespace Mobile.ViewModels.PaymentTypes
         public PaymentTypesPageViewModel(IConfiguration configuration, ISemanticScreenReader screenReader, INavigationService navigationService, PaymentTypeService paymentTypeService, UsersService usersService, RealmService realmService, PaymentsService paymentsService, PaymentCategoryService paymentCategoryService) : base(configuration, screenReader, navigationService, paymentTypeService, usersService, realmService, paymentsService)
         {
             _paymentCategoryService = paymentCategoryService;
+            Title = "Payment Types";
         }
 
         [RelayCommand]
