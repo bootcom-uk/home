@@ -31,7 +31,7 @@ jobs:
     - name: Replace Variables in appsettings.json
       uses: Nambers/ReplaceStringInFile@v1.3
       with:
-        path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\appsettings.json"
+        path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\appsettings.json"
         oldString: "{{SYNCFUSION_LICENCE_KEY}}"
         newString: "${{secrets.SYNCFUSION_LICENCE_KEY}}"
         showFileContent: true
