@@ -30,10 +30,10 @@ jobs:
 
     - name: Replace Variables in appsettings.json
       run: |
-          sed -i "s|{{SYNCFUSION_LICENCE_KEY}}|${{secrets.SYNCFUSION_LICENCE_KEY}}|g" Mobile/Mobile/appsettings.json
-          sed -i "s|{{MOBILE_REALM_APPID}}|${{secrets.MOBILE_REALM_APPID}}|g" Mobile/Mobile/appsettings.json
-          sed -i "s|{{MOBILE_REALM_EMAIL_ADDRESS}}|${{secrets.MOBILE_REALM_EMAIL_ADDRESS}}|g" Mobile/Mobile/appsettings.json
-          sed -i "s|{{MOBILE_REALM_PASSWORD}}|${{secrets.MOBILE_REALM_PASSWORD}}|g" Mobile/Mobile/appsettings.json
+          sed -i "s|{{SYNCFUSION_LICENCE_KEY}}|${{secrets.SYNCFUSION_LICENCE_KEY}}|g" "D:\a\home\home\Mobile\Mobile\appsettings.json
+          sed -i "s|{{MOBILE_REALM_APPID}}|${{secrets.MOBILE_REALM_APPID}}|g" "D:\a\home\home\Mobile\Mobile\appsettings.json
+          sed -i "s|{{MOBILE_REALM_EMAIL_ADDRESS}}|${{secrets.MOBILE_REALM_EMAIL_ADDRESS}}|g" "D:\a\home\home\Mobile\Mobile\appsettings.json
+          sed -i "s|{{MOBILE_REALM_PASSWORD}}|${{secrets.MOBILE_REALM_PASSWORD}}|g" "D:\a\home\home\Mobile\Mobile\appsettings.json
 
    # - name: Clean      
    #   run: dotnet clean Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android 
