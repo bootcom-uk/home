@@ -51,18 +51,6 @@ jobs:
         script: '$currentVersion="${{ vars.MOBILE_ANDROID_VERSION_NAME }}";$versionParts = $currentVersion.split(".");$major = [int]$versionParts[0];$minor = [int]$versionParts[1];$patch = [int]$versionParts[2];$patch++;$newVersion = "$major.$minor.$patch";return $newVersion'
     - run: echo "${{ steps.increment-version.outputs.result }}"
 
-    #- name: Increment version        
-    #  run: |
-    #      $currentVersion=${{ vars.MOBILE_ANDROID_VERSION_NAME }}
-    #      # $versionParts = $currentVersion -split "\."
-    #      $versionParts = split($currentVersion, ".")
-    #      $major = $versionParts[0]
-    #      $minor = $versionParts[1]
-    #      $patch = $versionParts[2]
-    #      $patch++
-    #      $newVersion = "$major.$minor.$patch"
-    #      Write-Output "::set-output name=version::$newVersion"
-
     - name: Update version variable
       run: echo "VERSION=$(echo ${{ steps.increment-version.outputs.result }})" >> $env:GITHUB_ENV
 
@@ -101,12 +89,19 @@ jobs:
           ./**/*.aab
         # ./**/*.apk
 
-    - name: Upload .aab to Internal Track
-      id: upload_internal
-      uses: KevinRohn/github-action-upload-play-store@v1.0.0
+    - name: Publish Android App To Google Play Internal Track
       with:
-        service_account_json: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON_BASE64 }}
-        package_name: "co.uk.bootcom.home"
-        aab_file_path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\co.uk.bootcom.home-Signed.aab"
-        track: "internal" # "internal"
-        release_status: "draft"
+        serviceAccountJsonPlainText: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON }}
+        releaseFiles: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\co.uk.bootcom.home-Signed.aab"
+        packageName: "co.uk.bootcom.home"
+        track: "internal"
+        
+    #- name: Upload .aab to Internal Track
+    #  id: upload_internal
+    #  uses: KevinRohn/github-action-upload-play-store@v1.0.0
+    #  with:
+    #    service_account_json: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON_BASE64 }}
+    #    package_name: "co.uk.bootcom.home"
+    #    aab_file_path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\co.uk.bootcom.home-Signed.aab"
+    #    track: "internal"
+    #    release_status: "draft"
