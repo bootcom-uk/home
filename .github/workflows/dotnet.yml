@@ -25,9 +25,6 @@ jobs:
     - name: Install .NET MAUI
       run: dotnet workload install maui
 
-    - name: Clean      
-      run: dotnet clean Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android 
-      
     - name: Restore dependencies
       run: dotnet restore
 
@@ -38,6 +35,9 @@ jobs:
           sed -i "s|{{MOBILE_REALM_EMAIL_ADDRESS}}|${{secrets.MOBILE_REALM_EMAIL_ADDRESS}}|g" Mobile/Mobile/appsettings.json
           sed -i "s|{{MOBILE_REALM_PASSWORD}}|${{secrets.MOBILE_REALM_PASSWORD}}|g" Mobile/Mobile/appsettings.json
 
+    - name: Clean      
+      run: dotnet clean Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android 
+      
     - name: Bump release version
       uses: action-pack/increment@v2
       with:
@@ -96,5 +96,5 @@ jobs:
         service_account_json: ${{ secrets.ANDROID_GOOGLE_PLAY_SERVICE_KEY_JSON_BASE64 }}
         package_name: "co.uk.bootcom.home"
         aab_file_path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\co.uk.bootcom.home-Signed.aab"
-        track: "internal"
-        release_status: "draft"
+        track: "beta" # "internal"
+        release_status: "completed" # "draft"
