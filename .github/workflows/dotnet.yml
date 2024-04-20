@@ -97,4 +97,4 @@ jobs:
         package_name: "co.uk.bootcom.home"
         aab_file_path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\bin\\\\Release\\\\net8.0-android\\\\publish\\\\co.uk.bootcom.home-Signed.aab"
         track: "beta" # "internal"
-        release_status: "inProgress" # "draft"
+        release_status: "draft" 
