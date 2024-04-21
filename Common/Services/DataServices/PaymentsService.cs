@@ -33,7 +33,7 @@ namespace Services.DataServices
                 var item = new DailySpendAndReceipts()
                 {
                     Date = dateToCheck,
-                    AmountSpent = _realmService.Realm
+                    AmountSpent = _realmService.Realm!
                     .All<Payments>()
                     .Where(record => record.StartDate == dateOffsetToCheck && record.AmountPaid > 0)
                     .ToList()
@@ -87,7 +87,7 @@ namespace Services.DataServices
 
         public async Task AddPayment(Payments payments)
         {
-            await _realmService.Realm.WriteAsync(() => {
+            await _realmService.Realm!.WriteAsync(() => {
                 _realmService.Realm.Add(payments);
             });
 
@@ -100,7 +100,7 @@ namespace Services.DataServices
 
         public async Task UpdatePayment(Payments payments)
         {
-            await _realmService.Realm.WriteAsync(() => {
+            await _realmService.Realm!.WriteAsync(() => {
                 _realmService.Realm.Add(payments, true);
             });
             var paymentPeriod = _paymentPeriodService.PaymentPeriodForDate(payments.StartDate!.Value);
@@ -114,7 +114,7 @@ namespace Services.DataServices
         {
             var paymentPeriod = _paymentPeriodService.PaymentPeriodForDate(payments.StartDate!.Value);
 
-            await _realmService.Realm.WriteAsync(() => {
+            await _realmService.Realm!.WriteAsync(() => {
                 _realmService.Realm.Remove(payments);
             });
             
