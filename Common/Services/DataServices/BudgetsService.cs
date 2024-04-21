@@ -31,7 +31,12 @@ namespace Services.DataServices
 
             foreach (var budget in paymentPeriod.Budgets.Where(record => record.Budget > 0))
             {
-                budgetTotal += (budget.Budget - budget.AmountSpent + budget.AmountReceived);
+                var currentBudgetTotal = (budget.Budget - budget.AmountSpent + budget.AmountReceived);
+                if (currentBudgetTotal!.Value < 0) {
+                    currentBudgetTotal = 0;
+                }
+
+                budgetTotal += currentBudgetTotal;
             }
 
             return budgetTotal;
