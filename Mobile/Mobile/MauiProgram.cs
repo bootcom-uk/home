@@ -47,8 +47,17 @@ namespace Mobile
 
             builder.Configuration.AddJsonStream(stream);
 
+            var appSettings = builder.Configuration.Get<Common.Config.AppSettings>();
+
             builder
                 .UseMauiApp<App>()
+
+                // Add this section anywhere on the builder:
+                .UseSentry(options => {
+                    // The DSN is the only required setting.
+                    options.Dsn = appSettings.Sentry.Dsn;
+                })
+
                 .UsePrism(prism =>
                 {
                     prism.RegisterTypes(containerRegistry =>
