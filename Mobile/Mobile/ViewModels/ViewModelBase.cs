@@ -49,6 +49,7 @@ namespace Mobile.ViewModels
             _paymentsService = paymentsService;
 
             CurrentScreen = InternalSettings.CurrentScreen;
+
         }
 
         public abstract void OnNavigatedFrom(INavigationParameters parameters);

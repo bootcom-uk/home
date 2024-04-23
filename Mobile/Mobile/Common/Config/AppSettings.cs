@@ -8,5 +8,8 @@ namespace Mobile.Common.Config
         [ObservableProperty]
         Syncfusion syncfusion;
 
+        [ObservableProperty]
+        Sentry sentry;
+
     }
 }
