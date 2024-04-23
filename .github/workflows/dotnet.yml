@@ -58,6 +58,14 @@ jobs:
         newString: "${{secrets.MOBILE_REALM_PASSWORD}}"
         showFileContent: true
 
+    - name: Replace Variables in appsettings.json
+      uses: Nambers/ReplaceStringInFile@v1.3
+      with:
+        path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\appsettings.json"
+        oldString: "{{SENTRY_DSN}}"
+        newString: "${{secrets.SENTRY_DSN}}"
+        showFileContent: true
+
    # - name: Clean      
    #   run: dotnet clean Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android 
       
