@@ -62,7 +62,6 @@
               Grid.Row="0"
               Grid.Column="1"
               x:Name="cboPaymentPeriods"
-              x:FieldModifier="public"
               SelectedItem="{Binding SelectedPaymentPeriod}"
               ItemsSource="{Binding PaymentPeriodsDataSource}">
               <editors:SfComboBox.ItemTemplate>
