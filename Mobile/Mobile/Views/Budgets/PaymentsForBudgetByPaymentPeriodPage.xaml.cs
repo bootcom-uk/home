@@ -3,6 +3,7 @@ using Syncfusion.Maui.DataSource;
 using Syncfusion.Maui.DataSource.Extensions;
 using Syncfusion.Maui.ListView;
 using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace Mobile.Views.Budgets;
 
@@ -14,9 +15,7 @@ public partial class PaymentsForBudgetByPaymentPeriodPage : ContentPage
 
         lvPayments.Loaded += lvPayments_Loaded;        
         lvPayments.GroupExpanding += lvPayments_GroupExpanding;
-
-        lvPayments.DataSource.SourceCollectionChanged += lvPayments_DataSource_SourceCollectionChanged;
-
+        
         lvPayments.DataSource.GroupDescriptors.Add(new GroupDescriptor()
         {
             PropertyName = "PaymentTypeId.PaymentCategoryId.Name",
@@ -28,7 +27,7 @@ public partial class PaymentsForBudgetByPaymentPeriodPage : ContentPage
                     return item.PaymentTypeId.PaymentCategoryId.Name;
                 }
                 return $"{item.PaymentTypeId.PaymentCategoryId.Name} ({item.AssociatedResource.Name})";
-            }
+            }            
         });
 
     }
@@ -56,14 +55,16 @@ public partial class PaymentsForBudgetByPaymentPeriodPage : ContentPage
         }
     }
 
-    private void lvPayments_Loaded(object sender, ListViewLoadedEventArgs e)
+
+    private async void lvPayments_Loaded(object sender, ListViewLoadedEventArgs e)
     {
-        lvPayments.ExpandAll();
-        lvPayments.CollapseAll();
+        await App.Current.Dispatcher.DispatchAsync(async () =>
+        {
+            await Task.Delay(TimeSpan.FromSeconds(2));
+            lvPayments.CollapseAll();
+        });
+        
+        
     }
 
-    private void lvPayments_DataSource_SourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-    {
-        lvPayments.CollapseAll();
-    }
 }
