@@ -32,7 +32,7 @@
       Text="Displaying" />
     <syncfusion:SfListView
       Grid.Row="1"
-      HeaderSize="80"
+      HeaderSize="90"
       ItemSpacing="10"
       GroupHeaderSize="80"
       x:Name="lvPayments"
@@ -44,7 +44,9 @@
           <Grid>
             <Grid.RowDefinitions>
               <RowDefinition
-                Height="auto" />
+  Height="auto" />
+              <RowDefinition
+  Height="auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
               <ColumnDefinition
@@ -72,6 +74,18 @@
               </editors:SfComboBox.ItemTemplate>
             </editors:SfComboBox>
 
+            <HorizontalStackLayout
+              Grid.Row="1">
+              <Button
+                x:Name="btnExpandAll"
+                Clicked="btnExpandAll_Clicked"
+  Text="Expand All " />
+              <Button
+                x:Name="btnCollapseAll"
+                Clicked="btnCollapseAll_Clicked"
+  Text="Collapse All " />
+            </HorizontalStackLayout>
+            
           </Grid>
         </DataTemplate>
       </syncfusion:SfListView.HeaderTemplate>
@@ -123,7 +137,7 @@
               Grid.Row="0"
               Grid.Column="0"
               Grid.ColumnSpan="2"
-              Text="{Binding StartDate.Date, StringFormat='{0:dddd dd MMMM yyyy}'}" />
+              Text="{Binding StartDate.LocalDateTime.Date, StringFormat='{0:dddd dd MMMM yyyy}'}" />
 
             <Label
               Grid.Row="1"

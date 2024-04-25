@@ -67,4 +67,13 @@ public partial class PaymentsForBudgetByPaymentPeriodPage : ContentPage
         
     }
 
+    private void btnCollapseAll_Clicked(object sender, EventArgs e)
+    {
+        lvPayments.CollapseAll();
+    }
+
+    private void btnExpandAll_Clicked(object sender, EventArgs e)
+    {
+        lvPayments.ExpandAll();
+    }
 }
