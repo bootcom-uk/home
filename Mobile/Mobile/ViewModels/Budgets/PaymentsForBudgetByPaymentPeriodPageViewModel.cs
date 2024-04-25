@@ -30,7 +30,8 @@ namespace Mobile.ViewModels.Budgets
                     payments.ForEach(record => record.PaymentPeriod = SelectedPaymentPeriod);
                     DataSource = payments
                         .OrderBy(record => record.PaymentTypeId.PaymentCategoryId.DisplayOrder)
-                        .OrderByDescending(record => record.StartDate);                                        
+                        .OrderByDescending(record => record.StartDate);
+                    
                     break;
             }
         }

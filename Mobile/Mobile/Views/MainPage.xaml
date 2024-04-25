@@ -93,9 +93,21 @@ Height="auto" />
         
         <sfListView:SfListView.ItemTemplate>
           <DataTemplate>
-            <Label
-              Text="{Binding PaymentTypeDescription}" />
-          </DataTemplate>
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition
+  Height="auto" />
+                  <RowDefinition
+  Height="auto" />
+                </Grid.RowDefinitions>
+                <Label
+                Grid.Row="0"
+Text="{Binding PaymentTypeDescription, StringFormat='Payment Type: {0}'}" />
+                <Label
+                Grid.Row="1"
+Text="{Binding AmountPaid, StringFormat='Amount Paid: {0:C2}'}" />
+              </Grid>
+            </DataTemplate>
         </sfListView:SfListView.ItemTemplate>
         
       </sfListView:SfListView>

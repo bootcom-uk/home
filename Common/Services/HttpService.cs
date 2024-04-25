@@ -82,7 +82,8 @@ namespace Services
             requestMessage.Method = HttpMethod.Post;
             requestMessage.Headers.Add("RefreshToken", refreshToken);
             requestMessage.Headers.Add("DeviceId", deviceId.ToString());
-
+            requestMessage.Headers.AcceptEncoding.Clear();
+            requestMessage.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
             var responseMessage = await httpClient.SendAsync(requestMessage);
 
             if (!responseMessage.IsSuccessStatusCode)
