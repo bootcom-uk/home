@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Mail;
 
 namespace Services
@@ -11,7 +12,12 @@ namespace Services
 
         internal HttpClient CreateClient()
         {
-            var httpClient = new HttpClient();
+            var httpClientHandler = new HttpClientHandler()
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            };
+        
+            var httpClient = new HttpClient(httpClientHandler);
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             httpClient.DefaultRequestHeaders.AcceptEncoding.Clear();
             httpClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
@@ -92,7 +98,8 @@ namespace Services
                 throw new UnauthorizedAccessException();
             }
 
-            var returnDictionary = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(await responseMessage.Content.ReadAsStreamAsync());
+            var stream = await responseMessage.Content.ReadAsStreamAsync();
+            var returnDictionary = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(stream);
             return returnDictionary;
         }
 
@@ -112,9 +119,8 @@ namespace Services
                 return null;
             }
 
-            var content = await responseMessage.Content.ReadAsStringAsync();
-
-            return System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(await responseMessage.Content.ReadAsStreamAsync());
+            var stream = await responseMessage.Content.ReadAsStreamAsync();
+            return System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(stream);
 
         }
 
