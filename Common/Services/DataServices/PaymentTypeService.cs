@@ -98,7 +98,7 @@ namespace Services.DataServices
                 });
             }
 
-            returnList.ForEach(record => record.ShowSingleAmountControl = (record.AmountSpent == record.ExpectedAmount));
+            returnList.ForEach(record => record.ShowSingleAmountControl = (record.AmountSpent != null && record.ExpectedAmount != null &&(record.AmountSpent == record.ExpectedAmount)));
 
             return returnList
                 .Where(record => record.PaymentTypeActive || (!record.PaymentTypeActive && record.AmountSpent > 0))
