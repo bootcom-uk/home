@@ -106,7 +106,7 @@ namespace Services.DataServices
                 .ToList();
         }
 
-        private bool CanProcess(Payments payments,  List<PaymentType> paymentTypes) {
+        private static bool CanProcess(Payments payments,  List<PaymentType> paymentTypes) {
             if (payments.PaymentTypeId is null) return false;
             return paymentTypes.Select(record => record.Id).Contains(payments.PaymentTypeId!.Id);
         }
