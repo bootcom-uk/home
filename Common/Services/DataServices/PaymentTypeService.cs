@@ -78,7 +78,7 @@ namespace Services.DataServices
             
             var payments = realmService.Realm!.All<Payments>()
                 .Where(record => record.StartDate >= currentPaymentPeriod.DateFrom && record.EndDate <= currentPaymentPeriod.DateTo)                
-                .ToList()
+                .AsEnumerable()
                 .Where(record => CanProcess(record, householdBillsPaymentTypes));
 
             var returnList = new List<HouseholdBillSpending>();
@@ -98,7 +98,7 @@ namespace Services.DataServices
                 });
             }
 
-            returnList.ForEach(record => record.ShowSingleAmountControl = (record.AmountSpent != null && record.ExpectedAmount != null &&(record.AmountSpent == record.ExpectedAmount)));
+            returnList.ForEach(record => record.ShowSingleAmountControl = (record.AmountSpent != null && record.ExpectedAmount != null &&(record.AmountSpent.Value.ToString("0:C2") == record.ExpectedAmount.Value.ToString("0:C2"))));
 
             return returnList
                 .Where(record => record.PaymentTypeActive || (!record.PaymentTypeActive && record.AmountSpent > 0))
