@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mobile.Views.HouseholdBills.HouseholdBillsForCurrentPeriodOverviewPage"
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
+             xmlns:data="clr-namespace:Syncfusion.Maui.DataSource;assembly=Syncfusion.Maui.DataSource"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             ControlTemplate="{StaticResource MainPageTemplate}"
+             Title="Household Bills For Current Period">
+
+  <ContentPage.Resources>
+    <mct:InvertedBoolConverter
+    x:Key="invertedBoolConvertor" />
+  </ContentPage.Resources>
+
+  <ContentPage.Content>
+    <syncfusion:SfListView        
+  x:Name="paymentPeriodListView"
+      IsStickyHeader="True"
+  Grid.Row="0"
+  ItemSize="100"
+  HeaderSize="60"
+  ItemSpacing="5"
+  AllowSwiping="True"
+  ItemsSource="{Binding DataSource}">
+
+      <syncfusion:SfListView.HeaderTemplate>
+        <DataTemplate>
+          <Grid>
+            
+              <Label
+                VerticalOptions="Center"
+                Grid.Column="0"
+                Text="Display Outstanding Payments" />
+              <Switch
+                VerticalOptions="Center"
+                Grid.Column="1"
+                Toggled="swDisplayOutstandingPayments_Toggled"
+                x:Name="swDisplayOutstandingPayments" />
+            
+          </Grid>
+        </DataTemplate>
+      </syncfusion:SfListView.HeaderTemplate>
+      
+      <syncfusion:SfListView.ItemTemplate>
+        <DataTemplate>
+          <ContentView
+            ControlTemplate="{StaticResource RoundedContentFrame}">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition
+Height="auto" />
+                <RowDefinition
+Height="auto" />
+              </Grid.RowDefinitions>
+
+              <Label
+                Grid.Row="0"
+                StyleClass="RoundedFrameHeader"
+                Text="{Binding Name}" />
+
+              <Grid
+              Grid.Row="1"
+              IsVisible="{Binding ShowSingleAmountControl}">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition
+Width="250" />
+                  <ColumnDefinition
+Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label
+                Grid.Column="0"
+                Text="Amount Spent: " />
+                <Label
+                Grid.Column="1"
+                Text="{Binding AmountSpent, StringFormat='{0:C2}'}" />
+              </Grid>
+
+              <Grid
+              Grid.Row="1"
+              IsVisible="{Binding ShowSingleAmountControl, Converter={StaticResource invertedBoolConvertor}}">
+                <Grid.RowDefinitions>
+                  <RowDefinition
+  Height="auto" />
+                  <RowDefinition
+  Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition
+Width="250" />
+                  <ColumnDefinition
+Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label
+                Grid.Column="0"
+                Grid.Row="0"
+                Text="Expected Amount: " />
+                <Label
+                Grid.Column="1"
+                Grid.Row="0"
+                Text="{Binding ExpectedAmount, StringFormat='{0:C2}'}" />
+                <Label
+                Grid.Column="0"
+                Grid.Row="1"
+                Text="Amount Spent: " />
+                <Label
+                Grid.Column="1"
+                Grid.Row="1"
+                Text="{Binding AmountSpent, StringFormat='{0:C2}'}" />
+              </Grid>
+            </Grid>
+          </ContentView>
+        </DataTemplate>
+      </syncfusion:SfListView.ItemTemplate>
+    </syncfusion:SfListView>
+  </ContentPage.Content>
+</ContentPage>

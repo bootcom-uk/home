@@ -19,7 +19,7 @@ namespace Services.DataServices
 
         public async Task UpdateBudget(BudgetCategories budgetCategories)
         {
-            await _realmService.Realm.WriteAsync(() => {
+            await _realmService.Realm!.WriteAsync(() => {
                 _realmService.Realm.Add(budgetCategories, true);
             });
         }
@@ -62,7 +62,7 @@ namespace Services.DataServices
         public async Task FullPaymentPeriodBudgetResync(ObjectId paymentPeriodId)
         {
 
-            var paymentPeriod = _realmService.Realm.All<PaymentPeriod>()
+            var paymentPeriod = _realmService.Realm!.All<PaymentPeriod>()
                 .FirstOrDefault(record => record.Id == paymentPeriodId);
 
             if (paymentPeriod!.Budgets == null || paymentPeriod.Budgets.Count == 0)
@@ -129,7 +129,7 @@ namespace Services.DataServices
 
         public PaymentPeriod ConfigurePaymentPeriodBudgets(PaymentPeriod paymentPeriod)
         {
-            var budgetCategories = _realmService.Realm.All<BudgetCategories>();
+            var budgetCategories = _realmService.Realm!.All<BudgetCategories>();
 
             foreach (var budgetCategory in budgetCategories)
             {

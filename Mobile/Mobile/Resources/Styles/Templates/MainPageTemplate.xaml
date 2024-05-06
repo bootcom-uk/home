@@ -4,6 +4,13 @@
                     xmlns:controls="clr-namespace:Mobile.Controls"
              x:Class="Mobile.Resources.Styles.Templates.MainPageTemplate">
 
+  <ControlTemplate
+x:Key="RoundedContentFrame">
+    <Frame
+      CornerRadius="20">
+      <ContentPresenter />
+    </Frame>
+  </ControlTemplate>
 
   <ControlTemplate
   x:Key="MainPageContentFrame">

@@ -54,7 +54,7 @@ namespace Services.DataServices
             var id = ObjectId.GenerateNewId();
 
             // Creating a new payment period
-            await realmService.Realm!.WriteAsync(async () =>
+            await realmService.Realm!.WriteAsync(() =>
             {
                 var paymentPeriod = new PaymentPeriod()
                 {
