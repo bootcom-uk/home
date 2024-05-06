@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Configuration;
+using Mobile.LocalModels;
 using Models;
 using Models.Local;
 using Services;
@@ -26,7 +27,7 @@ namespace Mobile.ViewModels
         double? outstandingPaymentsForCurrentPeriod;
 
         [ObservableProperty]
-        ObservableCollection<String> budgetInformation;
+        ObservableCollection<BudgetOverview> budgetInformation;
 
         [ObservableProperty]
         List<DailySpendAndReceipts> dailySpendAndReceiptsDataSource;
@@ -62,6 +63,23 @@ namespace Mobile.ViewModels
         }
 
         [RelayCommand]
+        async Task BudgetInformationTapped(Object selectedItem)
+        {
+            var overviewType = (Mobile.LocalModels.BudgetOverview.OverviewType) selectedItem;
+
+            switch (overviewType)
+            {
+                case BudgetOverview.OverviewType.FUTURE_PAYMENTS:
+                    await NavigateCommand.ExecuteAsync("FuturePaymentsPage");
+                    break;
+                case BudgetOverview.OverviewType.HOUSEHOLD_BILLS:
+                    await NavigateCommand.ExecuteAsync("HouseholdBillsForCurrentPeriodOverviewPage");
+                    break;
+            }
+
+        }
+
+        [RelayCommand]
         async Task RefreshView()
         {
             PaymentPeriod = _paymentPeriodService.CurrentPaymentPeriod();
@@ -77,10 +95,10 @@ namespace Mobile.ViewModels
 
             BudgetInformation = new()
             {
-                { $"Total Outstanding Payments: {OutstandingPaymentsForCurrentPeriod:c2}" },
-                { $"Future Payments: {futurePayments:c2}" },
-                { $"Household Bills: {outstandingHouseholdBills:c2}" },
-                { $"Outstanding budgets: {outstandingBudgets:c2}" }
+               new() { Information = $"Total Outstanding Payments: {OutstandingPaymentsForCurrentPeriod:c2}", Type = BudgetOverview.OverviewType.TOTAL_OUTSTANDING_PAYMENTS },
+                new() { Information = $"Future Payments: {futurePayments:c2}", Type = BudgetOverview.OverviewType.FUTURE_PAYMENTS },
+                new() { Information = $"Household Bills: {outstandingHouseholdBills:c2}", Type = BudgetOverview.OverviewType.HOUSEHOLD_BILLS },
+                new() { Information =  $"Outstanding budgets: {outstandingBudgets:c2}",  Type = BudgetOverview.OverviewType.OUTSTANDING_BUDGETS }
             };
 
             MoneyOverviewTemplates = new()

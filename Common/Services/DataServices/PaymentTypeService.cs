@@ -1,72 +1,119 @@
 ﻿using Models;
 using Models.Local;
 using MongoDB.Bson;
+using System.Data.Common;
 
 namespace Services.DataServices
 {
-    public class PaymentTypeService
+    public class PaymentTypeService(RealmService realmService, PaymentPeriodService paymentPeriodService)
     {
-
-        internal readonly RealmService _realmService;
-               
-        public PaymentTypeService(RealmService realmService)
-        {
-            _realmService = realmService;
-        }
 
         public async Task SaveNewPaymentType(PaymentType paymentType)
         {
-            if (_realmService.Realm is null) await _realmService.InitializeAsync();
+            if (realmService.Realm is null) await realmService.InitializeAsync();
 
-            await _realmService.Realm!.WriteAsync(() =>
+            await realmService.Realm!.WriteAsync(() =>
             {
-                _realmService.Realm.Add(paymentType, false);
+                realmService.Realm.Add(paymentType, false);
             });
         }
 
         public async Task UpdatePaymentType(PaymentType paymentType)
         {
-            if (_realmService.Realm is null) await _realmService.InitializeAsync();
+            if (realmService.Realm is null) await realmService.InitializeAsync();
 
-            await _realmService.Realm!.WriteAsync(() =>
+            await realmService.Realm!.WriteAsync(() =>
             {
-                _realmService.Realm.Add(paymentType, true);
+                realmService.Realm.Add(paymentType, true);
             });
         }
 
         public async Task DeletePaymentType(ObjectId paymentTypeId)
         {
-            if (_realmService.Realm is null) await _realmService.InitializeAsync();
+            if (realmService.Realm is null) await realmService.InitializeAsync();
 
-            var paymentType = _realmService.Realm!.All<PaymentType>()
+            var paymentType = realmService.Realm!.All<PaymentType>()
                 .FirstOrDefault(record => record.Id == paymentTypeId);
 
             if(paymentType is null) { return; }
 
-            await _realmService.Realm.WriteAsync(() =>
+            await realmService.Realm.WriteAsync(() =>
             {
-                _realmService.Realm.Remove(paymentType);
+                realmService.Realm.Remove(paymentType);
             });
         }
 
         public async Task<PaymentType?> GetPaymentTypeById(ObjectId id)
         {
-            if (_realmService.Realm is null) await _realmService.InitializeAsync();
+            if (realmService.Realm is null) await realmService.InitializeAsync();
 
-            return _realmService.Realm!.All<PaymentType>()
+            return realmService.Realm!.All<PaymentType>()
                 .FirstOrDefault(record => record.Id == id);
         }
 
         public async Task<IQueryable<PaymentType>> GetAllPaymentTypes() {
-            if (_realmService.Realm is null) await _realmService.InitializeAsync();
+            if (realmService.Realm is null) await realmService.InitializeAsync();
 
-            return _realmService.Realm!.All<PaymentType>()
+            return realmService.Realm!.All<PaymentType>()
                 .OrderBy(record => record.Name);
+        }
+
+        public async Task<List<HouseholdBillSpending>?> GetAllHouseholdBillsForCurrentPaymentPeriod()
+        {
+            if (realmService.Realm is null) await realmService.InitializeAsync();
+
+            var currentPaymentPeriod = paymentPeriodService.CurrentPaymentPeriod();
+
+            if (currentPaymentPeriod == null)
+            {
+                return null;
+            }
+
+            var paymentCategory = realmService.Realm!.All<PaymentCategory>()
+                .FirstOrDefault(record => record.Name == "Household Bills");
+
+            var householdBillsPaymentTypes = realmService.Realm!.All<PaymentType>()
+                .Where(record => record.PaymentCategoryId != null && record.PaymentCategoryId == paymentCategory)
+                .ToList();
+            
+            var payments = realmService.Realm!.All<Payments>()
+                .Where(record => record.StartDate >= currentPaymentPeriod.DateFrom && record.EndDate <= currentPaymentPeriod.DateTo)                
+                .ToList()
+                .Where(record => CanProcess(record, householdBillsPaymentTypes));
+
+            var returnList = new List<HouseholdBillSpending>();
+
+            foreach(var paymentType in householdBillsPaymentTypes)
+            {
+                returnList.Add(new()
+                {
+                    Name = paymentType.Name,
+                    PaymentTypeActive = !paymentType.HavePaymentsEnded,
+                    ExpectedAmount = paymentType.DefaultPaymentAmount,
+                    AmountSpent = payments
+                    .Where(record => record.PaymentTypeId != null && record.PaymentTypeId.Id == paymentType.Id)
+                    .Select(record => record.AmountPaid)
+                    .Where(record => record != null)    
+                    .Sum(record => record)
+                });
+            }
+
+            returnList.ForEach(record => record.ShowSingleAmountControl = (record.AmountSpent == record.ExpectedAmount));
+
+            return returnList
+                .Where(record => record.PaymentTypeActive || (!record.PaymentTypeActive && record.AmountSpent > 0))
+                .OrderBy(record => record.Name)                
+                .ToList();
+        }
+
+        private bool CanProcess(Payments payments,  List<PaymentType> paymentTypes) {
+            if (payments.PaymentTypeId is null) return false;
+            return paymentTypes.Select(record => record.Id).Contains(payments.PaymentTypeId!.Id);
         }
 
         public List<SelectablePaymentType> GetSelectablePaymentTypes(bool displayArchivedRecords)
         {
-            var payments = _realmService.Realm.All<PaymentType>()
+            var payments = realmService.Realm!.All<PaymentType>()
                  .ToList()
                  .Select(record => new SelectablePaymentType
                  {

@@ -156,13 +156,22 @@ Text="{Binding AmountPaid, StringFormat='Amount Paid: {0:C2}'}" />
       <ContentView
         ControlTemplate="{StaticResource MainPageContentFrameAlternative}"
         Grid.Row="3">
-        <CarouselView         
+        <CarouselView
         BackgroundColor="Transparent"
+          x:Name="carouselView"
         ItemsSource="{Binding BudgetInformation}">
           <CarouselView.ItemTemplate>
             <DataTemplate>
-              <Label
-Text="{Binding .}" />
+              <Frame>
+                <Frame.GestureRecognizers>
+                  <TapGestureRecognizer
+                    NumberOfTapsRequired="2"
+                    Command="{Binding Path=BindingContext.BudgetInformationTappedCommand, Source={x:Reference carouselView}}"
+                    CommandParameter="{Binding Type}"/>
+                </Frame.GestureRecognizers>
+                <Label
+Text="{Binding Information}" />
+              </Frame>
             </DataTemplate>
           </CarouselView.ItemTemplate>
         </CarouselView>

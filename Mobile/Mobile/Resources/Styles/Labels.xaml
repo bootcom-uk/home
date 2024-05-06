@@ -36,6 +36,11 @@
     <Setter Property="TextColor" Value="{StaticResource Gray950}" />
   </Style>
 
+  <Style TargetType="Label" Class="RoundedFrameHeader">
+    <Setter Property="FontSize" Value="18" />
+    <Setter Property="HorizontalTextAlignment" Value="Center" />
+  </Style>
+  
   <Style TargetType="Label" Class="LargePaymentAmountLabel">
     <Setter Property="VerticalTextAlignment" Value="Center" />
     <Setter Property="FontSize" Value="26" />

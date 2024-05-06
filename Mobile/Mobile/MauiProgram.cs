@@ -11,6 +11,7 @@ using Mobile.Views;
 using Mobile.Views.Authentication;
 using Mobile.Views.Budgets;
 using Mobile.Views.FuturePayments;
+using Mobile.Views.HouseholdBills;
 using Mobile.Views.PaymentPeriods;
 using Mobile.Views.PaymentTypes;
 using Mobile.Views.Scheduling;
@@ -120,7 +121,11 @@ namespace Mobile
                         containerRegistry
                         .RegisterForNavigation<PaymentsForBudgetByPaymentPeriodPage, PaymentsForBudgetByPaymentPeriodPageViewModel>()
                         .RegisterInstance(SemanticScreenReader.Default);
-                        
+
+                        containerRegistry
+                        .RegisterForNavigation<HouseholdBillsForCurrentPeriodOverviewPage, HouseholdBillsForCurrentPeriodOverviewPageViewModel>()
+                        .RegisterInstance(SemanticScreenReader.Default);
+
 
                     });
                     prism.OnAppStart(async navigationService =>
