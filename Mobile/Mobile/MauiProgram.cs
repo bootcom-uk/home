@@ -129,7 +129,7 @@ namespace Mobile
                         .RegisterInstance(SemanticScreenReader.Default);
 
 
-                    });
+                    });                    
                     prism.OnAppStart(async navigationService =>
                     {
                         // We have a stored token
@@ -145,7 +145,7 @@ namespace Mobile
                         await navigationService.NavigateAsync("LoginPage");
                     });
                 })
-                .ConfigureFonts(fonts =>
+               .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("ARLRDBD.TTF", "ArialRoundedMtBold");
                 })

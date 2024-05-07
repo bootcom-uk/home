@@ -28,5 +28,7 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+  <key>NSFaceIDUsageDescription</key>
+  <string>Your face is required to unlock the app!</string>
 </dict>
 </plist>
