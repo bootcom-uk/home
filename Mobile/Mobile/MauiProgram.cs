@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using Maui.Android.InAppUpdates;
 using Microsoft.Extensions.Configuration;
 using Mobile.ViewModels;
 using Mobile.ViewModels.Authentication;
@@ -52,6 +53,7 @@ namespace Mobile
 
             builder
                 .UseMauiApp<App>()
+                .UseAndroidInAppUpdates()
 
                 // Add this section anywhere on the builder:
                 .UseSentry(options => {
