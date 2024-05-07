@@ -34,6 +34,7 @@
     <AndroidPackageFormat>aab</AndroidPackageFormat>
     <AndroidEnableMultiDex>True</AndroidEnableMultiDex>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <RunAOTCompilation>False</RunAOTCompilation>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
@@ -55,6 +56,7 @@
     <AndroidPackageFormat>aab</AndroidPackageFormat>
     <AndroidEnableMultiDex>True</AndroidEnableMultiDex>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <RunAOTCompilation>False</RunAOTCompilation>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
@@ -114,16 +116,17 @@
     <PackageReference Include="BootCom-Maui-Shared-Extensions" Version="1.0.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <PackageReference Include="Oscore.Maui.Android.InAppUpdates" Version="1.1.0" />
     <PackageReference Include="Prism.DryIoc.Maui" Version="8.1.273-pre" />
-    <PackageReference Include="Sentry.Maui" Version="4.4.0" />
-    <PackageReference Include="Syncfusion.Maui.Buttons" Version="25.1.41" />
-    <PackageReference Include="Syncfusion.Maui.Calendar" Version="25.1.41" />
-    <PackageReference Include="Syncfusion.Maui.Charts" Version="25.1.41" />
-    <PackageReference Include="Syncfusion.Maui.Inputs" Version="25.1.41" />
-    <PackageReference Include="Syncfusion.Maui.ListView" Version="25.1.41" />
-    <PackageReference Include="Syncfusion.Maui.Picker" Version="25.1.41" />
-    <PackageReference Include="Syncfusion.Maui.Popup" Version="25.1.41" />
-    <PackageReference Include="Syncfusion.Maui.Scheduler" Version="25.1.41" />
+    <PackageReference Include="Sentry.Maui" Version="4.5.0" />
+    <PackageReference Include="Syncfusion.Maui.Buttons" Version="25.1.42" />
+    <PackageReference Include="Syncfusion.Maui.Calendar" Version="25.1.42" />
+    <PackageReference Include="Syncfusion.Maui.Charts" Version="25.1.42" />
+    <PackageReference Include="Syncfusion.Maui.Inputs" Version="25.1.42" />
+    <PackageReference Include="Syncfusion.Maui.ListView" Version="25.1.42" />
+    <PackageReference Include="Syncfusion.Maui.Picker" Version="25.1.42" />
+    <PackageReference Include="Syncfusion.Maui.Popup" Version="25.1.42" />
+    <PackageReference Include="Syncfusion.Maui.Scheduler" Version="25.1.42" />
   </ItemGroup>
 
   <ItemGroup>
