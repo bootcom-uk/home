@@ -23,22 +23,22 @@ namespace Mobile
         {
             base.OnResume();
 
-            var isAvailable = await CrossFingerprint.Current.IsAvailableAsync(true);
+            //var isAvailable = await CrossFingerprint.Current.IsAvailableAsync(true);
 
-            if (isAvailable)
-            {
-                var request = new AuthenticationRequestConfiguration(
-                                         "Login using biometrics",
-                                         "Confirm login with your biometrics");
-                request.AllowAlternativeAuthentication = true;
+            //if (isAvailable)
+            //{
+            //    var request = new AuthenticationRequestConfiguration(
+            //                             "Login using biometrics",
+            //                             "Confirm login with your biometrics");
+            //    request.AllowAlternativeAuthentication = true;
 
-                var result = await Dispatcher.DispatchAsync(async () => await CrossFingerprint.Current.AuthenticateAsync(request));
+            //    var result = await Dispatcher.DispatchAsync(async () => await CrossFingerprint.Current.AuthenticateAsync(request));
 
-                if(result.Status != FingerprintAuthenticationResultStatus.Succeeded)
-                {
-                    Application.Current.Quit();
-                }
-            }
+            //    if(result.Status != FingerprintAuthenticationResultStatus.Succeeded)
+            //    {
+            //        Application.Current.Quit();
+            //    }
+            //}
 
             
         }
