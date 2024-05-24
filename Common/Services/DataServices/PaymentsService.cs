@@ -71,8 +71,11 @@ namespace Services.DataServices
             return records;
         }
 
-        public async Task<IEnumerable<Payments>>? GetLast3DaysPaymentsForCurrentPeriod(PaymentPeriod paymentPeriod)
+        public async Task<IEnumerable<Payments>>? GetLast3DaysPaymentsForCurrentPeriod(PaymentPeriod? paymentPeriod)
         {
+
+            if (paymentPeriod is null) return Enumerable.Empty<Payments>();
+
             if (_realmService.Realm is null) await _realmService.InitializeAsync();
 
             DateTimeOffset? from = DateTimeOffset.Now.AddDays(-3);
