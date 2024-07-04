@@ -88,7 +88,7 @@ namespace Mobile.ViewModels
             DailySpendAndReceiptsDataSource = _paymentsService.DailySpendAndReceiptsForLast7Days();
 
             var futurePayments = _futurePaymentsService.GetFuturePaymentsTotalForPeriod(PaymentPeriod);
-            var outstandingHouseholdBills = _paymentCategoryService.OutstandingHouseholdBillsForPeriod(PaymentPeriod) ?? 0;
+            var outstandingHouseholdBills = await _paymentCategoryService.OutstandingHouseholdBillsForPeriod(PaymentPeriod) ?? 0;
             var outstandingBudgets = _budgetsService.OutstandingBudgetsForPeriod(PaymentPeriod) ?? 0;
 
             OutstandingPaymentsForCurrentPeriod = futurePayments + Math.Round(outstandingHouseholdBills, 2) + Math.Round(outstandingBudgets, 2);

@@ -40,22 +40,33 @@ namespace Services.DataServices
                 .OrderBy(record => record.Name);
         }
 
-        public double? OutstandingHouseholdBillsForPeriod(PaymentPeriod paymentPeriod)
+        public async Task<double?> OutstandingHouseholdBillsForPeriod(PaymentPeriod paymentPeriod)
         {
-            var paymentCategory = _realmService.Realm.All<PaymentCategory>()
+
+            if (_realmService.Realm is null)
+            {
+                await _realmService.InitializeAsync();
+            }
+
+            var paymentCategory = _realmService.Realm!.All<PaymentCategory>()
                 .FirstOrDefault(record => record.OriginalId == 1);
             var paymentTypes = _realmService.Realm.All<PaymentType>()
                 .Where(record => record.PaymentCategoryId == paymentCategory && record.HavePaymentsEnded == false)
                 .ToList();
-            var payments = _realmService.Realm.All<Payments>()
+            var paidPayments = _realmService.Realm.All<Payments>()
                 .Where(record => record.StartDate >= paymentPeriod.DateFrom && record.EndDate <= paymentPeriod.DateTo)
                 .ToList()
                 .Where(record => record.PaymentTypeId != null && paymentTypes.Contains(record.PaymentTypeId))
+                .ToList();
+            var payments = paidPayments
+                .Where(record => record.PaymentTypeId != null && paymentTypes.Contains(record.PaymentTypeId))
                 .Select(record => record.PaymentTypeId)
-                .Distinct();            
-            return paymentTypes.Except(payments)
+                .Distinct();
+            var currentOutstanding = paymentTypes.Except(payments)
                 .Select(record => record!.DefaultPaymentAmount)
                 .Sum();
+
+            return currentOutstanding;
         }
 
     }

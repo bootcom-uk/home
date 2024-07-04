@@ -99,8 +99,8 @@ namespace Mobile.ViewModels.PaymentPeriods
             PaymentPeriodPopupDataSource = new()
             {
                 Id = paymentPeriod.Id,
-                DateTo = paymentPeriod.DateTo?.DateTime,
-                DateFrom = paymentPeriod.DateFrom?.DateTime
+                DateTo = paymentPeriod.DateTo?.LocalDateTime,
+                DateFrom = paymentPeriod.DateFrom?.LocalDateTime
             };
             PaymentPeriodPopupDataSource.Budgets = new();
             var allPayments = await _paymentsService.GetPaymentsByDates(paymentPeriod.DateFrom.Value, paymentPeriod.DateTo.Value);
@@ -113,11 +113,6 @@ namespace Mobile.ViewModels.PaymentPeriods
                 .Where(paymentRecord => paymentRecord.AmountReceived > 0)
                 .Where(paymentRecord => paymentRecord.StartDate >= paymentPeriod.DateFrom && paymentRecord.EndDate <= paymentPeriod.DateTo)
                 .Where(paymentRecord => paymentRecord.AssociatedResource != null && record.BudgetCategoryId.AssociatedResource != null && (paymentRecord.AssociatedResource.Id == record.BudgetCategoryId.AssociatedResource.Id));
-
-                
-                
-
-                Console.WriteLine(receipts.Count().ToString());
 
 
                 var receiptTotal = receipts.Select(receiptRecord => receiptRecord.AmountReceived).Sum() ?? 0;
