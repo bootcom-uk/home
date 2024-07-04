@@ -125,6 +125,7 @@ Text="{Binding AmountPaid, StringFormat='Amount Paid: {0:C2}'}" />
 
           <chart:SfCartesianChart.XAxes>
             <chart:DateTimeAxis
+              IntervalType="Days"
               ShowMajorGridLines="False"
               ShowMinorGridLines="False"/>
           </chart:SfCartesianChart.XAxes>
@@ -144,7 +145,7 @@ Text="{Binding AmountPaid, StringFormat='Amount Paid: {0:C2}'}" />
 
           <chart:ColumnSeries ItemsSource="{Binding DailySpendAndReceiptsDataSource}"
                               ShowDataLabels="True"
-                              XBindingPath="Date" 
+                              XBindingPath="Date"                              
                               YBindingPath="AmountReceived">
            
           </chart:ColumnSeries>

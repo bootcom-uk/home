@@ -32,7 +32,7 @@ namespace Services.DataServices
 
                 var item = new DailySpendAndReceipts()
                 {
-                    Date = dateToCheck,
+                    Date = dateToCheck.Date,
                     AmountSpent = _realmService.Realm!
                     .All<Payments>()
                     .Where(record => record.StartDate == dateOffsetToCheck && record.AmountPaid > 0)
