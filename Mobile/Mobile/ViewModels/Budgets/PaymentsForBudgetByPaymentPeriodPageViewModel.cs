@@ -29,8 +29,7 @@ namespace Mobile.ViewModels.Budgets
                     var payments = (await _paymentsService.GetPaymentsByDates(SelectedPaymentPeriod.DateFrom.Value, SelectedPaymentPeriod.DateTo.Value)).ToList();
                     payments.ForEach(record => record.PaymentPeriod = SelectedPaymentPeriod);
                     DataSource = payments
-                        .OrderBy(record => record.PaymentTypeId.PaymentCategoryId.DisplayOrder)
-                        .OrderByDescending(record => record.StartDate);
+                        .OrderBy(record => record.PaymentTypeDescription);
                     
                     break;
             }
@@ -59,6 +58,7 @@ namespace Mobile.ViewModels.Budgets
         public async override void OnNavigatedTo(INavigationParameters parameters)
         {
             PaymentPeriodsDataSource = await _paymentPeriodService.GetPaymentPeriods();
+            SelectedPaymentPeriod = _paymentPeriodService.CurrentPaymentPeriod();
         }
     }
 }
