@@ -14,6 +14,8 @@
     <ResourceDictionary>
       <convertors:EditableFuturePaymentCanSaveConvertor
         x:Key="editableFuturePaymentCanSaveConvertor" />
+      <convertors:PaymentsToTotalAmountConvertor
+        x:Key="paymentsToTotalAmountConvertor" />
     </ResourceDictionary>
   </ContentPage.Resources>
   
@@ -115,21 +117,12 @@ Height="auto" />
       x:Name="lvFuturePayments"
       ItemSize="80"
       HeaderSize="60"
+      GroupHeaderSize="70"
       ItemSpacing="5"
       AllowSwiping="True"      
       SwipeStarting="SfListView_SwipeStarting"
       AllowGroupExpandCollapse="False"
-      ItemsSource="{Binding DataSource}"
-      >
-
-      <syncfusion:SfListView.DataSource>
-        <data:DataSource>
-          <data:DataSource.GroupDescriptors>
-            <data:GroupDescriptor
-              PropertyName="PaymentPeriodId" />
-          </data:DataSource.GroupDescriptors>
-        </data:DataSource>
-      </syncfusion:SfListView.DataSource>
+      ItemsSource="{Binding DataSource}">
 
       <syncfusion:SfListView.HeaderTemplate>
         <DataTemplate>
@@ -155,6 +148,25 @@ Height="auto" />
          Text="There are no future payments, why not use the above button to add one?" />
       </syncfusion:SfListView.EmptyView>
 
+      <syncfusion:SfListView.GroupHeaderTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition
+                Height="auto" />
+              <RowDefinition
+  Height="auto" />
+            </Grid.RowDefinitions>
+            <Label
+              Grid.Row="0"
+              StyleClass="LargePaymentAmountLabel"
+              Text="{Binding Key}" />
+            <Label
+              Grid.Row="1"
+              Text="{Binding Items, Converter={StaticResource paymentsToTotalAmountConvertor}, StringFormat='Subtotal: {0:C2}'}" />
+          </Grid>
+        </DataTemplate>
+      </syncfusion:SfListView.GroupHeaderTemplate>
       
       <syncfusion:SfListView.ItemTemplate>
         <DataTemplate>

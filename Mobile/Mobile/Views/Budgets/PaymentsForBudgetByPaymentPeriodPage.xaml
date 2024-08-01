@@ -22,14 +22,11 @@
   
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition
-  Height="auto" />
+      
       <RowDefinition
   Height="*" />
     </Grid.RowDefinitions>
-    <Label
-      Grid.Row="0"
-      Text="Displaying" />
+
     <syncfusion:SfListView
       Grid.Row="1"
       HeaderSize="90"
@@ -57,6 +54,7 @@
             
             <Label
               Text="Payment Period: "
+              VerticalTextAlignment="Center"
               Grid.Row="0"
               Grid.Column="0" />
 
@@ -75,6 +73,8 @@
             </editors:SfComboBox>
 
             <HorizontalStackLayout
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
               Grid.Row="1">
               <Button
                 x:Name="btnExpandAll"
