@@ -65,7 +65,7 @@ namespace Mobile.ViewModels.FuturePayments
             IsFuturePaymentPopupOpen = false;
             IsProcessing = false;
 
-            DataSource = _futurePaymentsService.GetFuturePayments();
+            DataSource = await _futurePaymentsService.GetFuturePayments();
         }
 
         [RelayCommand]
@@ -88,7 +88,7 @@ namespace Mobile.ViewModels.FuturePayments
         {
             var futurePayment = (payment as FuturePayment);
             await _futurePaymentsService.DeleteFuturePayment(futurePayment);
-            DataSource = _futurePaymentsService.GetFuturePayments();
+            DataSource = await _futurePaymentsService.GetFuturePayments();
         }
 
         [RelayCommand]
@@ -110,6 +110,7 @@ namespace Mobile.ViewModels.FuturePayments
             _addingNewFuturePayment = false;
             FuturePaymentMinimumDate = DateTime.Now.Date;
             IsFuturePaymentPopupOpen = true;
+            PopupDataSource.Id = futurePayment.Id.Value;
             PopupDataSource.FuturePaymentDate = futurePayment.PaymentRequiredDate.LocalDateTime;
             PopupDataSource.FuturePaymentDetail = futurePayment.PaymentInformation;
             PopupDataSource.FuturePaymentAmount = futurePayment.PaymentExpectedAmount;
@@ -125,7 +126,7 @@ namespace Mobile.ViewModels.FuturePayments
             {
                 await _realmService.InitializeAsync();
             }
-            DataSource = _futurePaymentsService.GetFuturePayments();
+            DataSource = await _futurePaymentsService.GetFuturePayments();
         }
     }
 }

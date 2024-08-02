@@ -16,6 +16,8 @@
         x:Key="editableFuturePaymentCanSaveConvertor" />
       <convertors:PaymentsToTotalAmountConvertor
         x:Key="paymentsToTotalAmountConvertor" />
+      <convertors:DateTimeOffsetToLocalDateTimeConvertor
+        x:Key="dateTimeOffsetToLocalDateTimeConvertor" />
     </ResourceDictionary>
   </ContentPage.Resources>
   
@@ -194,7 +196,7 @@ Height="auto" />
                   </Grid.ColumnDefinitions>
                   <Label
                     Grid.Row="0"
-                    Text="{Binding PaymentRequiredDate, StringFormat='Payment Required: {0:dd/MM/yyyy}'}"/>
+                    Text="{Binding PaymentRequiredDate, Converter={StaticResource dateTimeOffsetToLocalDateTimeConvertor}, StringFormat='Payment Required: {0:dd/MM/yyyy}'}"/>
                   <Label
                     Grid.Row="1"
                     Grid.Column="0"
