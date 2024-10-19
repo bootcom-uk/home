@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Mail;
+using System.Net.Mime;
+using System.Text;
 
 namespace Services
 {
@@ -8,7 +10,7 @@ namespace Services
     {
 
 
-        internal readonly string _loginUrl = "https://bootcomidentity.azurewebsites.net";
+        internal readonly string _loginUrl = "https://bootcomidentity.azurewebsites.net/AuthenticationV2";
 
         internal HttpClient CreateClient()
         {
@@ -36,7 +38,7 @@ namespace Services
                 var httpClient = CreateClient();
 
                 var requestMessage = new HttpRequestMessage();
-                requestMessage.RequestUri = new Uri($"{_loginUrl}/DateTime");
+                requestMessage.RequestUri = new Uri($"{_loginUrl}/verify-token-validity");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
                 requestMessage.Method = HttpMethod.Get;
 
@@ -50,26 +52,6 @@ namespace Services
             }
         }
 
-        private async Task<string?> GetUserId(string token)
-        {
-            try
-            {
-                var httpClient = CreateClient();
-
-                var requestMessage = new HttpRequestMessage();
-                requestMessage.RequestUri = new Uri($"{_loginUrl}/User/name");
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-                requestMessage.Method = HttpMethod.Get;
-
-                var responseMessage = await httpClient.SendAsync(requestMessage);
-
-                return await responseMessage.Content.ReadAsStringAsync();
-            }
-            catch
-            {
-                return null;
-            }
-        }
 
         public async Task<Dictionary<string, string>?> ValidateLogin(Guid deviceId, string token, string refreshToken)
         {
@@ -84,13 +66,19 @@ namespace Services
             var httpClient = CreateClient();
 
             var requestMessage = new HttpRequestMessage();
-            requestMessage.RequestUri = new Uri($"{_loginUrl}/RefreshToken");
+            requestMessage.RequestUri = new Uri($"{_loginUrl}/refresh-token");
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
             requestMessage.Method = HttpMethod.Post;
-            requestMessage.Headers.Add("RefreshToken", refreshToken);
-            requestMessage.Headers.Add("DeviceId", deviceId.ToString());
+
+            var formData = new MultipartFormDataContent();
+            formData.Add(new StringContent(deviceId.ToString(), Encoding.UTF8, MediaTypeNames.Text.Plain), "deviceId");
+            formData.Add(new StringContent(refreshToken, Encoding.UTF8, MediaTypeNames.Text.Plain), "refreshToken");
+            requestMessage.Content = formData;
+
             requestMessage.Headers.AcceptEncoding.Clear();
             requestMessage.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+
+
             var responseMessage = await httpClient.SendAsync(requestMessage);
 
             if (!responseMessage.IsSuccessStatusCode)
@@ -108,9 +96,13 @@ namespace Services
             var httpClient = CreateClient();
 
             var requestMessage = new HttpRequestMessage();
-            requestMessage.RequestUri = new Uri($"{_loginUrl}/Authentication/{accessCode}");
+            requestMessage.RequestUri = new Uri($"{_loginUrl}/verify-access-code");
             requestMessage.Method = HttpMethod.Post;
-            requestMessage.Headers.Add("DeviceId", deviceId.ToString());
+
+            var formData = new MultipartFormDataContent();
+            formData.Add(new StringContent(accessCode, Encoding.UTF8, MediaTypeNames.Text.Plain), "accessCode");
+            formData.Add(new StringContent(deviceId.ToString(), Encoding.UTF8, MediaTypeNames.Text.Plain), "deviceId");
+            requestMessage.Content = formData;
 
             var responseMessage = await httpClient.SendAsync(requestMessage);
 
@@ -118,6 +110,8 @@ namespace Services
             {
                 return null;
             }
+
+            var stringResponse = await responseMessage.Content.ReadAsStringAsync();
 
             var stream = await responseMessage.Content.ReadAsStreamAsync();
             return System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(stream);
@@ -129,10 +123,14 @@ namespace Services
             var httpClient = CreateClient();
             
             var requestMessage = new HttpRequestMessage();
-            requestMessage.RequestUri = new Uri($"{_loginUrl}/Authentication");
+            requestMessage.RequestUri = new Uri($"{_loginUrl}/generate-access-code/BOOTCOM_HOME");
             requestMessage.Method = HttpMethod.Post;
-            requestMessage.Headers.Add("EmailAddress", emailAddress);
-            requestMessage.Headers.Add("DeviceId", deviceId.ToString());
+
+            var formData = new MultipartFormDataContent();
+            formData.Add(new StringContent(emailAddress, Encoding.UTF8, MediaTypeNames.Text.Plain), "emailAddress");
+            formData.Add(new StringContent(deviceId.ToString(), Encoding.UTF8, MediaTypeNames.Text.Plain), "deviceId");
+
+            requestMessage.Content = formData;
 
             var responseMessage = await httpClient.SendAsync(requestMessage);
 

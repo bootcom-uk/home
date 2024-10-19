@@ -23,7 +23,7 @@ namespace Services
             var user = await app.LogInAsync(usernamePasswordCreds);
 
             var config = new FlexibleSyncConfiguration(app.CurrentUser!);
-            config.Schema = new[] { typeof(PaymentType), typeof(Payments), typeof(BudgetCategories), typeof(PaymentCategory), typeof(PaymentPeriod), typeof(PaymentPeriod_Budgets), typeof(FuturePayment), typeof(Models.User) };
+            config.Schema = new[] { typeof(PaymentType), typeof(Payments), typeof(BudgetCategories), typeof(PaymentCategory), typeof(PaymentPeriod), typeof(PaymentPeriod_Budgets), typeof(FuturePayment), typeof(Models.User), typeof(PaymentType_PaymentSchedule) };
 
             Realm = Realms.Realm.GetInstance(config);
 

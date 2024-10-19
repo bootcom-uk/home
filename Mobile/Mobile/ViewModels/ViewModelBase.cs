@@ -147,7 +147,7 @@ namespace Mobile.ViewModels
                 .FirstOrDefault(record => record.Id == SelectedPaymentTypeId);
 
             var addedByUser = _realmService.Realm.All<User>()
-                .FirstOrDefault(record => record.OriginalId == InternalSettings.UserId);
+                .FirstOrDefault(record => record.Id == InternalSettings.UserId);
 
             var amountPaid = 0d;
 

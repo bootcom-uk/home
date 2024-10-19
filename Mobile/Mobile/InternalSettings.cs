@@ -6,17 +6,17 @@ namespace Mobile
     public static class InternalSettings
     {
 
-        public static Guid? UserId
+        public static ObjectId? UserId
         {
             get
             {
                 var serializedValue = Preferences.Default.Get(nameof(UserId), string.Empty);
-                Guid? deserializedValue;
+                ObjectId? deserializedValue;
                 if (string.IsNullOrEmpty(serializedValue))
                 {
                     return null;
                 }
-                deserializedValue = JsonSerializer.Deserialize<Guid?>(serializedValue);
+                deserializedValue = JsonSerializer.Deserialize<ObjectId?>(serializedValue);
                 return deserializedValue;
             }
             set
