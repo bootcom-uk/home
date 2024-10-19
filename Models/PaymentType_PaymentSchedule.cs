@@ -10,7 +10,7 @@ namespace Models
 
         public string? ScheduleType { get; set; }
 
-        public IList<int>? WeeklyScheduleDays { get; }
+        public IList<int> WeeklyScheduleDays { get; }
 
         public int? WeeklyScheduleEveryXWeeks { get; set; }
 
