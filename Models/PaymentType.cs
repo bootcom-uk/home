@@ -13,7 +13,7 @@ namespace Models
         public bool? DisplayAsFuturePayment { get; set; }
         public bool HavePaymentsEnded { get; set; }
         public bool IsResourceRequired { get; set; }
-        public required string Name { get; set; }
+        public string Name { get; set; }
         public int? OriginalId { get; set; }
         public int? OriginalPaymentCategoryId { get; set; }
         public PaymentCategory? PaymentCategoryId { get; set; }
