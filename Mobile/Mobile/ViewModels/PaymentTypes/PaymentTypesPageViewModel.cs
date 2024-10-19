@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Configuration;
+using Mobile.Views.PaymentTypes;
 using Models;
 using Models.Local;
 using MongoDB.Bson;
@@ -61,8 +62,15 @@ namespace Mobile.ViewModels.PaymentTypes
         }
 
         [RelayCommand]
-        void AddNewPaymentType()
+        async Task AddNewPaymentType()
         {
+            await _navigationService.NavigateAsync(nameof(ModifyPaymentTypePage), new NavigationParameters
+            {
+                { "IsNewRecord", true }
+            });
+
+            return;
+
             _isAddingPaymentType = true;
             PaymentTypeTitle = "Add New Payment Type";
             PaymentTypeDataSource = new()
@@ -81,6 +89,14 @@ namespace Mobile.ViewModels.PaymentTypes
         [RelayCommand]
         async Task EditPaymentType(object id)
         {
+
+            await _navigationService.NavigateAsync(nameof(ModifyPaymentTypePage), new NavigationParameters
+            {
+                { "IsNewRecord", false },
+                { "RecordId",  id as ObjectId? }
+            });
+            return;
+
             _isAddingPaymentType = false;
             var paymentId = id as ObjectId?;
             if (paymentId is null) return;
@@ -114,7 +130,7 @@ namespace Mobile.ViewModels.PaymentTypes
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            PaymentCategoriesDataSource = await _paymentCategoryService.GetAllPaymentCategories();
+           PaymentCategoriesDataSource = await _paymentCategoryService.GetAllPaymentCategories();
            DataSource = await _paymentTypeService.GetAllPaymentTypes();
         }
         

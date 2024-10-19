@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using Services;
 using Services.DataServices;
 
@@ -41,7 +42,7 @@ namespace Mobile.ViewModels.Authentication
 
                 InternalSettings.UserToken = response["token"];
                 InternalSettings.RefreshToken = response["refreshToken"];
-                InternalSettings.UserId = Guid.Parse(response["userId"]);
+                InternalSettings.UserId = ObjectId.Parse(response["userId"]);
                 await _navigationService.NavigateAsync("MainPage");
             }
             catch (Exception ex)
