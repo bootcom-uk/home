@@ -111,8 +111,6 @@ namespace Services
                 return null;
             }
 
-            var stringResponse = await responseMessage.Content.ReadAsStringAsync();
-
             var stream = await responseMessage.Content.ReadAsStreamAsync();
             return System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(stream);
 
