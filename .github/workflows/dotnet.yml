@@ -66,6 +66,14 @@ jobs:
         newString: "${{secrets.SENTRY_DSN}}"
         showFileContent: true
 
+    - name: Replace Variables in appsettings.json
+      uses: Nambers/ReplaceStringInFile@v1.3
+      with:
+        path: "D:\\\\a\\\\home\\\\home\\\\Mobile\\\\Mobile\\\\Platforms\\\\Android\\\\google-services.json"
+        oldString: "{{GOOGLE_SERVICES_API_KEY}}"
+        newString: "${{secrets.GOOGLE_SERVICES_API_KEY}}"
+        showFileContent: true
+
    # - name: Clean      
    #   run: dotnet clean Mobile/Mobile/Mobile.csproj -c Release -f net8.0-android 
       
