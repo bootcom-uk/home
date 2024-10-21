@@ -23,7 +23,7 @@ namespace Services.DataServices
 
         public List<User> ListUsers()
         {
-            var users = _realmService.Realm.All<User>()
+            var users = _realmService!.Realm.All<User>()
                 .OrderBy(record => record.Name)
                 .ToList();
             return users;

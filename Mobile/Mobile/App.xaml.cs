@@ -19,7 +19,7 @@ namespace Mobile
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(appSettings.Syncfusion.LicenceKey);
         }
 
-        protected async override void OnResume()
+        protected override void OnResume()
         {
             base.OnResume();
 
