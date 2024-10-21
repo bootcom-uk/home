@@ -270,14 +270,16 @@ namespace Mobile.ViewModels
 
         protected override void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            switch(e.PropertyName)
+            base.OnPropertyChanged(e);
+
+            switch (e.PropertyName)
             {
                 case nameof(DisplayArchivedRecords):
                     PaymentTypeDataSource = _paymentTypeService.GetSelectablePaymentTypes(DisplayArchivedRecords);
                     break;
             }
 
-            base.OnPropertyChanged(e);
+            
         }
     }
 }

@@ -54,6 +54,8 @@ namespace Mobile.ViewModels
             _futurePaymentsService = futurePaymentsService;
             _paymentCategoryService = paymentCategoryService;
             _budgetsService = budgetsService;
+
+            BudgetInformation = new();
         }
 
         [RelayCommand]
@@ -93,19 +95,16 @@ namespace Mobile.ViewModels
 
             OutstandingPaymentsForCurrentPeriod = futurePayments + Math.Round(outstandingHouseholdBills, 2) + Math.Round(outstandingBudgets, 2);
 
-            BudgetInformation = new()
-            {
-               new() { Information = $"Total Outstanding Payments: {OutstandingPaymentsForCurrentPeriod:c2}", Type = BudgetOverview.OverviewType.TOTAL_OUTSTANDING_PAYMENTS },
-                new() { Information = $"Future Payments: {futurePayments:c2}", Type = BudgetOverview.OverviewType.FUTURE_PAYMENTS },
-                new() { Information = $"Household Bills: {outstandingHouseholdBills:c2}", Type = BudgetOverview.OverviewType.HOUSEHOLD_BILLS },
-                new() { Information =  $"Outstanding budgets: {outstandingBudgets:c2}",  Type = BudgetOverview.OverviewType.OUTSTANDING_BUDGETS }
-            };
-
             MoneyOverviewTemplates = new()
             {
                 { "BudgetOverview" },
                 { "Chris" }
             };
+            
+            BudgetInformation.Add(new() { Information = $"Total Outstanding Payments: {OutstandingPaymentsForCurrentPeriod:c2}", Type = BudgetOverview.OverviewType.TOTAL_OUTSTANDING_PAYMENTS });
+            BudgetInformation.Add(new() { Information = $"Future Payments: {futurePayments:c2}", Type = BudgetOverview.OverviewType.FUTURE_PAYMENTS });
+            BudgetInformation.Add(new() { Information = $"Household Bills: {outstandingHouseholdBills:c2}", Type = BudgetOverview.OverviewType.HOUSEHOLD_BILLS });
+            BudgetInformation.Add(new() { Information = $"Outstanding budgets: {outstandingBudgets:c2}", Type = BudgetOverview.OverviewType.OUTSTANDING_BUDGETS });
 
             IsRefreshing = false;
         }
