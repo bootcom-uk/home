@@ -130,7 +130,7 @@ namespace Mobile
 
 
                     });                    
-                    prism.OnAppStart(async navigationService =>
+                    prism.CreateWindow(async navigationService =>
                     {
                         // We have a stored token
                         if (!string.IsNullOrWhiteSpace(InternalSettings.UserToken))
