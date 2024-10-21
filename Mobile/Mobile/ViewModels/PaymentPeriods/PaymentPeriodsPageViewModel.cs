@@ -99,11 +99,11 @@ namespace Mobile.ViewModels.PaymentPeriods
             PaymentPeriodPopupDataSource = new()
             {
                 Id = paymentPeriod.Id,
-                DateTo = paymentPeriod.DateTo?.DateTime,
-                DateFrom = paymentPeriod.DateFrom?.DateTime
+                DateTo = paymentPeriod.DateTo?.LocalDateTime,
+                DateFrom = paymentPeriod.DateFrom?.LocalDateTime
             };
             PaymentPeriodPopupDataSource.Budgets = new();
-            var allPayments = await _paymentsService.GetPaymentsByDates(paymentPeriod.DateFrom.Value, paymentPeriod.DateTo.Value);
+            var allPayments = await _paymentsService.GetPaymentsByDates(new DateTimeOffset(paymentPeriod.DateFrom.Value.LocalDateTime), new DateTimeOffset(paymentPeriod.DateTo.Value.LocalDateTime));
             paymentPeriod.Budgets.Where(record => record.Budget > 0).ForEach(record =>
             {
 
@@ -111,13 +111,8 @@ namespace Mobile.ViewModels.PaymentPeriods
 
                 .Where(paymentRecord => paymentRecord.PaymentTypeId.PaymentCategoryId.Id == record.BudgetCategoryId.PaymentCategoryId.Id)
                 .Where(paymentRecord => paymentRecord.AmountReceived > 0)
-                .Where(paymentRecord => paymentRecord.StartDate >= paymentPeriod.DateFrom && paymentRecord.EndDate <= paymentPeriod.DateTo)
+                .Where(paymentRecord => paymentRecord.StartDate >= new DateTimeOffset(paymentPeriod.DateFrom.Value.LocalDateTime) && paymentRecord.EndDate <= new DateTimeOffset(paymentPeriod.DateTo.Value.LocalDateTime))
                 .Where(paymentRecord => paymentRecord.AssociatedResource != null && record.BudgetCategoryId.AssociatedResource != null && (paymentRecord.AssociatedResource.Id == record.BudgetCategoryId.AssociatedResource.Id));
-
-                
-                
-
-                Console.WriteLine(receipts.Count().ToString());
 
 
                 var receiptTotal = receipts.Select(receiptRecord => receiptRecord.AmountReceived).Sum() ?? 0;

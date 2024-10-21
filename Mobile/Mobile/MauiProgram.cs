@@ -121,6 +121,10 @@ namespace Mobile
                       .RegisterInstance(SemanticScreenReader.Default);
 
                         containerRegistry
+                     .RegisterForNavigation<ModifyPaymentTypePage, ModifyPaymentTypePageViewModel>()
+                     .RegisterInstance(SemanticScreenReader.Default);
+
+                        containerRegistry
                         .RegisterForNavigation<PaymentsForBudgetByPaymentPeriodPage, PaymentsForBudgetByPaymentPeriodPageViewModel>()
                         .RegisterInstance(SemanticScreenReader.Default);
 
@@ -129,15 +133,14 @@ namespace Mobile
                         .RegisterInstance(SemanticScreenReader.Default);
 
 
-                    });                    
+                    });
                     prism.CreateWindow(async navigationService =>
                     {
-                        // We have a stored token
                         if (!string.IsNullOrWhiteSpace(InternalSettings.UserToken))
                         {
                             // Is this user still authenticated?
                             await navigationService.NavigateAsync("ValidateLoginPage");
-                            
+
                             return;
                         }
 

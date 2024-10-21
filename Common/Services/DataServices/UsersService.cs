@@ -17,7 +17,7 @@ namespace Services.DataServices
         {
             if (userId == null) return null;
 
-            return _realmService.Realm.All<User>()
+            return _realmService.Realm!.All<User>()
                 .FirstOrDefault(record => record.Id == userId);
         }
 

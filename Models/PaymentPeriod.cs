@@ -19,7 +19,7 @@ namespace Models
 
         public override string ToString()
         {
-            return $"Payment period {DateFrom?.ToString("dd/MM/yyyy")} to {DateTo?.ToString("dd/MM/yyyy")}";
+            return $"Payment period {DateFrom?.LocalDateTime.ToString("dd/MM/yyyy")} to {DateTo?.LocalDateTime.ToString("dd/MM/yyyy")}";
         }
 
     }

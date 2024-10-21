@@ -66,7 +66,7 @@
                   Grid.Row="2"
                   Text="Date To:" />
                 <DatePicker
-                  Grid.Row="3"
+                  Grid.Row="3"                  
                   Date="{Binding PaymentPeriodPopupDataSource.DateTo}"
                   />
               <Button
@@ -97,7 +97,7 @@ ControlTemplate="{StaticResource MainPageContentFrame}">
                             <ColumnDefinition
   Width="*" />
                             <ColumnDefinition
-  Width="120" />
+  Width="auto" />
                           </Grid.ColumnDefinitions>
                           <Label
                           Grid.Row="0"
@@ -150,7 +150,7 @@ ControlTemplate="{StaticResource MainPageContentFrame}">
                 <ColumnDefinition
                   Width="*" />
                 <ColumnDefinition
-                  Width="120" />
+                  Width="auto" />
               </Grid.ColumnDefinitions>
               <Button
               Grid.Column="1"                
@@ -203,8 +203,8 @@ CommandParameter="{Binding .}"
   Grid.Row="0">
                     <Label.Text>
                       <MultiBinding StringFormat="{}{0:dd/MM/yyyy} to {1:dd/MM/yyyy}">
-                        <Binding Path="DateFrom" />
-                        <Binding Path="DateTo" />
+                        <Binding Path="DateFrom.LocalDateTime" />
+                        <Binding Path="DateTo.LocalDateTime" />
                       </MultiBinding>
                     </Label.Text>
                   </Label>
