@@ -7,6 +7,8 @@
              xmlns:convertors="clr-namespace:Mobile.Common.Convertors"
              xmlns:sfListView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
              xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+
              ControlTemplate="{StaticResource MainPageTemplate}"
              x:Class="Mobile.Views.MainPage">
 
@@ -16,6 +18,8 @@
 
       <convertors:DateDifferenceFromNowConvertor
         x:Key="dateDifferenceFromNowConvertor" />
+      <toolkit:InvertedBoolConverter
+        x:Key="invertedBoolConverter" />
     </ResourceDictionary>
     
     <DataTemplate
@@ -46,6 +50,8 @@
         <RowDefinition
   Height="auto" />
         <RowDefinition
+Height="auto" />
+        <RowDefinition
 Height="150" />
         <RowDefinition
   Height="500" />
@@ -53,8 +59,17 @@ Height="150" />
 Height="auto" />
       </Grid.RowDefinitions>
 
+      <HorizontalStackLayout
+  Grid.Row="0">
+        <Button
+          IsEnabled="{Binding IsProcessing, Converter={StaticResource invertedBoolConverter}}"
+          Command="{Binding ResyncBudgetsForCurrentPeriodCommand}"
+          Text="Resync Budgets" />
+        
+      </HorizontalStackLayout>
+      
       <ContentView
-  Grid.Row="0"
+  Grid.Row="1"
   ControlTemplate="{StaticResource MainPageContentFrame}">
         <ContentView.GestureRecognizers>
           <TapGestureRecognizer
@@ -75,7 +90,7 @@ Height="auto" />
       </ContentView>
 
       <ContentView
-      Grid.Row="1"
+      Grid.Row="2"
       ControlTemplate="{StaticResource MainPageContentFrameAlternative}">
         <sfListView:SfListView        
         IsScrollingEnabled="True"
@@ -114,7 +129,7 @@ Text="{Binding AmountPaid, StringFormat='Amount Paid: {0:C2}'}" />
       </ContentView>
 
       <ContentView
-        Grid.Row="2"
+        Grid.Row="3"
         ControlTemplate="{StaticResource MainPageContentFrame}">
 
         <chart:SfCartesianChart>
@@ -156,7 +171,7 @@ Text="{Binding AmountPaid, StringFormat='Amount Paid: {0:C2}'}" />
 
       <ContentView
         ControlTemplate="{StaticResource MainPageContentFrameAlternative}"
-        Grid.Row="3">
+        Grid.Row="4">
         <CarouselView
         BackgroundColor="Transparent"
           x:Name="carouselView"

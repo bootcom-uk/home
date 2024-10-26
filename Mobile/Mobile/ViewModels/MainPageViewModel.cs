@@ -65,6 +65,16 @@ namespace Mobile.ViewModels
         }
 
         [RelayCommand]
+        async Task ResyncBudgetsForCurrentPeriod()
+        {
+            var currentPaymentPeriod = _paymentPeriodService.CurrentPaymentPeriod();
+            if (currentPaymentPeriod == null) { return; }
+            IsProcessing = true;
+            await _budgetsService.FullPaymentPeriodBudgetResync(currentPaymentPeriod!.Id.Value);
+            IsProcessing = false;
+        }
+
+        [RelayCommand]
         async Task BudgetInformationTapped(Object selectedItem)
         {
             var overviewType = (Mobile.LocalModels.BudgetOverview.OverviewType) selectedItem;
