@@ -11,21 +11,20 @@ namespace Mobile
             get
             {
                 var serializedValue = Preferences.Default.Get(nameof(UserId), string.Empty);
-                ObjectId? deserializedValue;
                 if (string.IsNullOrEmpty(serializedValue))
                 {
                     return null;
                 }
-                deserializedValue = JsonSerializer.Deserialize<ObjectId?>(serializedValue);
-                return deserializedValue;
+                return ObjectId.Parse(serializedValue);
             }
             set
             {
-                var serializedValue = JsonSerializer.Serialize(value, new JsonSerializerOptions()
+                if (value is null)
                 {
-                    PropertyNameCaseInsensitive = true
-                });
-                Preferences.Default.Set(nameof(UserId), serializedValue);
+                    Preferences.Default.Set(nameof(UserId), string.Empty);
+                    return;
+                }
+                Preferences.Default.Set(nameof(UserId), value.Value.ToString());
             }
         }
 
